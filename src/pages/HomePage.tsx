@@ -117,7 +117,6 @@ export default function HomePage() {
             recruiting active players!
           </p>
           <a
-            href="/contact"
             className="inline-block bg-white text-rok-purple font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors"
           >
             Contact Recruiting

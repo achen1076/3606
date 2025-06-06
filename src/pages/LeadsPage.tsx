@@ -296,10 +296,7 @@ export default function LeadsPage() {
               Have questions or want to join our kingdom? Our leadership team is
               here to help!
             </p>
-            <a
-              href="/contact"
-              className="inline-block bg-white text-rok-purple font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors"
-            >
+            <a className="inline-block bg-white text-rok-purple font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors">
               Contact Us
             </a>
           </div>
