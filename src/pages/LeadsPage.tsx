@@ -31,9 +31,6 @@ export default function LeadsPage() {
                   BuckNaked
                 </h3>
                 <p className="text-white font-bold mt-1">King</p>
-                <p className="text-gray-300 mt-3">
-                  Power: 120M | VIP 18 | 1200+ Days
-                </p>
                 <p className="text-gray-400 mt-4 text-sm">
                   "Leading with strategy and strength. Together we conquer."
                 </p>
@@ -47,10 +44,7 @@ export default function LeadsPage() {
                 <h3 className="text-xl font-bold text-rok-purple-light">
                   TSN Stitch
                 </h3>
-                <p className="text-white font-bold mt-1">King</p>
-                <p className="text-gray-300 mt-3">
-                  Power: 95M | VIP 17 | 1100+ Days
-                </p>
+                <p className="text-white font-bold mt-1">War Lead</p>
                 <p className="text-gray-400 mt-4 text-sm">
                   "Specializing in battle strategy and field control."
                 </p>
@@ -65,9 +59,6 @@ export default function LeadsPage() {
                   BuckNaked
                 </h3>
                 <p className="text-white font-bold mt-1">Diplomacy</p>
-                <p className="text-gray-300 mt-3">
-                  Power: 88M | VIP 17 | 1050+ Days
-                </p>
                 <p className="text-gray-400 mt-4 text-sm">
                   "Managing kingdom relations and strategic alliances."
                 </p>
@@ -204,7 +195,7 @@ export default function LeadsPage() {
         <section className="w-full py-8">
           <div className="bg-gradient-to-br from-rok-purple/20 to-black rounded-lg p-6 md:p-8 shadow-lg">
             <h2 className="text-2xl font-bold text-white mb-6">
-              Rally / Garrison Leadss
+              Rally / Garrison Leads
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* War Coordinator */}
