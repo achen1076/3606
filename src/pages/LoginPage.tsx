@@ -54,7 +54,7 @@ export default function LoginPage() {
                 isLoading={isLoading}
               />
             </div>
-
+            {/* 
             <div className="mt-8 text-center text-gray-400">
               <p>Demo Accounts:</p>
               <p className="mt-2">
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 <span className="text-rok-purple-light">Member:</span> username:
                 member, password: member3606
               </p>
-            </div>
+            </div> */}
           </div>
         </SectionCard>
       </section>
