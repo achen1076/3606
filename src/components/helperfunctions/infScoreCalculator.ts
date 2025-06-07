@@ -418,7 +418,7 @@ export function calculateInfantryScore(formValues: any) {
       equipmentScoreChart["eternal_empire_legs"][
         Number(equipment["legsIconic"])
       ] * legsMultiplier;
-  } else if (legs === "eternal-hope-legs-legendary") {
+  } else if (legs === "eternal-night-legs-legendary") {
     equipmentScore +=
       equipmentScoreChart["eternal_night_legs"][
         Number(equipment["legsIconic"])
