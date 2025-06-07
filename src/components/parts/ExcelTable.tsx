@@ -487,7 +487,12 @@ export default function ExcelTable({
         </div>
       ) : error ? (
         <div className="bg-red-900/30 border border-red-800 text-white p-4 rounded-lg">
-          <p>{error}</p>
+          {error ===
+          "Failed to load the Excel file. Invalid HTML: could not find <table>" ? (
+            <p>No data found</p>
+          ) : (
+            <p>{error}</p>
+          )}
         </div>
       ) : (
         <div>
