@@ -1151,9 +1151,7 @@ export default function InfLeadForm() {
             </h4>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-black/30 p-4 rounded-lg">
               <div>
-                <p className="text-gray-300 mb-1">
-                  Your {formType === "rally" ? "Rally" : "Garrison"} Lead Score:
-                </p>
+                <p className="text-gray-300 mb-1">Your Score:</p>
                 <p className="text-3xl font-bold text-rok-purple-light">
                   {score.toFixed(2)}
                 </p>
