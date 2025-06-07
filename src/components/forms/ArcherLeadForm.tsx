@@ -15,6 +15,7 @@ export default function InfLeadForm() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setShowScore(true);
+
     // Get the form element
     const form = event.currentTarget as HTMLFormElement;
 
@@ -41,23 +42,23 @@ export default function InfLeadForm() {
     const chestIconicSelect = form.querySelector(
       'select[name="chestIconic"]'
     ) as HTMLSelectElement;
-    const bootsSelect = form.querySelector(
-      'select[name="boots"]'
+    const bootSelect = form.querySelector(
+      'select[name="boot"]'
     ) as HTMLSelectElement;
-    const bootsIconicSelect = form.querySelector(
-      'select[name="bootsIconic"]'
+    const bootIconicSelect = form.querySelector(
+      'select[name="bootIconic"]'
     ) as HTMLSelectElement;
-    const glovesSelect = form.querySelector(
-      'select[name="gloves"]'
+    const gloveSelect = form.querySelector(
+      'select[name="glove"]'
     ) as HTMLSelectElement;
-    const glovesIconicSelect = form.querySelector(
-      'select[name="glovesIconic"]'
+    const gloveIconicSelect = form.querySelector(
+      'select[name="gloveIconic"]'
     ) as HTMLSelectElement;
-    const legsSelect = form.querySelector(
-      'select[name="legs"]'
+    const legSelect = form.querySelector(
+      'select[name="leg"]'
     ) as HTMLSelectElement;
-    const legsIconicSelect = form.querySelector(
-      'select[name="legsIconic"]'
+    const legIconicSelect = form.querySelector(
+      'select[name="legIconic"]'
     ) as HTMLSelectElement;
     const weaponSelect = form.querySelector(
       'select[name="weapon"]'
@@ -69,13 +70,13 @@ export default function InfLeadForm() {
       'select[name="accessory1"]'
     ) as HTMLSelectElement;
     const accessory1IconicSelect = form.querySelector(
-      'select[name="accessory1IconicLevel"]'
+      'select[name="accessory1Iconic"]'
     ) as HTMLSelectElement;
     const accessory2Select = form.querySelector(
       'select[name="accessory2"]'
     ) as HTMLSelectElement;
     const accessory2IconicSelect = form.querySelector(
-      'select[name="accessory2IconicLevel"]'
+      'select[name="accessory2Iconic"]'
     ) as HTMLSelectElement;
 
     const helmetSpecialTalentInput = form.querySelector(
@@ -84,14 +85,14 @@ export default function InfLeadForm() {
     const chestSpecialTalentInput = form.querySelector(
       'input[name="specialTalentChest"]'
     ) as HTMLInputElement;
-    const bootsSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentBoots"]'
+    const bootSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentBoot"]'
     ) as HTMLInputElement;
-    const glovesSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentGloves"]'
+    const gloveSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentGlove"]'
     ) as HTMLInputElement;
-    const legsSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentLegs"]'
+    const legSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentLeg"]'
     ) as HTMLInputElement;
     const weaponSpecialTalentInput = form.querySelector(
       'input[name="specialTalentWeapon"]'
@@ -119,8 +120,8 @@ export default function InfLeadForm() {
 
     // Create the form values object
     const formValues = {
-      vip: vipInput?.value || "",
       formType: formType,
+      vip: vipInput?.value || "",
       citySkin: citySkinInputs,
       equipment: {
         helmet: helmetSelect?.value || "",
@@ -129,15 +130,15 @@ export default function InfLeadForm() {
         chest: chestSelect?.value || "",
         chestIconic: chestIconicSelect?.value || "",
         chestSpecialTalent: chestSpecialTalentInput?.checked || false,
-        boots: bootsSelect?.value || "",
-        bootsIconic: bootsIconicSelect?.value || "",
-        bootsSpecialTalent: bootsSpecialTalentInput?.checked || false,
-        gloves: glovesSelect?.value || "",
-        glovesIconic: glovesIconicSelect?.value || "",
-        glovesSpecialTalent: glovesSpecialTalentInput?.checked || false,
-        legs: legsSelect?.value || "",
-        legsIconic: legsIconicSelect?.value || "",
-        legsSpecialTalent: legsSpecialTalentInput?.checked || false,
+        boot: bootSelect?.value || "",
+        bootIconic: bootIconicSelect?.value || "",
+        bootSpecialTalent: bootSpecialTalentInput?.checked || false,
+        glove: gloveSelect?.value || "",
+        gloveIconic: gloveIconicSelect?.value || "",
+        gloveSpecialTalent: gloveSpecialTalentInput?.checked || false,
+        leg: legSelect?.value || "",
+        legIconic: legIconicSelect?.value || "",
+        legSpecialTalent: legSpecialTalentInput?.checked || false,
         weapon: weaponSelect?.value || "",
         weaponIconic: weaponIconicSelect?.value || "",
         weaponSpecialTalent: weaponSpecialTalentInput?.checked || false,
@@ -163,8 +164,7 @@ export default function InfLeadForm() {
       inscription: selectedInscriptions,
     };
 
-    const score = calculateArcherScore(formValues);
-    setScore(score);
+    setScore(calculateArcherScore(formValues));
   };
 
   return (
@@ -506,14 +506,17 @@ export default function InfLeadForm() {
                   required
                 >
                   <option value="">Select Helmet</option>
-                  <option value="archer-helmet-epic">
-                    Archer Helmet (Epic)
+                  <option value="arch-epic-helmet">
+                    Revival Helmet (Epic)
                   </option>
-                  <option value="set-helmet-legendary">
-                    Set Helmet (Legendary)
+                  <option value="arch-dragon-helmet">
+                    Dragon Breath Helmet (Legendary)
                   </option>
-                  <option value="kvk-helmet-legendary">
+                  <option value="arch-kvk-helmet">
                     KvK Helmet (Legendary)
+                  </option>
+                  <option value="leadership-helmet">
+                    Leadership Helmet (Legendary)
                   </option>
                 </select>
               </div>
@@ -556,12 +559,15 @@ export default function InfLeadForm() {
                   required
                 >
                   <option value="">Select Chest</option>
-                  <option value="archer-chest-epic">Archer Chest (Epic)</option>
-                  <option value="dragon-breath-legendary">
-                    Dragon Breath (Legendary)
+                  <option value="arch-epic-chest">Archer Chest (Epic)</option>
+                  <option value="arch-dragon-chest">
+                    Dragon Breath Chest (Legendary)
                   </option>
-                  <option value="milky-way-legendary">
-                    Milky Way (Legendary)
+                  <option value="arch-milky-chest">
+                    Milky Way Chest (Legendary)
+                  </option>
+                  <option value="leadership-chest">
+                    Leadership Chest (Legendary)
                   </option>
                 </select>
               </div>
@@ -599,19 +605,18 @@ export default function InfLeadForm() {
                   Gloves
                 </label>
                 <select
-                  name="gloves"
+                  name="glove"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Gloves</option>
-                  <option value="archer-gloves-epic">
-                    Archer Gloves (Epic)
+                  <option value="arch-epic-glove">Archer Gloves (Epic)</option>
+                  <option value="arch-ian-glove">Ian Gloves (Legendary)</option>
+                  <option value="arch-dragon-glove">
+                    Dragon Breath Gloves (Legendary)
                   </option>
-                  <option value="dragon-breath-legendary">
-                    Dragon Breath (Legendary)
-                  </option>
-                  <option value="leadership-legendary">
-                    Leadership (Legendary)
+                  <option value="leadership-glove">
+                    Leadership Gloves (Legendary)
                   </option>
                 </select>
               </div>
@@ -620,7 +625,7 @@ export default function InfLeadForm() {
                   Gloves Iconic Level
                 </label>
                 <select
-                  name="glovesIconic"
+                  name="gloveIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -636,10 +641,10 @@ export default function InfLeadForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-gloves"
+                  id="special-talent-glove"
                   className="cursor-pointer"
-                  name="specialTalentGloves"
-                  value="specialTalentGloves"
+                  name="specialTalentGlove"
+                  value="specialTalentGlove"
                 />
               </div>
             </div>
@@ -649,17 +654,23 @@ export default function InfLeadForm() {
                   Legs
                 </label>
                 <select
-                  name="legs"
+                  name="leg"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Legs</option>
-                  <option value="archer-legs-epic">Archer Legs (Epic)</option>
-                  <option value="dragon-breath-legendary">
-                    Dragon Breath (Legendary)
+                  <option value="arch-fanatic-leg">Fanatic Legs (Epic)</option>
+                  <option value="arch-revival-leg">
+                    Revival Legs (Legendary)
                   </option>
-                  <option value="leadership-legendary">
-                    Leadership (Legendary)
+                  <option value="arch-dragon-leg">
+                    Dragon Breath Legs (Legendary)
+                  </option>
+                  <option value="arch-tasset-leg">
+                    Tasset Legs (Legendary)
+                  </option>
+                  <option value="leadership-leg">
+                    Leadership Legs (Legendary)
                   </option>
                 </select>
               </div>
@@ -668,7 +679,7 @@ export default function InfLeadForm() {
                   Legs Iconic Level
                 </label>
                 <select
-                  name="legsIconic"
+                  name="legIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -684,10 +695,10 @@ export default function InfLeadForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-legs"
+                  id="special-talent-leg"
                   className="cursor-pointer"
-                  name="specialTalentLegs"
-                  value="specialTalentLegs"
+                  name="specialTalentLeg"
+                  value="specialTalentLeg"
                 />
               </div>
             </div>
@@ -702,14 +713,15 @@ export default function InfLeadForm() {
                   required
                 >
                   <option value="">Select Weapon</option>
-                  <option value="archer-weapon-epic">
-                    Archer Weapon (Epic)
+                  <option value="arch-epic-weapon">Archer Weapon (Epic)</option>
+                  <option value="arch-dragon-weapon">
+                    Dragon Breath Weapon (Legendary)
                   </option>
-                  <option value="set-weapon-legendary">
-                    Set Weapon (Legendary)
-                  </option>
-                  <option value="kvk-weapon-legendary">
+                  <option value="arch-kvk-weapon">
                     KvK Weapon (Legendary)
+                  </option>
+                  <option value="leadership-weapon">
+                    Leadership Weapon (Legendary)
                   </option>
                 </select>
               </div>
@@ -747,16 +759,19 @@ export default function InfLeadForm() {
                   Boots
                 </label>
                 <select
-                  name="boots"
+                  name="boot"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Boots</option>
-                  <option value="archer-boots-epic">Archer Boots (Epic)</option>
-                  <option value="dragon-breath-legendary">
+                  <option value="arch-epic-boot">Archer Boots (Epic)</option>
+                  <option value="arch-dragon-boot">
                     Dragon Breath Boots (Legendary)
                   </option>
-                  <option value="leadership-legendary">
+                  <option value="arch-commander-boot">
+                    Commander Boots (Legendary)
+                  </option>
+                  <option value="leadership-boot">
                     Leadership Boots (Legendary)
                   </option>
                 </select>
@@ -766,7 +781,7 @@ export default function InfLeadForm() {
                   Boots Iconic Level
                 </label>
                 <select
-                  name="bootsIconic"
+                  name="bootIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -782,9 +797,9 @@ export default function InfLeadForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-boots"
-                  name="specialTalentBoots"
-                  value="specialTalentBoots"
+                  id="special-talent-boot"
+                  name="specialTalentBoot"
+                  value="specialTalentBoot"
                   className="cursor-pointer"
                 />
               </div>
@@ -800,7 +815,7 @@ export default function InfLeadForm() {
                   required
                 >
                   <option value="">Select Accessory 1</option>
-                  <option value="archer-accessory-epic">Epic</option>
+                  <option value="epic-accessory">Epic</option>
                   <option value="ring">Ring</option>
                   <option value="horn">Horn</option>
                   <option value="drum">Drum</option>
@@ -846,7 +861,7 @@ export default function InfLeadForm() {
                   required
                 >
                   <option value="">Select Accessory 2</option>
-                  <option value="archer-accessory-epic">Epic</option>
+                  <option value="epic-accessory">Epic</option>
                   <option value="ring">Ring</option>
                   <option value="horn">Horn</option>
                   <option value="drum">Drum</option>

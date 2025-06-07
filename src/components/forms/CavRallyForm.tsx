@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { calculateCavalryScore } from "../helperfunctions/cavScoreCalculator.ts";
+import { gearCalculator } from "../../constants/gearCalculator.tsx";
+
 export default function CavRallyForm() {
   const [selectedInscriptions, setSelectedInscriptions] = useState<string[]>(
     []
@@ -41,23 +43,23 @@ export default function CavRallyForm() {
     const chestIconicSelect = form.querySelector(
       'select[name="chestIconic"]'
     ) as HTMLSelectElement;
-    const bootsSelect = form.querySelector(
-      'select[name="boots"]'
+    const bootSelect = form.querySelector(
+      'select[name="boot"]'
     ) as HTMLSelectElement;
-    const bootsIconicSelect = form.querySelector(
-      'select[name="bootsIconic"]'
+    const bootIconicSelect = form.querySelector(
+      'select[name="bootIconic"]'
     ) as HTMLSelectElement;
-    const glovesSelect = form.querySelector(
-      'select[name="gloves"]'
+    const gloveSelect = form.querySelector(
+      'select[name="glove"]'
     ) as HTMLSelectElement;
-    const glovesIconicSelect = form.querySelector(
-      'select[name="glovesIconic"]'
+    const gloveIconicSelect = form.querySelector(
+      'select[name="gloveIconic"]'
     ) as HTMLSelectElement;
-    const legsSelect = form.querySelector(
-      'select[name="legs"]'
+    const legSelect = form.querySelector(
+      'select[name="leg"]'
     ) as HTMLSelectElement;
-    const legsIconicSelect = form.querySelector(
-      'select[name="legsIconic"]'
+    const legIconicSelect = form.querySelector(
+      'select[name="legIconic"]'
     ) as HTMLSelectElement;
     const weaponSelect = form.querySelector(
       'select[name="weapon"]'
@@ -69,13 +71,13 @@ export default function CavRallyForm() {
       'select[name="accessory1"]'
     ) as HTMLSelectElement;
     const accessory1IconicSelect = form.querySelector(
-      'select[name="accessory1IconicLevel"]'
+      'select[name="accessory1Iconic"]'
     ) as HTMLSelectElement;
     const accessory2Select = form.querySelector(
       'select[name="accessory2"]'
     ) as HTMLSelectElement;
     const accessory2IconicSelect = form.querySelector(
-      'select[name="accessory2IconicLevel"]'
+      'select[name="accessory2Iconic"]'
     ) as HTMLSelectElement;
 
     const helmetSpecialTalentInput = form.querySelector(
@@ -84,14 +86,14 @@ export default function CavRallyForm() {
     const chestSpecialTalentInput = form.querySelector(
       'input[name="specialTalentChest"]'
     ) as HTMLInputElement;
-    const bootsSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentBoots"]'
+    const bootSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentBoot"]'
     ) as HTMLInputElement;
-    const glovesSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentGloves"]'
+    const gloveSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentGlove"]'
     ) as HTMLInputElement;
-    const legsSpecialTalentInput = form.querySelector(
-      'input[name="specialTalentLegs"]'
+    const legSpecialTalentInput = form.querySelector(
+      'input[name="specialTalentLeg"]'
     ) as HTMLInputElement;
     const weaponSpecialTalentInput = form.querySelector(
       'input[name="specialTalentWeapon"]'
@@ -129,15 +131,15 @@ export default function CavRallyForm() {
         chest: chestSelect?.value || "",
         chestIconic: chestIconicSelect?.value || "",
         chestSpecialTalent: chestSpecialTalentInput?.checked || false,
-        boots: bootsSelect?.value || "",
-        bootsIconic: bootsIconicSelect?.value || "",
-        bootsSpecialTalent: bootsSpecialTalentInput?.checked || false,
-        gloves: glovesSelect?.value || "",
-        glovesIconic: glovesIconicSelect?.value || "",
-        glovesSpecialTalent: glovesSpecialTalentInput?.checked || false,
-        legs: legsSelect?.value || "",
-        legsIconic: legsIconicSelect?.value || "",
-        legsSpecialTalent: legsSpecialTalentInput?.checked || false,
+        boot: bootSelect?.value || "",
+        bootIconic: bootIconicSelect?.value || "",
+        bootSpecialTalent: bootSpecialTalentInput?.checked || false,
+        glove: gloveSelect?.value || "",
+        gloveIconic: gloveIconicSelect?.value || "",
+        gloveSpecialTalent: gloveSpecialTalentInput?.checked || false,
+        leg: legSelect?.value || "",
+        legIconic: legIconicSelect?.value || "",
+        legSpecialTalent: legSpecialTalentInput?.checked || false,
         weapon: weaponSelect?.value || "",
         weaponIconic: weaponIconicSelect?.value || "",
         weaponSpecialTalent: weaponSpecialTalentInput?.checked || false,
@@ -164,8 +166,6 @@ export default function CavRallyForm() {
     };
 
     setScore(calculateCavalryScore(formValues));
-
-    console.log(score);
   };
 
   return (
@@ -507,15 +507,12 @@ export default function CavRallyForm() {
                   required
                 >
                   <option value="">Select Helmet</option>
-                  <option value="cavalry-helmet-epic">
-                    Cavalry Helmet (Epic)
+                  <option value="cav-epic-helmet">Cavalry Helmet (Epic)</option>
+                  <option value="cav-hellish-helmet">
+                    Hellish Helmet (Legendary)
                   </option>
-                  <option value="set-helmet-legendary">
-                    Set Helmet (Legendary)
-                  </option>
-                  <option value="kvk-helmet-legendary">
-                    KvK Helmet (Legendary)
-                  </option>
+                  <option value="cav-kvk-helmet">KvK Helmet (Legendary)</option>
+                  <option value="leadership-helmet">Leadership Helmet</option>
                 </select>
               </div>
               <div>
@@ -557,14 +554,15 @@ export default function CavRallyForm() {
                   required
                 >
                   <option value="">Select Chest</option>
-                  <option value="cavalry-chest-epic">
-                    Cavalry Chest (Epic)
-                  </option>
-                  <option value="shadow-legion-chest-legendary">
+                  <option value="cav-epic-chest">Cavalry Chest (Epic)</option>
+                  <option value="cav-shadow-chest">
                     Shadow Legion Chest (Legendary)
                   </option>
-                  <option value="hellish-wasteland-chest-legendary">
+                  <option value="cav-hellish-chest">
                     Hellish Wasteland Chest (Legendary)
+                  </option>
+                  <option value="leadership-chest">
+                    Leadership Chest (Legendary)
                   </option>
                 </select>
               </div>
@@ -602,19 +600,20 @@ export default function CavRallyForm() {
                   Gloves
                 </label>
                 <select
-                  name="gloves"
+                  name="glove"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Gloves</option>
-                  <option value="cavalry-gloves-epic">
-                    Cavalry Gloves (Epic)
+                  <option value="cav-epic-glove">Cavalry Gloves (Epic)</option>
+                  <option value="cav-navar-glove">
+                    Navar Gloves (Legendary)
                   </option>
-                  <option value="hellish-wasteland-gloves-legendary">
+                  <option value="cav-hellish-glove">
                     Hellish Wasteland Gloves (Legendary)
                   </option>
-                  <option value="navar-gloves-legendary">
-                    Navar Gloves (Legendary)
+                  <option value="leadership-glove">
+                    Leadership Gloves (Legendary)
                   </option>
                 </select>
               </div>
@@ -623,7 +622,7 @@ export default function CavRallyForm() {
                   Gloves Iconic Level
                 </label>
                 <select
-                  name="glovesIconic"
+                  name="gloveIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -639,10 +638,10 @@ export default function CavRallyForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-gloves"
+                  id="special-talent-glove"
                   className="cursor-pointer"
-                  name="specialTalentGloves"
-                  value="specialTalentGloves"
+                  name="specialTalentGlove"
+                  value="specialTalentGlove"
                 />
               </div>
             </div>
@@ -652,17 +651,20 @@ export default function CavRallyForm() {
                   Legs
                 </label>
                 <select
-                  name="legs"
+                  name="leg"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Legs</option>
-                  <option value="cavalry-legs-epic">Cavalry Legs (Epic)</option>
-                  <option value="ash-legs-legendary">
+                  <option value="cav-epic-leg">Cavalry Legs (Epic)</option>
+                  <option value="cav-ash-leg">
                     Ash of Dawn Legs (Legendary)
                   </option>
-                  <option value="hellish-wasteland-legs-legendary">
+                  <option value="cav-hellish-leg">
                     Hellish Wasteland Legs (Legendary)
+                  </option>
+                  <option value="leadership-leg">
+                    Leadership Legs (Legendary)
                   </option>
                 </select>
               </div>
@@ -671,7 +673,7 @@ export default function CavRallyForm() {
                   Legs Iconic Level
                 </label>
                 <select
-                  name="legsIconic"
+                  name="legIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -687,10 +689,10 @@ export default function CavRallyForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-legs"
+                  id="special-talent-leg"
                   className="cursor-pointer"
-                  name="specialTalentLegs"
-                  value="specialTalentLegs"
+                  name="specialTalentLeg"
+                  value="specialTalentLeg"
                 />
               </div>
             </div>
@@ -705,14 +707,13 @@ export default function CavRallyForm() {
                   required
                 >
                   <option value="">Select Weapon</option>
-                  <option value="cavalry-weapon-epic">
-                    Cavalry Weapon (Epic)
+                  <option value="cav-epic-weapon">Cavalry Weapon (Epic)</option>
+                  <option value="cav-hellish-weapon">
+                    Hellish Wasteland Weapon (Legendary)
                   </option>
-                  <option value="set-weapon-legendary">
-                    Set Weapon (Legendary)
-                  </option>
-                  <option value="kvk-weapon-legendary">
-                    KvK Weapon (Legendary)
+                  <option value="cav-kvk-weapon">KvK Weapon (Legendary)</option>
+                  <option value="leadership-weapon">
+                    Leadership Weapon (Legendary)
                   </option>
                 </select>
               </div>
@@ -750,16 +751,20 @@ export default function CavRallyForm() {
                   Boots
                 </label>
                 <select
-                  name="boots"
+                  name="boot"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
                   <option value="">Select Boots</option>
-                  <option value="cavalry-boots-epic">
-                    Cavalry Boots (Epic)
+                  <option value="cav-epic-boot">Cavalry Boots (Epic)</option>
+                  <option value="cav-mountain-boot">
+                    Mountain Boots (Legendary)
                   </option>
-                  <option value="set-boots-legendary">
-                    Set Boots (Legendary)
+                  <option value="cav-hellish-boot">
+                    Hellish Wasteland Boots (Legendary)
+                  </option>
+                  <option value="leadership-boot">
+                    Leadership Boots (Legendary)
                   </option>
                 </select>
               </div>
@@ -768,7 +773,7 @@ export default function CavRallyForm() {
                   Boots Iconic Level
                 </label>
                 <select
-                  name="bootsIconic"
+                  name="bootIconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -784,9 +789,9 @@ export default function CavRallyForm() {
                 <label className="block text-gray-300">Special Talent?</label>
                 <input
                   type="checkbox"
-                  id="special-talent-boots"
-                  name="specialTalentBoots"
-                  value="specialTalentBoots"
+                  id="special-talent-boot"
+                  name="specialTalentBoot"
+                  value="specialTalentBoot"
                   className="cursor-pointer"
                 />
               </div>
@@ -802,7 +807,7 @@ export default function CavRallyForm() {
                   required
                 >
                   <option value="">Select Accessory 1</option>
-                  <option value="cavalry-accessory-epic">Epic</option>
+                  <option value="epic-accessory">Epic</option>
                   <option value="ring">Ring</option>
                   <option value="horn">Horn</option>
                   <option value="drum">Drum</option>
@@ -848,7 +853,7 @@ export default function CavRallyForm() {
                   required
                 >
                   <option value="">Select Accessory 2</option>
-                  <option value="cavalry-accessory-epic">Epic</option>
+                  <option value="epic-accessory">Epic</option>
                   <option value="ring">Ring</option>
                   <option value="horn">Horn</option>
                   <option value="drum">Drum</option>
