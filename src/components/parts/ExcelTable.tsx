@@ -14,6 +14,7 @@ export default function ExcelTable({
 
   // Define file paths for different seasons
   const seasonFilePaths = {
+    2: "/data/3606_k2.xlsx",
     3: "/data/3606_k3.xlsx",
     4: "/data/3606_k4.xlsx",
   };
@@ -393,6 +394,16 @@ export default function ExcelTable({
       {/* Season Selector */}
       <div className="mb-6 flex justify-center">
         <div className="inline-flex bg-gray-800 rounded-lg p-1">
+          <button
+            onClick={() => setCurrentSeason(2)}
+            className={`px-4 py-2 rounded-md text-sm font-medium ${
+              currentSeason === 2
+                ? "bg-rok-purple text-white"
+                : "text-gray-300 hover:bg-gray-700"
+            }`}
+          >
+            Season 2
+          </button>
           <button
             onClick={() => setCurrentSeason(3)}
             className={`px-4 py-2 rounded-md text-sm font-medium ${
