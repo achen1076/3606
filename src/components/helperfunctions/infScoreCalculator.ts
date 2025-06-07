@@ -12,6 +12,7 @@ export function calculateInfantryScore(formValues: any) {
   // Adjust multipliers based on form type
   const isGarrison = formType === "garrison" ? 1 : 0;
   const isRally = formType === "rally" ? 1 : 0;
+  const isField = formType === "field" ? 1 : 0;
 
   // Calculate score based on VIP level
   if (vip === "13-16") {
@@ -530,7 +531,7 @@ export function calculateInfantryScore(formValues: any) {
     Fearsome: 1 * allDamageMultiplier,
     Warflames: 1 * allDamageMultiplier,
     Elite: 1 * allDamageMultiplier,
-    Assertive: 2 * allDamageMultiplier * isRally,
+    Assertive: 2 * allDamageMultiplier * (isRally + isField),
     Sentries: 2 * allDamageMultiplier * isGarrison,
 
     Destructive: -4,

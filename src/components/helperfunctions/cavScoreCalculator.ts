@@ -2,7 +2,9 @@ export function calculateCavalryScore(formValues: any) {
   const { formType, vip, citySkin, equipment, armaments, inscription } =
     formValues;
 
-  let score = 1;
+  console.log(formValues);
+
+  let score = 0;
 
   let attackMultiplier = 1;
   let defenseMultiplier = 1.1;
@@ -12,6 +14,7 @@ export function calculateCavalryScore(formValues: any) {
   // Adjust multipliers based on form type
   const isGarrison = formType === "garrison" ? 1 : 0;
   const isRally = formType === "rally" ? 1 : 0;
+  const isField = formType === "field" ? 1 : 0;
 
   // Calculate score based on VIP level
   if (vip === "13-16") {
@@ -383,7 +386,7 @@ export function calculateCavalryScore(formValues: any) {
       glovesMultiplier;
   } else if (gloves === "navar-gloves-legendary") {
     equipmentScore +=
-      equipmentScoreChart["navar_gloves"][Number(equipment["glovesIconic"])] *
+      equipmentScoreChart["navars_gloves"][Number(equipment["glovesIconic"])] *
       glovesMultiplier;
   } else if (gloves === "hellish-gloves-legendary") {
     equipmentScore +=
@@ -496,6 +499,7 @@ export function calculateCavalryScore(formValues: any) {
   score += Number(armaments["cavalryHealth"]) * healthMultiplier;
   score += Number(armaments["allDamage"]) * allDamageMultiplier;
 
+
   //Inscriptions
 
   const inscriptionValues = {
@@ -515,7 +519,7 @@ export function calculateCavalryScore(formValues: any) {
     Fearsome: 1 * allDamageMultiplier,
     Warflames: 1 * allDamageMultiplier,
     Elite: 1 * allDamageMultiplier,
-    Assertive: 2 * allDamageMultiplier * isRally,
+    Assertive: 2 * allDamageMultiplier * (isRally + isField),
     Sentries: 2 * allDamageMultiplier * isGarrison,
 
     Destructive: -4,
