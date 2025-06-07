@@ -2,8 +2,6 @@ export function calculateCavalryScore(formValues: any) {
   const { formType, vip, citySkin, equipment, armaments, inscription } =
     formValues;
 
-  console.log(formValues);
-
   let score = 0;
 
   let attackMultiplier = 1;
@@ -499,7 +497,6 @@ export function calculateCavalryScore(formValues: any) {
   score += Number(armaments["cavalryHealth"]) * healthMultiplier;
   score += Number(armaments["allDamage"]) * allDamageMultiplier;
 
-
   //Inscriptions
 
   const inscriptionValues = {
@@ -565,6 +562,5 @@ export function calculateCavalryScore(formValues: any) {
     }
   });
 
-  console.log(score);
   return score;
 }

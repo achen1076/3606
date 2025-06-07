@@ -4,6 +4,8 @@ export function calculateInfantryScore(formValues: any) {
 
   let score = 0;
 
+  console.log(formValues);
+
   let attackMultiplier = 1;
   let defenseMultiplier = 1.1;
   let healthMultiplier = 1.25;
@@ -341,7 +343,7 @@ export function calculateInfantryScore(formValues: any) {
   let helmetSpecialTalent = equipment["helmetSpecialTalent"];
   let helmetMultiplier = 1;
 
-  if (helmetSpecialTalent === "") {
+  if (helmetSpecialTalent) {
     helmetMultiplier = 1.3;
   }
   if (helmet === "infantry-helmet-epic") {
@@ -363,7 +365,7 @@ export function calculateInfantryScore(formValues: any) {
   let chestSpecialTalent = equipment["chestSpecialTalent"];
   let chestMultiplier = 1;
 
-  if (chestSpecialTalent === "") {
+  if (chestSpecialTalent) {
     chestMultiplier = 1.3;
   }
   if (chest === "infantry-chest-epic") {
@@ -384,7 +386,7 @@ export function calculateInfantryScore(formValues: any) {
   let glovesSpecialTalent = equipment["glovesSpecialTalent"];
   let glovesMultiplier = 1;
 
-  if (glovesSpecialTalent === "") {
+  if (glovesSpecialTalent) {
     glovesMultiplier = 1.3;
   }
   if (gloves === "infantry-gloves-epic") {
@@ -404,7 +406,7 @@ export function calculateInfantryScore(formValues: any) {
   let legsSpecialTalent = equipment["legsSpecialTalent"];
   let legsMultiplier = 1;
 
-  if (legsSpecialTalent === "") {
+  if (legsSpecialTalent) {
     legsMultiplier = 1.3;
   }
   if (legs === "infantry-legs-epic") {
@@ -427,7 +429,7 @@ export function calculateInfantryScore(formValues: any) {
   let weaponSpecialTalent = equipment["weaponSpecialTalent"];
   let weaponMultiplier = 1;
 
-  if (weaponSpecialTalent === "") {
+  if (weaponSpecialTalent) {
     weaponMultiplier = 1.3;
   }
   if (weapon === "infantry-weapon-epic") {
@@ -448,7 +450,7 @@ export function calculateInfantryScore(formValues: any) {
   let bootsSpecialTalent = equipment["bootsSpecialTalent"];
   let bootsMultiplier = 1;
 
-  if (bootsSpecialTalent === "") {
+  if (bootsSpecialTalent) {
     bootsMultiplier = 1.3;
   }
   if (boots === "infantry-boots-epic") {
@@ -469,7 +471,7 @@ export function calculateInfantryScore(formValues: any) {
   let accessory1SpecialTalent = equipment["accessory1SpecialTalent"];
   let accessory1Multiplier = 1;
 
-  if (accessory1SpecialTalent === "") {
+  if (accessory1SpecialTalent) {
     accessory1Multiplier = 1.3;
   }
   if (accessory1 === "infantry-accessory-epic") {
@@ -488,7 +490,7 @@ export function calculateInfantryScore(formValues: any) {
   let accessory2SpecialTalent = equipment["accessory2SpecialTalent"];
   let accessory2Multiplier = 1;
 
-  if (accessory2SpecialTalent === "") {
+  if (accessory2SpecialTalent) {
     accessory2Multiplier = 1.3;
   }
   if (accessory2 === "infantry-accessory-epic") {
