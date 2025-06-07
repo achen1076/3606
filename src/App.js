@@ -19,9 +19,7 @@ export default function App() {
         <Route path="/stats" element={<StatsPage />} />
         <Route path="/leads" element={<LeadsPage />} />
         <Route path="/tools" element={
-          <ProtectedRoute>
             <ToolsPage />
-          </ProtectedRoute>
         } />
         <Route path="/forms" element={
           <ProtectedRoute>
