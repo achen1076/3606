@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage.tsx";
 import StatsPage from "./pages/StatsPage.tsx";
 import LeadsPage from "./pages/LeadsPage.tsx";
 import ToolsPage from "./pages/ToolsPage.tsx";
+import FormsPage from "./pages/FormsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import LogoutPage from "./pages/LogoutPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
@@ -20,6 +21,11 @@ export default function App() {
         <Route path="/tools" element={
           <ProtectedRoute>
             <ToolsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/forms" element={
+          <ProtectedRoute>
+            <FormsPage />
           </ProtectedRoute>
         } />
         <Route path="/login" element={<LoginPage />} />

@@ -3,6 +3,7 @@ import PageLayout from "../components/templates/PageLayout.tsx";
 import PageTitle from "../components/molecules/PageTitle.tsx";
 import SectionCard from "../components/molecules/SectionCard.tsx";
 import StatCard from "../components/molecules/StatCard.tsx";
+import ExcelTable from "../components/parts/ExcelTable.tsx";
 
 export default function StatsPage() {
   return (
@@ -21,6 +22,32 @@ export default function StatsPage() {
             <StatCard title="Top 300 Power" value="11.5B" />
             <StatCard title="Top 300 KP" value="79B" />
             <StatCard title="KvK Wins" value="2" />
+          </div>
+        </SectionCard>
+      </section>
+
+      {/* Alliance Stats */}
+      <section className="w-full py-8">
+        <SectionCard title="Alliance Statistics">
+          <div className="overflow-x-auto">
+            <table className="w-full text-white">
+              <thead>
+                <tr className="bg-rok-purple text-white">
+                  <th className="p-3 text-left">Alliance</th>
+                  <th className="p-3 text-right">Power</th>
+                  <th className="p-3 text-right">KP</th>
+                  <th className="p-3 text-right">Members</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-700">
+                  <td className="p-3 text-left">~iN</td>
+                  <td className="p-3 text-right">7.5B</td>
+                  <td className="p-3 text-right">74B</td>
+                  <td className="p-3 text-right">153</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </SectionCard>
       </section>
@@ -119,29 +146,17 @@ export default function StatsPage() {
           </div>
         </SectionCard>
       </section>
-      {/* Alliance Stats */}
+
+      {/* Player Stats */}
       <section className="w-full py-8">
-        <SectionCard title="Alliance Statistics">
-          <div className="overflow-x-auto">
-            <table className="w-full text-white">
-              <thead>
-                <tr className="bg-rok-purple text-white">
-                  <th className="p-3 text-left">Alliance</th>
-                  <th className="p-3 text-right">Power</th>
-                  <th className="p-3 text-right">KP</th>
-                  <th className="p-3 text-right">Members</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-gray-700">
-                  <td className="p-3 text-left">~iN</td>
-                  <td className="p-3 text-right">7.5B</td>
-                  <td className="p-3 text-right">74B</td>
-                  <td className="p-3 text-right">153</td>
-                </tr>
-              </tbody>
-            </table>
+        <SectionCard title="KvK 3 Player Statistics">
+          <div className="mb-4">
+            <p className="text-gray-300">
+              Player performance data for Kingdom 3606's KvK 3. Click on column
+              headers to sort the data.
+            </p>
           </div>
+          <ExcelTable excelFilePath="/data/3606_k3.xlsx" />
         </SectionCard>
       </section>
     </PageLayout>

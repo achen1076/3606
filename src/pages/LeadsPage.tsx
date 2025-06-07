@@ -44,7 +44,7 @@ export default function LeadsPage() {
                 <h3 className="text-xl font-bold text-rok-purple-light">
                   TSN Stitch
                 </h3>
-                <p className="text-white font-bold mt-1">War Lead</p>
+                <p className="text-white font-bold mt-1">Leader</p>
                 <p className="text-gray-400 mt-4 text-sm">
                   "Specializing in battle strategy and field control."
                 </p>
@@ -184,92 +184,6 @@ export default function LeadsPage() {
                       Geo
                     </h3>
                     <p className="text-white text-sm">Officer</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Officers & Specialists */}
-        <section className="w-full py-8">
-          <div className="bg-gradient-to-br from-rok-purple/20 to-black rounded-lg p-6 md:p-8 shadow-lg">
-            <h2 className="text-2xl font-bold text-white mb-6">
-              Rally / Garrison Leads
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* War Coordinator */}
-              <div className="bg-black/30 p-5 rounded-lg">
-                <h3 className="text-xl font-bold text-rok-purple-light mb-3">
-                  Rally Leads
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">Cav Rally Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">Inf Rally Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">
-                        Archery Rally Lead
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Resource Management */}
-              <div className="bg-black/30 p-5 rounded-lg">
-                <h3 className="text-xl font-bold text-rok-purple-light mb-3">
-                  Garrison Leads
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">Cav Garrison Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">Inf Garrison Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-rok-purple/60 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold text-white">A</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-bold">Achen</p>
-                      <p className="text-gray-400 text-sm">
-                        Archery Garrison Lead
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

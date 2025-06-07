@@ -84,6 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <NavLink to="/stats">Stats</NavLink>
               <NavLink to="/leads">Leads</NavLink>
               <NavLink to="/tools">Tools</NavLink>
+              <NavLink to="/forms">Forms</NavLink>
               {isLoggedIn ? (
                 <div className="flex items-center space-x-6">
                   <span className="text-rok-purple-light">
@@ -104,6 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink to="/stats">Stats</NavLink>
             <NavLink to="/leads">Leads</NavLink>
             <NavLink to="/tools">Tools</NavLink>
+            <NavLink to="/forms">Forms</NavLink>
             {isLoggedIn ? (
               <>
                 <span className="text-rok-purple-light py-2">
