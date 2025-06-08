@@ -30,11 +30,33 @@ export default function Calculators() {
         <p className="text-lg text-gray-300 mb-6">
           Use these tools to plan and build marches
         </p>
-        <p className="text-sm text-gray-300 mb-6">
+        <p className="text-sm text-gray-300 mb-4">
           Note: These calculators are currently in beta and may not be perfect.
           Swapping between rally, field, and garrison only affect gear and some
           inscriptions.
         </p>
+        
+        {/* Reference Links */}
+        <div className="mb-6 flex flex-wrap gap-4">
+          <a 
+            href="/gear-scores" 
+            className="px-4 py-2 bg-rok-purple/30 hover:bg-rok-purple/50 text-white rounded-md flex items-center transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+            </svg>
+            View Gear Score Reference
+          </a>
+          <a 
+            href="/inscription-scores" 
+            className="px-4 py-2 bg-rok-purple/30 hover:bg-rok-purple/50 text-white rounded-md flex items-center transition-all"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+            </svg>
+            View Inscription Score Reference
+          </a>
+        </div>
 
         {/* Accordion Sections */}
         <div className="space-y-4">

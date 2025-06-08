@@ -5,10 +5,13 @@ export default function FormsPage() {
   const [activeTab, setActiveTab] = useState<string>("cavalry");
 
   const formUrls = {
-    cavalry: "https://docs.google.com/forms/d/e/1FAIpQLScsJ5pHD2FygBw1X3kIrewdEPuXRyVLrNTXZvacTWJDTaq6ZQ/viewform?embedded=true",
-    infantry: "https://docs.google.com/forms/d/e/1FAIpQLScvCCMdzPQI7ZVu2Z4QSxUeJ_114K-X1wur2btEWMyKixGR2g/viewform?embedded=true",
-    archer: "https://docs.google.com/forms/d/e/1FAIpQLSfUWrnvxnjn5dPNf_AAdmojJKIqqYnZRSzyyXTqQC3-mpmkRQ/viewform?embedded=true",
-    mge: "https://docs.google.com/forms/d/e/1FAIpQLScFoLr3bJ0w3jxzFsb6kYUPMTCmcxzW4_7yDIyrVUv1fMwa7w/viewform?embedded=true"
+    cavalry:
+      "https://docs.google.com/forms/d/e/1FAIpQLScsJ5pHD2FygBw1X3kIrewdEPuXRyVLrNTXZvacTWJDTaq6ZQ/viewform?embedded=true",
+    infantry:
+      "https://docs.google.com/forms/d/e/1FAIpQLScvCCMdzPQI7ZVu2Z4QSxUeJ_114K-X1wur2btEWMyKixGR2g/viewform?embedded=true",
+    archer:
+      "https://docs.google.com/forms/d/e/1FAIpQLSfUWrnvxnjn5dPNf_AAdmojJKIqqYnZRSzyyXTqQC3-mpmkRQ/viewform?embedded=true",
+    mge: "https://docs.google.com/forms/d/e/1FAIpQLScFoLr3bJ0w3jxzFsb6kYUPMTCmcxzW4_7yDIyrVUv1fMwa7w/viewform?embedded=true",
   };
 
   return (
@@ -16,7 +19,7 @@ export default function FormsPage() {
       <PageLayout>
         <main className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold text-white mb-8">Kingdom Forms</h1>
-          
+
           {/* Tab Navigation */}
           <div className="flex flex-wrap mb-6 border-b border-gray-700">
             <button
@@ -60,11 +63,11 @@ export default function FormsPage() {
               MGE Form
             </button>
           </div>
-          
+
           {/* Form Container */}
           <div className="bg-black/30 p-4 rounded-lg shadow-lg">
             <div className="relative w-full overflow-hidden pb-[56.25%] h-0">
-              <iframe 
+              <iframe
                 src={formUrls[activeTab as keyof typeof formUrls]}
                 className="absolute top-0 left-0 w-full h-full border-0"
                 frameBorder="0"

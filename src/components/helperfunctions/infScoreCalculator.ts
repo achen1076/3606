@@ -1,7 +1,8 @@
 import { gearCalculator } from "../../constants/gearCalculator.tsx";
+import inscriptionScoreCalculator from "../../constants/inscriptionScore.tsx";
 
 export function calculateInfantryScore(formValues: any) {
-  const { formType, vip, citySkin, equipment, armaments, inscription } =
+  const { formType, vip, citySkin, armaments, inscription, formation } =
     formValues;
 
   let score = 0;
@@ -123,68 +124,13 @@ export function calculateInfantryScore(formValues: any) {
 
   //Inscriptions
 
-  const inscriptionValues = {
-    Robust: 3.5 * healthMultiplier,
-    Vitality: 3.5 * healthMultiplier,
-    Fit: 3.5 * healthMultiplier,
-    Hardy: 3.5 * healthMultiplier,
-    "Well Clad": 3.5 * defenseMultiplier,
-    Armored: 3.5 * defenseMultiplier,
-    Shielded: 3.5 * defenseMultiplier,
-    Metallic: 3.5 * defenseMultiplier,
-    Warcry: 3.5 * attackMultiplier,
-    Brutal: 3.5 * attackMultiplier,
-    Spiked: 3.5 * attackMultiplier,
-    Infamy: 3.5 * attackMultiplier,
-    Valiant: 1 * allDamageMultiplier,
-    Fearsome: 1 * allDamageMultiplier,
-    Warflames: 1 * allDamageMultiplier,
-    Elite: 1 * allDamageMultiplier,
-    Assertive: 2 * allDamageMultiplier * (isRally + isField),
-    Sentries: 2 * allDamageMultiplier * isGarrison,
+  const inscriptionScore = inscriptionScoreCalculator(
+    inscription,
+    formation,
+    formType
+  );
 
-    Destructive: -4,
-    "Straight to the Point": 19,
-    Invincible: 16,
-    Fearless: 26,
-    Hunter: 19,
-    Unstoppable: 16,
-    Balanced: 12,
-    Intrepid: 28,
-    Thrasher: 18,
-    Butterfly: 9,
-    Steelskin: 24,
-    Flurry: 22,
-    Toppler: 24,
-    Airtight: 12,
-    Thundering: 26,
-    Demolisher: 16,
-
-    "Battle Ready": 2,
-    "Even Keeled": 8,
-    Unswerving: 0,
-    Forceful: 10,
-    Crazed: 2,
-    "Boiling Blood": 8,
-    Defiant: 2,
-    "Focus Fire": 11,
-    Pummeler: 4,
-    Causative: 4,
-    Determined: 6,
-    Relentless: 8,
-    Imploder: 5,
-    Raider: 5,
-    Hardheaded: 0,
-    Rattling: 10,
-  };
-
-  inscription.forEach((inscrip: string) => {
-    if (inscriptionValues[inscrip]) {
-      score += inscriptionValues[inscrip];
-    } else {
-      score += 1;
-    }
-  });
+  score += inscriptionScore;
 
   return score;
 }

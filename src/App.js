@@ -7,7 +7,8 @@ import ToolsPage from "./pages/ToolsPage.tsx";
 import FormsPage from "./pages/FormsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import LogoutPage from "./pages/LogoutPage.tsx";
-import AdminPage from "./pages/AdminPage.tsx";
+import AllGearScorePage from "./pages/AllGearScorePage.tsx";
+import InscriptionScorePage from "./pages/InscriptionScorePage.tsx";
 import ProtectedRoute from "./components/templates/ProtectedRoute.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 
@@ -18,21 +19,19 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/stats" element={<StatsPage />} />
         <Route path="/leads" element={<LeadsPage />} />
-        <Route path="/tools" element={
-            <ToolsPage />
-        } />
-        <Route path="/forms" element={
-          <ProtectedRoute>
-            <FormsPage />
-          </ProtectedRoute>
-        } />
+        <Route path="/gear-scores" element={<AllGearScorePage />} />
+        <Route path="/inscription-scores" element={<InscriptionScorePage />} />
+        <Route path="/tools" element={<ToolsPage />} />
+        <Route
+          path="/forms"
+          element={
+            <ProtectedRoute>
+              <FormsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutPage />} />
-        <Route path="/admin" element={
-          <ProtectedRoute requireAdmin={true}>
-            <AdminPage />
-          </ProtectedRoute>
-        } />
       </Routes>
     </AuthProvider>
   );

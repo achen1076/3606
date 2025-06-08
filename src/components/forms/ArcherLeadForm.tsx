@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { calculateArcherScore } from "../helperfunctions/archerScoreCalculator.ts";
 
-export default function InfLeadForm() {
+export default function ArcherLeadForm() {
   const [selectedInscriptions, setSelectedInscriptions] = useState<string[]>(
     []
   );
+
+  const [formation, setFormation] = useState<string>("wedge");
 
   const [score, setScore] = useState<number>(0);
   const [formType, setFormType] = useState<"rally" | "garrison" | "field">(
@@ -118,6 +120,10 @@ export default function InfLeadForm() {
       'input[name="allDamage"]'
     ) as HTMLInputElement;
 
+    const formationInput = form.querySelector(
+      'select[name="formation"]'
+    ) as HTMLSelectElement;
+
     // Create the form values object
     const formValues = {
       formType: formType,
@@ -161,6 +167,7 @@ export default function InfLeadForm() {
           : 0,
         allDamage: allDamageInput?.value ? parseFloat(allDamageInput.value) : 0,
       },
+      formation: formationInput?.value || "",
       inscription: selectedInscriptions,
     };
 
@@ -914,6 +921,21 @@ export default function InfLeadForm() {
             </span>
             Armaments
           </h4>
+          {/* Formation Dropdown */}
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-2">Formation</label>
+            <select
+              name="formation"
+              className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
+              value={formation}
+              onChange={(e) => setFormation(e.target.value)}
+            >
+              <option value="wedge">Wedge</option>
+              <option value="arch">Arch</option>
+              <option value="delta">Delta</option>
+              <option value="pincer">Pincer</option>
+            </select>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-300 mb-2">Archer Attack</label>
@@ -966,65 +988,81 @@ export default function InfLeadForm() {
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-2 max-h-60 overflow-y-auto p-2 border border-gray-700 rounded-md">
               {[
-                "Airtight",
+                ...(formation === "pincer" ? ["Airtight"] : []),
                 "Alert",
                 "Armored",
                 "Artisan",
                 "Assertive",
-                "Balanced",
+                ...(formation === "wedge" ? ["Balanced"] : []),
+                "Ballistics",
+                ...(formation === "arch" ? ["Battle Ready"] : []),
                 "Bellicose",
                 "Bluster",
-                "Boiling Blood",
+                ...(formation === "wedge" ? ["Boiling Blood"] : []),
                 "Brave",
                 "Brawler",
                 "Breaker",
                 "Brutal",
-                "Butterfly",
+                ...(formation === "delta" ? ["Butterfly"] : []),
                 "Calm",
-                "Causative",
+                ...(formation === "delta" ? ["Causative"] : []),
                 "Cohesive",
                 "Combo",
                 "Counterer",
-                "Crazed",
+                ...(formation === "wedge" ? ["Crazed"] : []),
                 "Daring",
-                "Defiant",
+                ...(formation === "wedge" ? ["Defiant"] : []),
                 "Deflecter",
-                "Demolisher",
+                ...(formation === "pincer" ? ["Demolisher"] : []),
                 "Desperado",
-                "Determined",
+                ...(formation === "arch" ? ["Destructive"] : []),
+                ...(formation === "delta" ? ["Determined"] : []),
                 "Devious",
                 "Eclipsed",
                 "Elite",
                 "Embattled",
                 "Enduring",
                 "Enraged",
-                "Evasive",
+                "Evasive (Instrument)",
+                "Evasive (Emblem)",
+                ...(formation === "arch" ? ["Even Keeled"] : []),
+                ...(formation === "arch" ? ["Fearless"] : []),
                 "Fearsome",
+                "Fine Horse",
                 "Fit",
-                "Flurry",
-                "Focus Fire",
+                ...(formation === "delta" ? ["Flurry"] : []),
+                ...(formation === "arch" ? ["Focus Fire"] : []),
+                ...(formation === "arch" ? ["Forceful"] : []),
+                "Furious",
+                "Galloping",
                 "Guarded",
                 "Guardians",
                 "Hardy",
-                "Hard Headed",
-                "Hunter",
+                ...(formation === "pincer" ? ["Hard Headed"] : []),
+                "Haste",
+                ...(formation === "wedge" ? ["Hunter"] : []),
+                "Hurried",
                 "Infamy",
-                "Intrepid",
-                "Imploder",
+                ...(formation === "wedge" ? ["Intrepid"] : []),
+                ...(formation === "arch" ? ["Invincible"] : []),
+                ...(formation === "pincer" ? ["Imploder"] : []),
                 "Iron Wall",
+                "Lineshot",
+                "Loosed",
                 "Metallics",
                 "Militant",
                 "Onslaught",
                 "Patronage",
+                "Primed",
                 "Phalanx",
                 "Pulverize",
                 "Pursuer",
-                "Pummeler",
-                "Raider",
+                ...(formation === "delta" ? ["Pummeler"] : []),
+                ...(formation === "pincer" ? ["Raider"] : []),
                 "Rapacious",
-                "Rattling",
+                ...(formation === "pincer" ? ["Rattling"] : []),
                 "Rebuff",
-                "Relentless",
+                ...(formation === "delta" ? ["Relentless"] : []),
                 "Requital",
                 "Resistant",
                 "Respite",
@@ -1036,14 +1074,17 @@ export default function InfLeadForm() {
                 "Smite",
                 "Spiked",
                 "Spirited",
-                "Steelskin",
+                ...(formation === "delta" ? ["Steelskin"] : []),
+                ...(formation === "arch" ? ["Straight to the Point"] : []),
                 "Strategic",
                 "Striker",
-                "Thrasher",
-                "Thundering",
-                "Toppler",
+                "Swift",
+                ...(formation === "delta" ? ["Thrasher"] : []),
+                ...(formation === "pincer" ? ["Thundering"] : []),
+                ...(formation === "pincer" ? ["Toppler"] : []),
                 "Tremors",
-                "Unstoppable",
+                ...(formation === "wedge" ? ["Unstoppable"] : []),
+                ...(formation === "arch" ? ["Unswerving"] : []),
                 "Uplifting",
                 "Valiant",
                 "Vitality",
@@ -1053,32 +1094,81 @@ export default function InfLeadForm() {
                 "Warhunger",
                 "Watchman",
                 "Well Clad",
-              ].map((inscription) => (
-                <div
-                  key={inscription}
-                  onClick={() => {
-                    if (selectedInscriptions.includes(inscription)) {
-                      setSelectedInscriptions(
-                        selectedInscriptions.filter(
-                          (item) => item !== inscription
-                        )
-                      );
-                    } else {
-                      setSelectedInscriptions([
-                        ...selectedInscriptions,
-                        inscription,
-                      ]);
-                    }
-                  }}
-                  className={`p-2 rounded-md border cursor-pointer transition-all duration-200 ${
-                    selectedInscriptions.includes(inscription)
-                      ? "bg-rok-purple text-white border-rok-purple-light"
-                      : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
-                  }`}
-                >
-                  {inscription}
-                </div>
-              ))}
+              ].map((inscription) => {
+                // Determine if this is a special or rare inscription
+                const isSpecial = [
+                  "Destructive",
+                  "Straight to the Point",
+                  "Invincible",
+                  "Fearless",
+                  "Hunter",
+                  "Unstoppable",
+                  "Balanced",
+                  "Intrepid",
+                  "Thrasher",
+                  "Butterfly",
+                  "Steelskin",
+                  "Flurry",
+                  "Airtight",
+                  "Toppler",
+                  "Thundering",
+                  "Demolisher",
+                ].includes(inscription);
+                const isRare = [
+                  "Battle Ready",
+                  "Even Keeled",
+                  "Unswerving",
+                  "Forceful",
+                  "Crazed",
+                  "Boiling Blood",
+                  "Defiant",
+                  "Focus Fire",
+                  "Pummeler",
+                  "Causative",
+                  "Determined",
+                  "Relentless",
+                  "Imploder",
+                  "Rattling",
+                  "Raider",
+                  "Hard Headed",
+                ].includes(inscription);
+
+                const isSpecialOrRare = isSpecial || isRare;
+
+                // Get the formation-specific background color
+                let formationSpecificBg = "";
+                if (isSpecial) formationSpecificBg = "bg-yellow-900";
+                if (isRare) formationSpecificBg = "bg-blue-900";
+
+                return (
+                  <div
+                    key={inscription}
+                    onClick={() => {
+                      if (selectedInscriptions.includes(inscription)) {
+                        setSelectedInscriptions(
+                          selectedInscriptions.filter(
+                            (item) => item !== inscription
+                          )
+                        );
+                      } else {
+                        setSelectedInscriptions([
+                          ...selectedInscriptions,
+                          inscription,
+                        ]);
+                      }
+                    }}
+                    className={`p-2 rounded-md border cursor-pointer transition-all duration-200 ${
+                      selectedInscriptions.includes(inscription)
+                        ? "bg-rok-purple text-white border-rok-purple-light"
+                        : isSpecialOrRare
+                        ? `${formationSpecificBg} text-white border-gray-700 hover:bg-opacity-80`
+                        : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
+                    }`}
+                  >
+                    {inscription}
+                  </div>
+                );
+              })}
             </div>
 
             {selectedInscriptions.length > 0 && (
