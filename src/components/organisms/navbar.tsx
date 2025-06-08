@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
     setIsMenuOpen(false);
   };
 
@@ -45,6 +45,9 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link to="/" className="text-xl font-bold pl-2 flex items-center">
               <span className="text-white">Kingdom </span>
               <span className="text-rok-purple-light ml-1">3606</span>
+              <span className="text-white ml-1 font-serif opacity-90 text-sm">
+                (made by achen)
+              </span>
             </Link>
           </div>
 
