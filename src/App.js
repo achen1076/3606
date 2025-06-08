@@ -22,14 +22,7 @@ export default function App() {
         <Route path="/gear-scores" element={<AllGearScorePage />} />
         <Route path="/inscription-scores" element={<InscriptionScorePage />} />
         <Route path="/tools" element={<ToolsPage />} />
-        <Route
-          path="/forms"
-          element={
-            <ProtectedRoute>
-              <FormsPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/forms" element={<FormsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutPage />} />
       </Routes>
