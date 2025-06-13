@@ -1033,7 +1033,7 @@ export default function InfLeadForm() {
                 "Fine Horse",
                 "Fit",
                 ...(formation === "delta" ? ["Flurry"] : []),
-                ...(formation === "arch" ? ["Focus Fire"] : []),
+                ...(formation === "wedge" ? ["Focus Fire"] : []),
                 ...(formation === "arch" ? ["Forceful"] : []),
                 "Furious",
                 "Galloping",
