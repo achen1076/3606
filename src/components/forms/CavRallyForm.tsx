@@ -459,22 +459,22 @@ export default function CavRallyForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-12-defense"
+                  id="skin-attack-12"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-12-attack" className="text-white">
+                <label htmlFor="skin-attack-12" className="text-white">
                   12% Attack
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-12-defense"
+                  id="skin-defense-12"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-12-defense" className="text-white">
+                <label htmlFor="skin-defense-12" className="text-white">
                   12% Defense
                 </label>
               </div>
