@@ -339,117 +339,117 @@ export default function InfLeadForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-attack-10"
+                  id="inf-attack-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-attack-10" className="text-white">
+                <label htmlFor="inf-attack-10" className="text-white">
                   Inf Attack 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-attack-15"
+                  id="inf-attack-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-attack-15" className="text-white">
+                <label htmlFor="inf-attack-15" className="text-white">
                   Inf Attack 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-attack-20"
+                  id="inf-attack-20"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-attack-20" className="text-white">
+                <label htmlFor="inf-attack-20" className="text-white">
                   Inf Attack 20%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-defense-10"
+                  id="inf-defense-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-defense-10" className="text-white">
+                <label htmlFor="inf-defense-10" className="text-white">
                   Inf Defense 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-defense-15"
+                  id="inf-defense-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-defense-15" className="text-white">
+                <label htmlFor="inf-defense-15" className="text-white">
                   Inf Defense 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-defense-20"
+                  id="inf-defense-20"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-defense-20" className="text-white">
+                <label htmlFor="inf-defense-20" className="text-white">
                   Inf Defense 20%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-health-5"
+                  id="inf-health-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-health-5" className="text-white">
+                <label htmlFor="inf-health-5" className="text-white">
                   Inf Health 5%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-health-10"
+                  id="inf-health-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-health-10" className="text-white">
+                <label htmlFor="inf-health-10" className="text-white">
                   Inf Health 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-health-15"
+                  id="inf-health-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-health-15" className="text-white">
+                <label htmlFor="inf-health-15" className="text-white">
                   Inf Health 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-inf-health-20"
+                  id="inf-health-20"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-inf-health-20" className="text-white">
+                <label htmlFor="inf-health-20" className="text-white">
                   Inf Health 20%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-skill-dmg-5"
+                  id="skill-dmg-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
@@ -460,7 +460,7 @@ export default function InfLeadForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-12-defense"
+                  id="skin-12-attack"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
