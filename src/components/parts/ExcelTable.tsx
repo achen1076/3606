@@ -7,8 +7,8 @@ interface ExcelTableProps {
 }
 
 export default function ExcelTable({
-  excelFilePath = "/data/3606_k3.xlsx",
-  initialSeason = 3,
+  excelFilePath = "/data/3606_kvk4.xlsx",
+  initialSeason = 4,
 }: ExcelTableProps) {
   const [currentSeason, setCurrentSeason] = useState<number>(initialSeason);
 
