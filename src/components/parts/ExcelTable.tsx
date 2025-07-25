@@ -16,7 +16,7 @@ export default function ExcelTable({
   const seasonFilePaths = {
     2: "/data/3606_k2.xlsx",
     3: "/data/3606_k3.xlsx",
-    4: "/data/3606_k4.xlsx",
+    4: "/data/3606_kvk4.xlsx",
   };
 
   // Update file path when season changes
