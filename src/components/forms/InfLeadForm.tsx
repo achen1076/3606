@@ -924,7 +924,31 @@ export default function InfLeadForm() {
               name="formation"
               className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
               value={formation}
-              onChange={(e) => setFormation(e.target.value)}
+              onChange={(e) => {
+                const newFormation = e.target.value;
+                setFormation(newFormation);
+                
+                // Only remove rare and special inscriptions
+                const specialInscriptions = [
+                  "Destructive", "Straight to the Point", "Invincible", "Fearless",
+                  "Hunter", "Unstoppable", "Balanced", "Intrepid",
+                  "Thrasher", "Butterfly", "Steelskin", "Flurry",
+                  "Airtight", "Toppler", "Thundering", "Demolisher"
+                ];
+                
+                const rareInscriptions = [
+                  "Battle Ready", "Even Keeled", "Unswerving", "Forceful",
+                  "Crazed", "Boiling Blood", "Defiant", "Focus Fire",
+                  "Pummeler", "Causative", "Determined", "Relentless",
+                  "Imploder", "Rattling", "Raider", "Hard Headed"
+                ];
+                
+                // Filter out special and rare inscriptions
+                setSelectedInscriptions(selectedInscriptions.filter(inscription => 
+                  !specialInscriptions.includes(inscription) && 
+                  !rareInscriptions.includes(inscription)
+                ));
+              }}
             >
               <option value="wedge">Wedge</option>
               <option value="arch">Arch</option>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { baseInscriptionValues } from "../constants/inscriptionScore.tsx";
 import PageLayout from "../components/templates/PageLayout.tsx";
 import PageTitle from "../components/molecules/PageTitle.tsx";
+import { Link } from "react-router-dom";
 
 export default function InscriptionScorePage() {
   const [selectedFormation, setSelectedFormation] = useState<string>("wedge");
@@ -88,9 +89,26 @@ export default function InscriptionScorePage() {
         highlightedText="Score Reference"
         subtitle="View inscription values for different formations"
       />
+      
+
       <p className="text-white mb-6">
         Note: March Speed inscriptions all default to 1.
-      </p>
+      </p>'      <div className="mb-6">
+        <Link 
+          to="/tools"
+          className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors duration-200 border border-gray-700 shadow-sm"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-5 w-5 mr-2" 
+            viewBox="0 0 20 20" 
+            fill="currentColor"
+          >
+            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back to Tools
+        </Link>
+      </div>'
 
       <div className="bg-black/30 p-6 rounded-lg shadow-xl border border-rok-purple/30 mb-8">
         <div className="mb-6">
