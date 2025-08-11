@@ -18,7 +18,7 @@ const MEMBER_PASSWORD = process.env.REACT_APP_MEMBER_PASSWORD || "password";
 
 const MOCK_USERS: Record<string, { password: string; user: User }> = {
   admin: {
-    password: ADMIN_PASSWORD, // Password from environment variable
+    password: ADMIN_PASSWORD,
     user: {
       id: "1",
       username: "admin",
@@ -27,7 +27,7 @@ const MOCK_USERS: Record<string, { password: string; user: User }> = {
     },
   },
   member: {
-    password: MEMBER_PASSWORD, // Password from environment variable
+    password: MEMBER_PASSWORD,
     user: {
       id: "2",
       username: "member",

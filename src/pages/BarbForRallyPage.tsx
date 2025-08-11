@@ -232,9 +232,15 @@ export default function BarbForRallyPage() {
     // Note: We don't automatically update the timestamp here anymore
   };
 
-  // Function to manually update the timestamp
+  // Storage key for the timestamp
+  const TIMESTAMP_KEY = 'barb_fort_rally_last_updated';
+  
+  // Function to manually update the timestamp and save it to localStorage
   const updateTimestamp = () => {
-    setLastUpdated(new Date());
+    const now = new Date();
+    setLastUpdated(now);
+    // Save the timestamp to localStorage
+    localStorage.setItem(TIMESTAMP_KEY, now.toISOString());
   };
 
   // Function to fetch weekly data
@@ -272,6 +278,16 @@ export default function BarbForRallyPage() {
   };
 
   useEffect(() => {
+    // Load the saved timestamp from localStorage if it exists
+    const savedTimestamp = localStorage.getItem(TIMESTAMP_KEY);
+    if (savedTimestamp) {
+      try {
+        setLastUpdated(new Date(savedTimestamp));
+      } catch (err) {
+        console.error('Error parsing saved timestamp:', err);
+      }
+    }
+    
     fetchData();
     // Note: We don't call updateTimestamp() here
   }, []);
