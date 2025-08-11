@@ -3,6 +3,7 @@ import PageLayout from "../components/templates/PageLayout.tsx";
 import PageTitle from "../components/molecules/PageTitle.tsx";
 import SectionCard from "../components/molecules/SectionCard.tsx";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext.tsx";
 
 interface RallyData {
   governor_id: string;
@@ -156,6 +157,7 @@ const RallyTable: React.FC<TableProps> = ({ data, searchTerm, isLoading, error, 
 };
 
 export default function BarbForRallyPage() {
+  const { user, isLoggedIn } = useAuth();
   const [weeklyData, setWeeklyData] = useState<RallyData[]>([]);
   const [entireData, setEntireData] = useState<RallyData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -163,6 +165,10 @@ export default function BarbForRallyPage() {
   const [isLoadingEntire, setIsLoadingEntire] = useState(true);
   const [weeklyError, setWeeklyError] = useState<string | null>(null);
   const [entireError, setEntireError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  
+  // Check if the current user is an admin
+  const isAdmin = isLoggedIn && user?.role === 'admin';
 
   // Helper function to parse CSV data
   const parseCSVData = (text: string): RallyData[] => {
@@ -220,41 +226,54 @@ export default function BarbForRallyPage() {
     return [...validData].sort((a, b) => b.total - a.total);
   };
 
+  // Function to fetch data without automatically updating timestamp
+  const fetchData = async () => {
+    await Promise.all([fetchWeeklyData(), fetchEntireData()]);
+    // Note: We don't automatically update the timestamp here anymore
+  };
+
+  // Function to manually update the timestamp
+  const updateTimestamp = () => {
+    setLastUpdated(new Date());
+  };
+
+  // Function to fetch weekly data
+  const fetchWeeklyData = async () => {
+    try {
+      setIsLoadingWeekly(true);
+      const response = await fetch("/data/rally_data_weekly.csv");
+      const text = await response.text();
+      
+      const sortedData = parseCSVData(text);
+      setWeeklyData(sortedData);
+      setIsLoadingWeekly(false);
+    } catch (err) {
+      console.error("Error fetching or parsing weekly CSV data:", err);
+      setWeeklyError("Failed to load weekly rally data. Please try again later.");
+      setIsLoadingWeekly(false);
+    }
+  };
+
+  // Function to fetch entire data
+  const fetchEntireData = async () => {
+    try {
+      setIsLoadingEntire(true);
+      const response = await fetch("/data/rally_data_entire.csv");
+      const text = await response.text();
+      
+      const sortedData = parseCSVData(text);
+      setEntireData(sortedData);
+      setIsLoadingEntire(false);
+    } catch (err) {
+      console.error("Error fetching or parsing entire CSV data:", err);
+      setEntireError("Failed to load entire rally data. Please try again later.");
+      setIsLoadingEntire(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchWeeklyData = async () => {
-      try {
-        setIsLoadingWeekly(true);
-        const response = await fetch("/data/rally_data_weekly.csv");
-        const text = await response.text();
-        
-        const sortedData = parseCSVData(text);
-        setWeeklyData(sortedData);
-        setIsLoadingWeekly(false);
-      } catch (err) {
-        console.error("Error fetching or parsing weekly CSV data:", err);
-        setWeeklyError("Failed to load weekly rally data. Please try again later.");
-        setIsLoadingWeekly(false);
-      }
-    };
-
-    const fetchEntireData = async () => {
-      try {
-        setIsLoadingEntire(true);
-        const response = await fetch("/data/rally_data_entire.csv");
-        const text = await response.text();
-        
-        const sortedData = parseCSVData(text);
-        setEntireData(sortedData);
-        setIsLoadingEntire(false);
-      } catch (err) {
-        console.error("Error fetching or parsing entire CSV data:", err);
-        setEntireError("Failed to load entire rally data. Please try again later.");
-        setIsLoadingEntire(false);
-      }
-    };
-
-    fetchWeeklyData();
-    fetchEntireData();
+    fetchData();
+    // Note: We don't call updateTimestamp() here
   }, []);
 
   return (
@@ -285,6 +304,43 @@ export default function BarbForRallyPage() {
           </svg>
           Back to Tools
         </Link>
+      </div>
+
+      {/* Last Updated Timestamp and Update Button */}
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        {lastUpdated ? (
+          <div className="text-gray-400 text-sm flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+            </svg>
+            <span>
+              Data last updated: {lastUpdated.toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+              })}
+            </span>
+          </div>
+        ) : (
+          <div className="text-gray-400 text-sm">No timestamp recorded yet</div>
+        )}
+        
+        {isAdmin && (
+          <button
+            onClick={updateTimestamp}
+            className="px-3 py-1 bg-rok-purple hover:bg-rok-purple-dark text-white text-sm rounded-md flex items-center transition-colors duration-200 self-start"
+            title="Admin only: Update the timestamp to the current time"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+            </svg>
+            Update Timestamp
+          </button>
+        )}
       </div>
 
       {/* Search Section */}
