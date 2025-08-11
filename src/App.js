@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import LogoutPage from "./pages/LogoutPage.tsx";
 import AllGearScorePage from "./pages/AllGearScorePage.tsx";
 import InscriptionScorePage from "./pages/InscriptionScorePage.tsx";
+import BarbForRallyPage from "./pages/BarbForRallyPage.tsx";
 import ProtectedRoute from "./components/templates/ProtectedRoute.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/leads" element={<LeadsPage />} />
         <Route path="/gear-scores" element={<AllGearScorePage />} />
         <Route path="/inscription-scores" element={<InscriptionScorePage />} />
+        <Route path="/barbfortrally" element={<BarbForRallyPage />} />
         <Route path="/tools" element={<ToolsPage />} />
         <Route path="/forms" element={<FormsPage />} />
         <Route path="/login" element={<LoginPage />} />

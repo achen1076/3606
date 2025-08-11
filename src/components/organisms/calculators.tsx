@@ -170,6 +170,45 @@ export default function Calculators() {
             </div>
           </div>
         </div>
+
+        {/* Barb For Rally Section */}
+        <div className="mt-10 border-t border-gray-700 pt-8">
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Barb Fort Rally Data
+          </h2>
+          <p className="text-lg text-gray-300 mb-6">
+            View and analyze barb fort rally participation data for the kingdom
+          </p>
+          
+          <div className="bg-rok-purple/20 p-6 rounded-lg">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-white mb-4">Weekly Rally Data</h3>
+                <p className="text-gray-300 mb-4">
+                  View the latest weekly rally participation statistics including started and joined rallies.
+                </p>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-white mb-4">All-Time Rally Data</h3>
+                <p className="text-gray-300 mb-4">
+                  Track long-term rally participation across the kingdom with historical data.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-center">
+              <a 
+                href="/barbfortrally" 
+                className="px-6 py-3 bg-rok-purple hover:bg-rok-purple-dark text-white rounded-md flex items-center transition-all text-lg"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                View Barb Fort Rally Data
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
