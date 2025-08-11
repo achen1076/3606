@@ -89,11 +89,11 @@ export function calculateCavalryScore(formValues: any) {
         if (20 * healthMultiplier > citySkinScore) {
           citySkinScore = 20 * healthMultiplier;
         }
-      } else if (skin === "skin-12-attack") {
+      } else if (skin === "skin-attack-12") {
         if (12 * attackMultiplier > citySkinScore) {
           citySkinScore = 12 * attackMultiplier;
         }
-      } else if (skin === "skin-12-defense") {
+      } else if (skin === "skin-defense-12") {
         if (12 * defenseMultiplier > citySkinScore) {
           citySkinScore = 12 * defenseMultiplier;
         }

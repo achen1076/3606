@@ -7,8 +7,8 @@ interface ExcelTableProps {
 }
 
 export default function ExcelTable({
-  excelFilePath = "/data/3606_k3.xlsx",
-  initialSeason = 3,
+  excelFilePath = "/data/3606_kvk4.xlsx",
+  initialSeason = 4,
 }: ExcelTableProps) {
   const [currentSeason, setCurrentSeason] = useState<number>(initialSeason);
 
@@ -16,7 +16,7 @@ export default function ExcelTable({
   const seasonFilePaths = {
     2: "/data/3606_k2.xlsx",
     3: "/data/3606_k3.xlsx",
-    4: "/data/3606_k4.xlsx",
+    4: "/data/3606_kvk4.xlsx",
   };
 
   // Update file path when season changes

@@ -449,33 +449,33 @@ export default function InfLeadForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-skill-dmg-5"
+                  id="skin-skill-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-skill-dmg-5" className="text-white">
+                <label htmlFor="skin-skill-5" className="text-white">
                   Skill Dmg 5%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-12-defense"
+                  id="skin-attack-12"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-12-attack" className="text-white">
+                <label htmlFor="skin-attack-12" className="text-white">
                   12% Attack
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-12-defense"
+                  id="skin-defense-12"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-12-defense" className="text-white">
+                <label htmlFor="skin-defense-12" className="text-white">
                   12% Defense
                 </label>
               </div>
@@ -1057,7 +1057,7 @@ export default function InfLeadForm() {
                 "Fine Horse",
                 "Fit",
                 ...(formation === "delta" ? ["Flurry"] : []),
-                ...(formation === "arch" ? ["Focus Fire"] : []),
+                ...(formation === "wedge" ? ["Focus Fire"] : []),
                 ...(formation === "arch" ? ["Forceful"] : []),
                 "Furious",
                 "Galloping",
