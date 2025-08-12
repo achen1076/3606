@@ -13,8 +13,8 @@ interface RallyData {
   total: number;
 }
 
-type SortField = 'governor_id' | 'name' | 'started' | 'joined' | 'total';
-type SortDirection = 'asc' | 'desc';
+type SortField = "governor_id" | "name" | "started" | "joined" | "total";
+type SortDirection = "asc" | "desc";
 
 interface TableProps {
   data: RallyData[];
@@ -25,61 +25,73 @@ interface TableProps {
 }
 
 // Table component to avoid code duplication
-const RallyTable: React.FC<TableProps> = ({ data, searchTerm, isLoading, error, title }) => {
+const RallyTable: React.FC<TableProps> = ({
+  data,
+  searchTerm,
+  isLoading,
+  error,
+  title,
+}) => {
   // State for sorting
-  const [sortField, setSortField] = useState<SortField>('total');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  
+  const [sortField, setSortField] = useState<SortField>("total");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
   // Handle column header click for sorting
   const handleSort = (field: SortField) => {
     if (field === sortField) {
       // Toggle direction if same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       // Set new field and default to descending
       setSortField(field);
-      setSortDirection('desc');
+      setSortDirection("desc");
     }
   };
-  
+
   // Filter data based on search term
-  const filteredData = data.filter(item => {
+  const filteredData = data.filter((item) => {
     const searchTermLower = searchTerm.toLowerCase();
-    const nameMatch = item.name && typeof item.name === 'string' ? item.name.toLowerCase().includes(searchTermLower) : false;
-    const idMatch = item.governor_id && typeof item.governor_id === 'string' ? item.governor_id.toLowerCase().includes(searchTermLower) : false;
+    const nameMatch =
+      item.name && typeof item.name === "string"
+        ? item.name.toLowerCase().includes(searchTermLower)
+        : false;
+    const idMatch =
+      item.governor_id && typeof item.governor_id === "string"
+        ? item.governor_id.toLowerCase().includes(searchTermLower)
+        : false;
     return nameMatch || idMatch;
   });
-  
+
   // Sort the filtered data
   const sortedData = [...filteredData].sort((a, b) => {
     let aValue = a[sortField];
     let bValue = b[sortField];
-    
+
     // Handle string comparison for governor_id and name
-    if (sortField === 'governor_id' || sortField === 'name') {
-      aValue = String(aValue || '').toLowerCase();
-      bValue = String(bValue || '').toLowerCase();
-      
-      if (sortDirection === 'asc') {
+    if (sortField === "governor_id" || sortField === "name") {
+      aValue = String(aValue || "").toLowerCase();
+      bValue = String(bValue || "").toLowerCase();
+
+      if (sortDirection === "asc") {
         return aValue.localeCompare(bValue);
       } else {
         return bValue.localeCompare(aValue);
       }
-    } 
+    }
     // Handle numeric comparison
     else {
-      if (sortDirection === 'asc') {
+      if (sortDirection === "asc") {
         return Number(aValue) - Number(bValue);
       } else {
         return Number(bValue) - Number(aValue);
       }
     }
   });
-  
+
   // Helper for sort indicator
   const getSortIndicator = (field: SortField) => {
     if (field !== sortField) return null;
-    return sortDirection === 'asc' ? ' ↑' : ' ↓';
+    return sortDirection === "asc" ? " ↑" : " ↓";
   };
 
   return (
@@ -95,35 +107,35 @@ const RallyTable: React.FC<TableProps> = ({ data, searchTerm, isLoading, error, 
           <table className="w-full text-white text-sm">
             <thead>
               <tr className="bg-rok-purple text-white">
-                <th 
+                <th
                   className="p-2 text-left cursor-pointer hover:bg-rok-purple-dark"
-                  onClick={() => handleSort('governor_id')}
+                  onClick={() => handleSort("governor_id")}
                 >
-                  Governor ID{getSortIndicator('governor_id')}
+                  Governor ID{getSortIndicator("governor_id")}
                 </th>
-                <th 
+                <th
                   className="p-2 text-left cursor-pointer hover:bg-rok-purple-dark"
-                  onClick={() => handleSort('name')}
+                  onClick={() => handleSort("name")}
                 >
-                  Name{getSortIndicator('name')}
+                  Name{getSortIndicator("name")}
                 </th>
-                <th 
+                <th
                   className="p-2 text-center cursor-pointer hover:bg-rok-purple-dark"
-                  onClick={() => handleSort('started')}
+                  onClick={() => handleSort("started")}
                 >
-                  Started{getSortIndicator('started')}
+                  Started{getSortIndicator("started")}
                 </th>
-                <th 
+                <th
                   className="p-2 text-center cursor-pointer hover:bg-rok-purple-dark"
-                  onClick={() => handleSort('joined')}
+                  onClick={() => handleSort("joined")}
                 >
-                  Joined{getSortIndicator('joined')}
+                  Joined{getSortIndicator("joined")}
                 </th>
-                <th 
+                <th
                   className="p-2 text-center cursor-pointer hover:bg-rok-purple-dark"
-                  onClick={() => handleSort('total')}
+                  onClick={() => handleSort("total")}
                 >
-                  Total{getSortIndicator('total')}
+                  Total{getSortIndicator("total")}
                 </th>
               </tr>
             </thead>
@@ -143,7 +155,10 @@ const RallyTable: React.FC<TableProps> = ({ data, searchTerm, isLoading, error, 
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="p-2 text-center text-gray-400 text-sm">
+                  <td
+                    colSpan={5}
+                    className="p-2 text-center text-gray-400 text-sm"
+                  >
                     No matching records found
                   </td>
                 </tr>
@@ -165,63 +180,62 @@ export default function BarbForRallyPage() {
   const [isLoadingEntire, setIsLoadingEntire] = useState(true);
   const [weeklyError, setWeeklyError] = useState<string | null>(null);
   const [entireError, setEntireError] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  
+  // No need for lastUpdated state as we're using a hardcoded timestamp
+
   // Check if the current user is an admin
-  const isAdmin = isLoggedIn && user?.role === 'admin';
+  const isAdmin = isLoggedIn && user?.role === "admin";
 
   // Helper function to parse CSV data
   const parseCSVData = (text: string): RallyData[] => {
     const rows = text.split("\n");
     const parsedData: RallyData[] = [];
-    
+
     // Process each row (skip header)
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].trim();
       if (row === "") continue; // Skip empty rows
-      
+
       // Special handling for CSV with potential special characters in the name field
       // The CSV format is: governor_id,started,cancelled,completed,hit_target,joined,name
-      
+
       // First, get the position of the 6th comma which is before the name field
       let commaCount = 0;
       let lastCommaPos = -1;
-      
+
       for (let j = 0; j < row.length; j++) {
-        if (row[j] === ',') {
+        if (row[j] === ",") {
           commaCount++;
           lastCommaPos = j;
           if (commaCount === 6) break; // Found the 6th comma
         }
       }
-      
+
       if (commaCount < 6) continue; // Skip malformed rows
-      
+
       // Extract fields
       const beforeName = row.substring(0, lastCommaPos);
-      const fields = beforeName.split(',');
+      const fields = beforeName.split(",");
       const name = row.substring(lastCommaPos + 1); // Everything after the 6th comma is the name
-      
+
       // Get the required fields
       const governorId = fields[0] || "";
       const started = parseInt(fields[1]) || 0;
       const joined = parseInt(fields[5]) || 0;
-      
+
       parsedData.push({
         governor_id: governorId,
         started: started,
         joined: joined,
         name: name || "Unknown",
-        total: started + joined
+        total: started + joined,
       });
     }
-    
+
     // Filter out any invalid entries
-    const validData = parsedData.filter(item => 
-      item.governor_id !== undefined && 
-      item.name !== undefined
+    const validData = parsedData.filter(
+      (item) => item.governor_id !== undefined && item.name !== undefined
     );
-    
+
     // Sort by total in descending order
     return [...validData].sort((a, b) => b.total - a.total);
   };
@@ -232,16 +246,12 @@ export default function BarbForRallyPage() {
     // Note: We don't automatically update the timestamp here anymore
   };
 
-  // Storage key for the timestamp
-  const TIMESTAMP_KEY = 'barb_fort_rally_last_updated';
-  
-  // Function to manually update the timestamp and save it to localStorage
-  const updateTimestamp = () => {
-    const now = new Date();
-    setLastUpdated(now);
-    // Save the timestamp to localStorage
-    localStorage.setItem(TIMESTAMP_KEY, now.toISOString());
-  };
+  // The timestamp is set manually in the code
+  // This is a hardcoded timestamp that should be updated manually in the codebase
+  // Format: new Date(year, month-1, day, hour, minute)
+  // Example: August 11, 2025 7:56 PM = new Date(2025, 7, 11, 19, 56)
+  // Note: JavaScript months are 0-indexed (January is 0, December is 11)
+  const MANUAL_TIMESTAMP = new Date(2025, 7, 11, 19, 56); // August 11, 2025 7:56 PM
 
   // Function to fetch weekly data
   const fetchWeeklyData = async () => {
@@ -249,13 +259,15 @@ export default function BarbForRallyPage() {
       setIsLoadingWeekly(true);
       const response = await fetch("/data/rally_data_weekly.csv");
       const text = await response.text();
-      
+
       const sortedData = parseCSVData(text);
       setWeeklyData(sortedData);
       setIsLoadingWeekly(false);
     } catch (err) {
       console.error("Error fetching or parsing weekly CSV data:", err);
-      setWeeklyError("Failed to load weekly rally data. Please try again later.");
+      setWeeklyError(
+        "Failed to load weekly rally data. Please try again later."
+      );
       setIsLoadingWeekly(false);
     }
   };
@@ -266,28 +278,20 @@ export default function BarbForRallyPage() {
       setIsLoadingEntire(true);
       const response = await fetch("/data/rally_data_entire.csv");
       const text = await response.text();
-      
+
       const sortedData = parseCSVData(text);
       setEntireData(sortedData);
       setIsLoadingEntire(false);
     } catch (err) {
       console.error("Error fetching or parsing entire CSV data:", err);
-      setEntireError("Failed to load entire rally data. Please try again later.");
+      setEntireError(
+        "Failed to load entire rally data. Please try again later."
+      );
       setIsLoadingEntire(false);
     }
   };
 
   useEffect(() => {
-    // Load the saved timestamp from localStorage if it exists
-    const savedTimestamp = localStorage.getItem(TIMESTAMP_KEY);
-    if (savedTimestamp) {
-      try {
-        setLastUpdated(new Date(savedTimestamp));
-      } catch (err) {
-        console.error('Error parsing saved timestamp:', err);
-      }
-    }
-    
     fetchData();
     // Note: We don't call updateTimestamp() here
   }, []);
@@ -323,40 +327,33 @@ export default function BarbForRallyPage() {
       </div>
 
       {/* Last Updated Timestamp and Update Button */}
-      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        {lastUpdated ? (
-          <div className="text-gray-400 text-sm flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-            </svg>
-            <span>
-              Data last updated: {lastUpdated.toLocaleString(undefined, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-              })}
-            </span>
-          </div>
-        ) : (
-          <div className="text-gray-400 text-sm">No timestamp recorded yet</div>
-        )}
-        
-        {isAdmin && (
-          <button
-            onClick={updateTimestamp}
-            className="px-3 py-1 bg-rok-purple hover:bg-rok-purple-dark text-white text-sm rounded-md flex items-center transition-colors duration-200 self-start"
-            title="Admin only: Update the timestamp to the current time"
+      <div className="mb-4">
+        <div className="text-gray-400 text-sm flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-            </svg>
-            Update Timestamp
-          </button>
-        )}
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>
+            Data last updated:{" "}
+            {MANUAL_TIMESTAMP.toLocaleString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            })}
+          </span>
+        </div>
       </div>
 
       {/* Search Section */}
@@ -371,8 +368,19 @@ export default function BarbForRallyPage() {
               className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rok-purple"
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
               </svg>
             </div>
           </div>
@@ -383,22 +391,22 @@ export default function BarbForRallyPage() {
       <div className="flex flex-col lg:flex-row gap-2 w-full py-2">
         {/* Weekly Rally Data Table */}
         <section className="w-full lg:w-1/2">
-          <RallyTable 
-            data={weeklyData} 
-            searchTerm={searchTerm} 
-            isLoading={isLoadingWeekly} 
-            error={weeklyError} 
+          <RallyTable
+            data={weeklyData}
+            searchTerm={searchTerm}
+            isLoading={isLoadingWeekly}
+            error={weeklyError}
             title="Weekly Rally Data"
           />
         </section>
 
         {/* Entire Rally Data Table */}
         <section className="w-full lg:w-1/2">
-          <RallyTable 
-            data={entireData} 
-            searchTerm={searchTerm} 
-            isLoading={isLoadingEntire} 
-            error={entireError} 
+          <RallyTable
+            data={entireData}
+            searchTerm={searchTerm}
+            isLoading={isLoadingEntire}
+            error={entireError}
             title="All-Time Rally Data"
           />
         </section>
