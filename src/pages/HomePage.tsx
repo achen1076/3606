@@ -7,21 +7,23 @@ import { useAuth } from "../contexts/AuthContext.tsx";
 
 export default function HomePage() {
   const { isLoggedIn, user } = useAuth();
-  
+
   return (
     <PageLayout>
       {/* Welcome Message for Logged In Users */}
       {isLoggedIn && (
         <div className="w-full mb-6 bg-rok-purple/20 border border-rok-purple/30 rounded-lg p-4">
-          <h3 className="text-rok-purple-light font-bold">Welcome, {user?.displayName}!</h3>
+          <h3 className="text-rok-purple-light font-bold">
+            Welcome, {user?.displayName}!
+          </h3>
           <p className="text-white text-sm">
-            {user?.role === 'admin' ? 
-              'You have admin access to Kingdom 3606 resources.' : 
-              'Thank you for being part of Kingdom 3606.'}
+            {user?.role === "admin"
+              ? "You have admin access to Kingdom 3606 resources."
+              : "Thank you for being part of Kingdom 3606."}
           </p>
         </div>
       )}
-      
+
       {/* Hero Section */}
       <section className="w-full py-12 md:py-20 flex flex-col items-center">
         <div className="w-full max-w-4xl text-center">
@@ -59,65 +61,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Recruitment Section */}
       <section className="w-full py-12 md:py-16">
-        <SectionCard title="About Our Kingdom">
-          <div className="space-y-4 text-gray-300">
-            <p>
-              Kingdom 3606 is a united and powerful kingdom in Rise of Kingdoms.
-              Our kingdom is known for its strong leadership, organized
-              structure, and competitive spirit in KvK (Kingdom versus Kingdom)
-              events.
-            </p>
-            <p>
-              We pride ourselves on maintaining a balanced ecosystem where both
-              F2P (Free to Play) and P2W (Pay to Win) players can thrive and
-              contribute to our kingdom's success.
-            </p>
-            <p>
-              With a focus on teamwork and strategic planning, we have
-              established ourselves as a formidable force in the Rise of
-              Kingdoms world.
-            </p>
-          </div>
-        </SectionCard>
-      </section>
-
-      {/* News & Updates */}
-      <section className="w-full py-12 md:py-16">
-        <SectionCard title="Latest News">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-rok-purple/10 to-black rounded-lg p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-rok-purple-light mb-2">
-                KvK Season 3 Victory!
-              </h3>
-              <p className="text-gray-300 mb-4">
-                Our kingdom has emerged victorious in the latest KvK battle,
-                securing valuable rewards and territory.
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-rok-purple/10 to-black rounded-lg p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-rok-purple-light mb-2">
-                Alliance Restructuring
-              </h3>
-              <p className="text-gray-300 mb-4">
-                We're optimizing our alliance structure to better prepare for
-                upcoming challenges and events.
-              </p>
-            </div>
-          </div>
-        </SectionCard>
-      </section>
-
-      {/* News Section */}
-      <section className="w-full py-12 md:py-16">
-        <SectionCard title="Latest Kingdom News">
+        <SectionCard title="Recruitment">
           <p className="text-white mb-6">
             Looking for a competitive and organized kingdom? Kingdom 3606 is
             recruiting active players!
           </p>
           <a
             className="inline-block bg-white text-rok-purple font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors"
+            href="https://discord.gg/3606"
+            target="_blank"
           >
             Contact Recruiting
           </a>

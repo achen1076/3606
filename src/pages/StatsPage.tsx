@@ -16,7 +16,7 @@ export default function StatsPage() {
       />
 
       {/* Kingdom Power Stats */}
-      <section className="w-full py-8">
+      {/* <section className="w-full py-8">
         <SectionCard title="Kingdom Power">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard title="Top 300 Power" value="11.5B" />
@@ -24,7 +24,7 @@ export default function StatsPage() {
             <StatCard title="KvK Wins" value="2" />
           </div>
         </SectionCard>
-      </section>
+      </section> */}
 
       {/* Alliance Stats */}
       <section className="w-full py-8">
@@ -42,9 +42,9 @@ export default function StatsPage() {
               <tbody>
                 <tr className="border-b border-gray-700">
                   <td className="p-3 text-left">~iN</td>
-                  <td className="p-3 text-right">7.5B</td>
-                  <td className="p-3 text-right">74B</td>
-                  <td className="p-3 text-right">153</td>
+                  <td className="p-3 text-right">7.8B</td>
+                  <td className="p-3 text-right">200B</td>
+                  <td className="p-3 text-right">120</td>
                 </tr>
               </tbody>
             </table>
@@ -60,20 +60,27 @@ export default function StatsPage() {
               <h3 className="text-xl font-bold text-rok-purple-light mb-4">
                 Recent KvK Results
               </h3>
+              <div className="bg-black/30 p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <span className="text-white font-bold">Season 4</span>
+                  <span className="text-green-400 font-bold">Victory</span>
+                </div>
+                <p className="text-gray-300 mt-2">Top 3 DKP</p>
+              </div>
               <div className="space-y-4">
                 <div className="bg-black/30 p-4 rounded-lg">
                   <div className="flex justify-between items-center">
                     <span className="text-white font-bold">Season 3</span>
                     <span className="text-green-400 font-bold">Victory</span>
                   </div>
-                  <p className="text-gray-300 mt-2">Top 2 KP</p>
+                  <p className="text-gray-300 mt-2">Top 2 DKP</p>
                 </div>
                 <div className="bg-black/30 p-4 rounded-lg">
                   <div className="flex justify-between items-center">
                     <span className="text-white font-bold">Season 2</span>
                     <span className="text-green-400 font-bold">Victory</span>
                   </div>
-                  <p className="text-gray-300 mt-2">Top 2 KP</p>
+                  <p className="text-gray-300 mt-2">Top 2 DKP</p>
                 </div>
                 <div className="bg-black/30 p-4 rounded-lg">
                   <div className="flex justify-between items-center">
@@ -95,7 +102,7 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">Total Kingdom KP</span>
-                      <span className="text-white">15.8B</span>
+                      <span className="text-white">20.8B</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -107,7 +114,7 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">T5 Kills</span>
-                      <span className="text-white">208M</span>
+                      <span className="text-white">602M</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -119,7 +126,7 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">T4 Kills</span>
-                      <span className="text-white">1.1B</span>
+                      <span className="text-white">858M</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -130,8 +137,8 @@ export default function StatsPage() {
                   </div>
                   <div>
                     <div className="flex justify-between mb-1">
-                      <span className="text-white">Deaths</span>
-                      <span className="text-white">75M</span>
+                      <span className="text-white">Deads</span>
+                      <span className="text-white">200M</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -149,10 +156,10 @@ export default function StatsPage() {
 
       {/* Player Stats */}
       <section className="w-full py-8">
-        <SectionCard title="KvK 3 Player Statistics">
+        <SectionCard title="KvK Player Statistics">
           <div className="mb-4">
             <p className="text-gray-300">
-              Player performance data for Kingdom 3606's KvK 3. Click on column
+              Player performance data for Kingdom 3606's KvK. Click on column
               headers to sort the data.
             </p>
           </div>

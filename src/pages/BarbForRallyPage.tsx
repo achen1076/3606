@@ -180,7 +180,6 @@ export default function BarbForRallyPage() {
   const [isLoadingEntire, setIsLoadingEntire] = useState(true);
   const [weeklyError, setWeeklyError] = useState<string | null>(null);
   const [entireError, setEntireError] = useState<string | null>(null);
-  // No need for lastUpdated state as we're using a hardcoded timestamp
 
   // Check if the current user is an admin
   const isAdmin = isLoggedIn && user?.role === "admin";
@@ -248,10 +247,10 @@ export default function BarbForRallyPage() {
 
   // The timestamp is set manually in the code
   // This is a hardcoded timestamp that should be updated manually in the codebase
-  // Format: new Date(year, month-1, day, hour, minute)
-  // Example: August 11, 2025 7:56 PM = new Date(2025, 7, 11, 19, 56)
-  // Note: JavaScript months are 0-indexed (January is 0, December is 11)
-  const MANUAL_TIMESTAMP = new Date(2025, 7, 11, 19, 56); // August 11, 2025 7:56 PM
+  // Format: "YYYY-MM-DDThh:mm:ss-04:00" for EST timezone
+  // Example: August 11, 2025 7:56 PM EST = "2025-08-11T19:56:00-04:00"
+  // Note: The -04:00 part specifies the EST timezone offset
+  const MANUAL_TIMESTAMP = new Date("2025-08-12T11:11:00-04:00"); // August 12, 2025 11:11 AM EST
 
   // Function to fetch weekly data
   const fetchWeeklyData = async () => {
@@ -293,7 +292,6 @@ export default function BarbForRallyPage() {
 
   useEffect(() => {
     fetchData();
-    // Note: We don't call updateTimestamp() here
   }, []);
 
   return (
@@ -351,6 +349,7 @@ export default function BarbForRallyPage() {
               minute: "2-digit",
               second: "2-digit",
               hour12: true,
+              timeZoneName: "short",
             })}
           </span>
         </div>
