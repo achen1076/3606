@@ -250,7 +250,7 @@ export default function BarbForRallyPage() {
   // Format: "YYYY-MM-DDThh:mm:ss-04:00" for EST timezone
   // Example: August 11, 2025 7:56 PM EST = "2025-08-11T19:56:00-04:00"
   // Note: The -04:00 part specifies the EST timezone offset
-  const MANUAL_TIMESTAMP = new Date("2025-08-12T11:11:00-04:00"); // August 12, 2025 11:11 AM EST
+  const MANUAL_TIMESTAMP = new Date("2025-08-13T16:36:00-04:00"); // August 13, 2025 16:36 AM EST
 
   // Function to fetch weekly data
   const fetchWeeklyData = async () => {
