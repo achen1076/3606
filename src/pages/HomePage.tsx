@@ -40,7 +40,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <InfoCard title="Title Bot" value="24/7 Title Bot" />
               <InfoCard
-                title="Alliance Gift Level 26"
+                title="Alliance Gift Level 27"
                 value="2-3 Chests per Day"
               />
               <InfoCard
@@ -53,10 +53,13 @@ export default function HomePage() {
                 value="Application Process for Top Leads"
               />
               <InfoCard
-                title="Stable Kingdom"
+                title="Young and Stable"
                 value="Friendly veterans willing to help"
               />
             </div>
+            <h2 className="text-md font-bold text-white mt-4">
+              and this cool website!
+            </h2>
           </div>
         </div>
       </section>

@@ -48,8 +48,19 @@ const RallyTable: React.FC<TableProps> = ({
     }
   };
 
+  // First sort the entire dataset to establish ranks
+  const rankedData = [...data].sort((a, b) => {
+    // Default sort by total in descending order for establishing ranks
+    return b.total - a.total;
+  }).map((item, index) => ({
+    ...item,
+    originalRank: index + 1 // Add original rank based on total
+  }));
+  
   // Filter data based on search term
-  const filteredData = data.filter((item) => {
+  const filteredData = rankedData.filter((item) => {
+    if (!searchTerm) return true;
+    
     const searchTermLower = searchTerm.toLowerCase();
     const nameMatch =
       item.name && typeof item.name === "string"
@@ -107,6 +118,9 @@ const RallyTable: React.FC<TableProps> = ({
           <table className="w-full text-white text-sm">
             <thead>
               <tr className="bg-rok-purple text-white">
+                <th className="p-2 text-center w-12">
+                  #
+                </th>
                 <th
                   className="p-2 text-left cursor-pointer hover:bg-rok-purple-dark"
                   onClick={() => handleSort("governor_id")}
@@ -146,6 +160,7 @@ const RallyTable: React.FC<TableProps> = ({
                     key={index}
                     className="border-b border-gray-700 hover:bg-gray-800"
                   >
+                    <td className="p-2 text-center font-medium">{item.originalRank}</td>
                     <td className="p-2 text-left">{item.governor_id}</td>
                     <td className="p-2 text-left">{item.name}</td>
                     <td className="p-2 text-center">{item.started}</td>
@@ -180,6 +195,7 @@ export default function BarbForRallyPage() {
   const [isLoadingEntire, setIsLoadingEntire] = useState(true);
   const [weeklyError, setWeeklyError] = useState<string | null>(null);
   const [entireError, setEntireError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"weekly" | "entire">("weekly");
 
   // Check if the current user is an admin
   const isAdmin = isLoggedIn && user?.role === "admin";
@@ -386,29 +402,51 @@ export default function BarbForRallyPage() {
         </div>
       </section>
 
-      {/* Tables side by side */}
-      <div className="flex flex-col lg:flex-row gap-2 w-full py-2">
-        {/* Weekly Rally Data Table */}
-        <section className="w-full lg:w-1/2">
-          <RallyTable
-            data={weeklyData}
-            searchTerm={searchTerm}
-            isLoading={isLoadingWeekly}
-            error={weeklyError}
-            title="Weekly Rally Data"
-          />
-        </section>
+      {/* Tab Navigation */}
+      <div className="w-full py-2">
+        <div className="flex border-b border-gray-700 mb-4">
+          <button
+            onClick={() => setActiveTab("weekly")}
+            className={`py-2 px-4 font-medium text-sm focus:outline-none ${activeTab === "weekly" 
+              ? "border-b-2 border-rok-purple text-rok-purple-light" 
+              : "text-gray-400 hover:text-white"}`}
+          >
+            Weekly Rally Data
+          </button>
+          <button
+            onClick={() => setActiveTab("entire")}
+            className={`py-2 px-4 font-medium text-sm focus:outline-none ${activeTab === "entire" 
+              ? "border-b-2 border-rok-purple text-rok-purple-light" 
+              : "text-gray-400 hover:text-white"}`}
+          >
+            All-Time Rally Data
+          </button>
+        </div>
 
-        {/* Entire Rally Data Table */}
-        <section className="w-full lg:w-1/2">
-          <RallyTable
-            data={entireData}
-            searchTerm={searchTerm}
-            isLoading={isLoadingEntire}
-            error={entireError}
-            title="All-Time Rally Data"
-          />
-        </section>
+        {/* Tab Content */}
+        <div className="w-full">
+          {/* Weekly Rally Data Table */}
+          {activeTab === "weekly" && (
+            <RallyTable
+              data={weeklyData}
+              searchTerm={searchTerm}
+              isLoading={isLoadingWeekly}
+              error={weeklyError}
+              title="Weekly Rally Data"
+            />
+          )}
+
+          {/* Entire Rally Data Table */}
+          {activeTab === "entire" && (
+            <RallyTable
+              data={entireData}
+              searchTerm={searchTerm}
+              isLoading={isLoadingEntire}
+              error={entireError}
+              title="All-Time Rally Data"
+            />
+          )}
+        </div>
       </div>
     </PageLayout>
   );

@@ -42,8 +42,8 @@ export default function StatsPage() {
               <tbody>
                 <tr className="border-b border-gray-700">
                   <td className="p-3 text-left">~iN</td>
-                  <td className="p-3 text-right">7.8B</td>
-                  <td className="p-3 text-right">200B</td>
+                  <td className="p-3 text-right">8.5B</td>
+                  <td className="p-3 text-right">220B</td>
                   <td className="p-3 text-right">120</td>
                 </tr>
               </tbody>

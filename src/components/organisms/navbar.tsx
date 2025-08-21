@@ -89,11 +89,22 @@ const Navbar: React.FC<NavbarProps> = ({
               <NavLink to="/tools">Tools</NavLink>
               <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
               <NavLink to="/forms">Forms</NavLink>
+              <a 
+                href="https://discord.gg/3606" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-rok-purple-light transition-colors"
+              >
+                Discord
+              </a>
               {isLoggedIn ? (
                 <div className="flex items-center space-x-6">
                   <span className="text-rok-purple-light">
                     {user?.displayName}
                   </span>
+                  {user?.role === "admin" && (
+                    <NavLink to="/admin">Admin</NavLink>
+                  )}
                   <NavLink to="/logout">Logout</NavLink>
                 </div>
               ) : (
@@ -111,11 +122,22 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink to="/tools">Tools</NavLink>
             <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
             <NavLink to="/forms">Forms</NavLink>
+            <a 
+              href="https://discord.gg/3606" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white hover:text-rok-purple-light py-2"
+            >
+              Discord
+            </a>
             {isLoggedIn ? (
               <>
                 <span className="text-rok-purple-light py-2">
                   {user?.displayName}
                 </span>
+                {user?.role === "admin" && (
+                  <NavLink to="/admin">Admin</NavLink>
+                )}
                 <NavLink to="/logout">Logout</NavLink>
               </>
             ) : (
