@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isMobile, isTablet, width } = useWindowSize();
-  const isSmallScreen = width < 1200; // Consider screens under 1200px as needing mobile menu
+  const isSmallScreen = width < 1200; // Use mobile menu for screens under 1200px
   const { isLoggedIn, user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -91,9 +91,9 @@ const Navbar: React.FC<NavbarProps> = ({
               <NavLink to="/barbfortrally">Rally</NavLink>
               <NavLink to="/crystaltech">Tech</NavLink>
               <NavLink to="/forms">Forms</NavLink>
-              <a 
-                href="https://discord.gg/3606" 
-                target="_blank" 
+              <a
+                href="https://discord.gg/3606"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-rok-purple-light transition-colors whitespace-nowrap"
               >
@@ -122,12 +122,12 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink to="/stats">Stats</NavLink>
             <NavLink to="/leads">Leads</NavLink>
             <NavLink to="/tools">Tools</NavLink>
-            <NavLink to="/barbfortrally">Rally Data</NavLink>
-            <NavLink to="/crystaltech">Tech Tree</NavLink>
+            <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
+            <NavLink to="/crystaltech">Crystal Tech</NavLink>
             <NavLink to="/forms">Forms</NavLink>
-            <a 
-              href="https://discord.gg/3606" 
-              target="_blank" 
+            <a
+              href="https://discord.gg/3606"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-rok-purple-light py-2"
             >
@@ -138,9 +138,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 <span className="text-rok-purple-light py-2">
                   {user?.displayName}
                 </span>
-                {user?.role === "admin" && (
-                  <NavLink to="/admin">Admin</NavLink>
-                )}
+                {user?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
                 <NavLink to="/logout">Logout</NavLink>
               </>
             ) : (

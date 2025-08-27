@@ -21,29 +21,32 @@ const NavLink: React.FC<NavLinkProps> = ({
   const handleClick = (e?: React.MouseEvent<HTMLAnchorElement>) => {
     if (e) {
       e.preventDefault();
-    
-    if (isHashLink) {
-      e.preventDefault();
-      const element = document.querySelector(to);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+
+      if (isHashLink) {
+        e.preventDefault();
+        const element = document.querySelector(to);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }
       if (props.onClick) {
         props.onClick(e);
       }
     } else {
-    if (isHashLink) {
+      if (isHashLink) {
         const element = document.querySelector(to);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
       }
     }
-    };
+  };
 
   return (
-    <div className="group relative overflow-hidden cursor-pointer" onClick={() => handleClick()}>
+    <div
+      className="group relative overflow-hidden cursor-pointer"
+      onClick={() => handleClick()}
+    >
       {isHashLink ? (
         <a
           href={to}

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import PageLayout from "../components/templates/PageLayout.tsx";
 import PageTitle from "../components/molecules/PageTitle.tsx";
 import SectionCard from "../components/molecules/SectionCard.tsx";
-import { Link, Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext.tsx";
+import { Link } from "react-router-dom";
 import techTreeData from "../data/crystal_tech_data.json";
 import premadeTechTrees from "../data/premade_tech_trees.json";
 
@@ -64,7 +63,6 @@ interface TechNodeProps {
   onClick: (node: TechNode) => void;
   isAvailable: boolean;
   canUpgrade: (node: TechNode) => boolean;
-  canDowngrade: (node: TechNode) => boolean;
   onUpgrade: (node: TechNode) => void;
   onDowngrade: (node: TechNode) => void;
 }
@@ -74,7 +72,6 @@ const TechNodeComponent: React.FC<TechNodeProps> = ({
   onClick,
   isAvailable,
   canUpgrade,
-  canDowngrade,
   onUpgrade,
   onDowngrade,
 }) => {
@@ -102,7 +99,7 @@ const TechNodeComponent: React.FC<TechNodeProps> = ({
 
   return (
     <div
-      className={`absolute p-2 lg:p-3 rounded-lg shadow-md cursor-pointer transition-all duration-300 w-[120px] lg:w-[140px] h-[100px] lg:h-[120px] ${bgColor} ${borderColor} border-2 hover:shadow-lg flex flex-col justify-between group`}
+      className={`absolute p-3 rounded-lg shadow-md cursor-pointer transition-all duration-300 w-[140px] h-[120px] ${bgColor} ${borderColor} border-2 hover:shadow-lg flex flex-col justify-between group`}
       style={{
         left: `${node.position.x}%`,
         top: `${node.position.y}%`,
@@ -111,10 +108,10 @@ const TechNodeComponent: React.FC<TechNodeProps> = ({
       }}
       onClick={() => onClick(node)}
     >
-      {/* Mobile: Always visible buttons, Desktop: Hover-activated */}
-      <div className="absolute top-1 right-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1">
+      {/* Mobile: Always visible, Desktop: Hover-activated + and - buttons */}
+      <div className="absolute top-1 right-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 flex flex-col gap-1">
         <button
-          className={`w-5 h-5 lg:w-6 lg:h-6 rounded-full text-xs font-bold flex items-center justify-center ${
+          className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center ${
             canUpgradeNode
               ? "bg-green-500 hover:bg-green-600 text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -128,16 +125,16 @@ const TechNodeComponent: React.FC<TechNodeProps> = ({
           +
         </button>
         <button
-          className={`w-5 h-5 lg:w-6 lg:h-6 rounded-full text-xs font-bold flex items-center justify-center ${
-            canDowngrade(node)
+          className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center ${
+            node.level > 0
               ? "bg-red-500 hover:bg-red-600 text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
           onClick={(e) => {
             e.stopPropagation();
-            if (canDowngrade(node)) onDowngrade(node);
+            if (node.level > 0) onDowngrade(node);
           }}
-          disabled={!canDowngrade(node)}
+          disabled={node.level <= 0}
         >
           -
         </button>
@@ -145,20 +142,20 @@ const TechNodeComponent: React.FC<TechNodeProps> = ({
 
       <div className="flex flex-col items-center flex-1 justify-center">
         <div
-          className="font-semibold text-[10px] lg:text-xs text-center mb-1 lg:mb-2 leading-tight overflow-hidden"
-          style={{ maxHeight: "2rem" }}
+          className="font-semibold text-xs text-center mb-2 leading-tight overflow-hidden"
+          style={{ maxHeight: "2.5rem" }}
         >
           {node.name}
         </div>
       </div>
       <div className="w-full">
-        <div className="w-full bg-gray-200 rounded-full h-1.5 lg:h-2 mb-1">
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
           <div
-            className={`${progressColor} h-1.5 lg:h-2 rounded-full`}
+            className={`${progressColor} h-2 rounded-full`}
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
-        <div className="text-[10px] lg:text-xs text-center">
+        <div className="text-xs text-center">
           {isUnlockable
             ? `${node.level > 0 ? "Unlocked" : "Locked"}`
             : `Level ${node.level}/${node.maxLevel}`}
@@ -234,7 +231,6 @@ const getAllConnectionLines = (techTree: TechNode[]): ConnectionLineProps[] => {
 };
 
 export default function CrystalTechPage() {
-  const { user } = useAuth();
   const [techTree, setTechTree] = useState<TechNode[]>([]);
   const [selectedNode, setSelectedNode] = useState<TechNode | null>(null);
   const [loading, setLoading] = useState(true);
@@ -246,11 +242,6 @@ export default function CrystalTechPage() {
     setTechTree(techTreeData);
     setLoading(false);
   }, []);
-  
-  // Restrict access to admin users only
-  if (!user || user.role !== 'admin') {
-    return <Navigate to="/" replace />;
-  }
 
   // Helper function to check if a prerequisite item is satisfied
   const isPrerequisiteItemSatisfied = (
@@ -397,60 +388,9 @@ export default function CrystalTechPage() {
     );
   };
 
-  // Check if downgrading a node would break any dependencies
-  const canDowngradeNode = (node: TechNode): boolean => {
-    if (!node || node.level <= 0) return false;
-    
-    const targetLevel = node.level - 1;
-    
-    // Check if any other tech nodes depend on the current level of this node
-    for (const otherNode of techTree) {
-      if (otherNode.id === node.id || otherNode.level === 0) continue;
-      
-      // Check all prerequisites of the other node for all its current levels
-      for (let level = 1; level <= otherNode.level; level++) {
-        const prereqItems = getPrerequisiteItemsForLevel(otherNode, level);
-        
-        for (const prereqItem of prereqItems) {
-          if ("orGroup" in prereqItem) {
-            // For orGroups, check if this node is the ONLY satisfied prerequisite
-            const satisfiedPrereqs = prereqItem.orGroup.filter((prereq) => {
-              if (prereq.id === node.id) {
-                // Check if the target level would still satisfy this prerequisite
-                return targetLevel >= prereq.requiredLevel;
-              } else {
-                const prereqNode = techTree.find((n) => n.id === prereq.id);
-                return prereqNode && prereqNode.level >= prereq.requiredLevel;
-              }
-            });
-            
-            // If no prerequisites would be satisfied after downgrade, prevent it
-            if (satisfiedPrereqs.length === 0) {
-              return false;
-            }
-          } else {
-            // For individual prerequisites, check if this node is required
-            if (prereqItem.id === node.id && targetLevel < prereqItem.requiredLevel) {
-              return false;
-            }
-          }
-        }
-      }
-    }
-    
-    return true;
-  };
-
   // Handle downgrade
   const handleDowngrade = (node: TechNode) => {
     if (!node || node.level <= 0) return;
-    
-    // Check if downgrading would break any dependencies
-    if (!canDowngradeNode(node)) {
-      // Could show a toast/alert here in the future
-      console.log(`Cannot downgrade ${node.name}: Other techs depend on this level`);
-      return;
-    }
 
     // Remove from upgrade order (remove the last occurrence of this tech at this level)
     setUpgradeOrder((prev) => {
@@ -573,8 +513,6 @@ export default function CrystalTechPage() {
     return minLevel;
   };
 
-
-
   // Render prerequisites list
   const renderPrerequisites = (prerequisites: Prerequisite[]) => {
     return prerequisites.map((prereq, index) => {
@@ -642,17 +580,25 @@ export default function CrystalTechPage() {
     let skippedCount = 0;
 
     // Helper function to check if we can upgrade a node to a specific level
-    const canUpgradeToLevel = (nodeId: string, targetLevel: number, currentTree: TechNode[]): number => {
-      const node = currentTree.find(n => n.id === nodeId);
+    const canUpgradeToLevel = (
+      nodeId: string,
+      targetLevel: number,
+      currentTree: TechNode[]
+    ): number => {
+      const node = currentTree.find((n) => n.id === nodeId);
       if (!node) return 0;
-      
+
       let maxAchievableLevel = node.level;
-      
+
       // Try to upgrade level by level, checking prerequisites for each
-      for (let level = node.level + 1; level <= Math.min(targetLevel, node.maxLevel); level++) {
+      for (
+        let level = node.level + 1;
+        level <= Math.min(targetLevel, node.maxLevel);
+        level++
+      ) {
         // Get prerequisites for this specific level
         const levelPrereqs = getPrerequisiteItemsForLevel(node, level);
-        
+
         // Check if all prerequisites are satisfied
         const canUpgrade = levelPrereqs.every((prereqItem) => {
           if ("orGroup" in prereqItem) {
@@ -667,14 +613,14 @@ export default function CrystalTechPage() {
             return prereqNode && prereqNode.level >= prereqItem.requiredLevel;
           }
         });
-        
+
         if (canUpgrade) {
           maxAchievableLevel = level;
         } else {
           break; // Can't upgrade further due to missing prerequisites
         }
       }
-      
+
       return maxAchievableLevel;
     };
 
@@ -686,12 +632,18 @@ export default function CrystalTechPage() {
       }
 
       const node = newTree[nodeIndex];
-      const maxAchievableLevel = canUpgradeToLevel(upgrade.techId, upgrade.targetLevel, newTree);
-      
+      const maxAchievableLevel = canUpgradeToLevel(
+        upgrade.techId,
+        upgrade.targetLevel,
+        newTree
+      );
+
       if (maxAchievableLevel > node.level) {
         // Add upgrades to order for each achievable level
         for (let level = node.level + 1; level <= maxAchievableLevel; level++) {
-          const crystalCost = node.crystalCost ? node.crystalCost[level - 1] || 0 : 0;
+          const crystalCost = node.crystalCost
+            ? node.crystalCost[level - 1] || 0
+            : 0;
           newUpgradeOrder.push({
             techId: node.id,
             level: level,
@@ -703,18 +655,24 @@ export default function CrystalTechPage() {
         // Update node level
         newTree[nodeIndex] = { ...node, level: maxAchievableLevel };
         appliedCount++;
-        
+
         if (maxAchievableLevel < upgrade.targetLevel) {
-          console.log(`${node.name}: Could only upgrade to level ${maxAchievableLevel} instead of ${upgrade.targetLevel} due to missing prerequisites`);
+          console.log(
+            `${node.name}: Could only upgrade to level ${maxAchievableLevel} instead of ${upgrade.targetLevel} due to missing prerequisites`
+          );
         }
       } else {
-        console.log(`${node.name}: Skipped - prerequisites not met for any upgrades`);
+        console.log(
+          `${node.name}: Skipped - prerequisites not met for any upgrades`
+        );
         skippedCount++;
       }
     });
 
-    console.log(`Build applied: ${appliedCount} upgrades successful, ${skippedCount} skipped due to prerequisites`);
-    
+    console.log(
+      `Build applied: ${appliedCount} upgrades successful, ${skippedCount} skipped due to prerequisites`
+    );
+
     setTechTree(newTree);
     setUpgradeOrder(newUpgradeOrder);
     setSelectedBuild(buildId);
@@ -799,29 +757,38 @@ export default function CrystalTechPage() {
                 ))}
               </select>
             </div>
-            
+
             {selectedBuild && (
               <div className="mb-4">
                 {(() => {
-                  const build = premadeTechTrees.find((b) => b.id === selectedBuild);
+                  const build = premadeTechTrees.find(
+                    (b) => b.id === selectedBuild
+                  );
                   return build ? (
                     <div className="bg-gray-50 p-3 rounded-md">
-                      <h4 className="font-semibold text-gray-800 mb-1">{build.name}</h4>
-                      <p className="text-sm text-gray-600 mb-2">{build.description}</p>
+                      <h4 className="font-semibold text-gray-800 mb-1">
+                        {build.name}
+                      </h4>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {build.description}
+                      </p>
                       <div className="text-xs text-gray-500">
-                        <span className="font-medium">Upgrades:</span> {build.upgrades.length} techs
+                        <span className="font-medium">Upgrades:</span>{" "}
+                        {build.upgrades.length} techs
                       </div>
                     </div>
                   ) : null;
                 })()}
               </div>
             )}
-            
-            <div className="flex flex-col sm:flex-row gap-3">
+
+            <div className="flex gap-3">
               <button
-                onClick={() => selectedBuild && loadPremadeTechTree(selectedBuild)}
+                onClick={() =>
+                  selectedBuild && loadPremadeTechTree(selectedBuild)
+                }
                 disabled={!selectedBuild}
-                className={`px-4 py-2 rounded-md font-medium flex-1 sm:flex-none ${
+                className={`px-4 py-2 rounded-md font-medium ${
                   selectedBuild
                     ? "bg-blue-500 hover:bg-blue-600 text-white"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -831,7 +798,7 @@ export default function CrystalTechPage() {
               </button>
               <button
                 onClick={resetTechTree}
-                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-medium flex-1 sm:flex-none"
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md font-medium"
               >
                 Reset All
               </button>
@@ -840,11 +807,11 @@ export default function CrystalTechPage() {
         </SectionCard>
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tech Tree Visualization */}
-        <div className="lg:col-span-2 order-2 lg:order-1">
+        <div className="lg:col-span-2">
           <SectionCard title="Crystal Tech Tree">
-            <div className="relative w-full h-[600px] lg:h-[1200px] overflow-auto">
+            <div className="relative w-full h-[1200px] overflow-auto">
               {/* Connection Lines SVG Overlay */}
               <svg
                 className="absolute top-0 left-0 w-full pointer-events-none"
@@ -867,7 +834,6 @@ export default function CrystalTechPage() {
                   onClick={handleNodeClick}
                   isAvailable={isNodeAvailable(node)}
                   canUpgrade={canUpgrade}
-                  canDowngrade={canDowngradeNode}
                   onUpgrade={handleUpgrade}
                   onDowngrade={handleDowngrade}
                 />
@@ -877,13 +843,11 @@ export default function CrystalTechPage() {
         </div>
 
         {/* Tech Details Panel */}
-        <div className="order-1 lg:order-2">
+        <div>
           <SectionCard title="Tech Details">
             {selectedNode ? (
               <div className="bg-white p-4 rounded-lg shadow-lg">
-                <h3 className="text-xl font-bold mb-2">
-                  {selectedNode.name}
-                </h3>
+                <h3 className="text-xl font-bold mb-2">{selectedNode.name}</h3>
                 <p className="text-gray-700 mb-3">
                   {selectedNode.val1}:{" "}
                   {selectedNode.val2[selectedNode.level] ||
@@ -931,25 +895,25 @@ export default function CrystalTechPage() {
                   )}
 
                 <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex justify-center gap-4 items-center">
                     <button
-                      className={`w-12 h-12 lg:w-10 lg:h-10 rounded-full flex items-center justify-center text-xl font-bold ${
-                        canDowngradeNode(selectedNode)
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold ${
+                        canDowngrade(selectedNode)
                           ? "bg-red-500 hover:bg-red-600 text-white"
                           : "bg-gray-300 text-gray-500 cursor-not-allowed"
                       }`}
                       onClick={() => handleDowngrade(selectedNode)}
-                      disabled={!canDowngradeNode(selectedNode)}
+                      disabled={!canDowngrade(selectedNode)}
                     >
                       -
                     </button>
-                    <span className="text-lg lg:text-lg font-semibold min-w-[80px] text-center">
+                    <span className="text-lg font-semibold min-w-[80px] text-center">
                       {selectedNode.maxLevel === 1
                         ? `${selectedNode.level > 0 ? "Unlocked" : "Locked"}`
                         : `${selectedNode.level}/${selectedNode.maxLevel}`}
                     </span>
                     <button
-                      className={`w-12 h-12 lg:w-10 lg:h-10 rounded-full flex items-center justify-center text-xl font-bold ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold ${
                         canUpgrade(selectedNode)
                           ? selectedNode.maxLevel === 1
                             ? "bg-purple-500 hover:bg-purple-600 text-white"
@@ -1123,8 +1087,6 @@ export default function CrystalTechPage() {
             </div>
           )}
 
-
-
           <div className="mt-4">
             <button
               onClick={resetTechTree}
@@ -1143,7 +1105,7 @@ export default function CrystalTechPage() {
             {upgradeOrder.length > 0 ? (
               <div>
                 <div className="mb-3">
-                  <div className="font-semibold text-base lg:text-lg mb-2">
+                  <div className="font-semibold text-lg mb-2">
                     Total Cost:{" "}
                     {upgradeOrder
                       .reduce((sum, item) => sum + item.crystalCost, 0)
@@ -1155,15 +1117,15 @@ export default function CrystalTechPage() {
                     {upgradeOrder.length !== 1 ? "s" : ""} planned
                   </div>
                 </div>
-                <div className="max-h-48 lg:max-h-64 overflow-y-auto">
+                <div className="max-h-64 overflow-y-auto">
                   <ol className="list-decimal list-inside space-y-2">
                     {upgradeOrder.map((item, index) => (
                       <li
                         key={`${item.techId}-${item.level}-${index}`}
-                        className="text-xs lg:text-sm"
+                        className="text-sm"
                       >
                         <span className="font-medium">{item.name}</span>
-                        <span className="text-gray-600 ml-1 lg:ml-2 block lg:inline">
+                        <span className="text-gray-600 ml-2">
                           ({item.crystalCost.toLocaleString()} crystals)
                         </span>
                       </li>
