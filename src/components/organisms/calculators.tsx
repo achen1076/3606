@@ -209,6 +209,45 @@ export default function Calculators() {
             </div>
           </div>
         </div>
+
+        {/* Crystal Tech Section */}
+        <div className="mt-10 border-t border-gray-700 pt-8">
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Crystal Tech Tree
+          </h2>
+          <p className="text-lg text-gray-300 mb-6">
+            Research and develop crystal-based technology for your kingdom
+          </p>
+          
+          <div className="bg-rok-purple/20 p-6 rounded-lg">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-white mb-4">Tech Tree</h3>
+                <p className="text-gray-300 mb-4">
+                  Explore the crystal technology tree and plan your research path.
+                </p>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-white mb-4">Upgrade Paths</h3>
+                <p className="text-gray-300 mb-4">
+                  Visualize technology prerequisites and optimize your development strategy.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-center">
+              <a 
+                href="/crystaltech" 
+                className="px-6 py-3 bg-rok-purple hover:bg-rok-purple-dark text-white rounded-md flex items-center transition-all text-lg"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z" clipRule="evenodd" />
+                </svg>
+                View Crystal Tech Tree
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
