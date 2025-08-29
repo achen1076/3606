@@ -16,8 +16,7 @@ const Navbar: React.FC<NavbarProps> = ({
   ...props
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isMobile, isTablet, width } = useWindowSize();
-  const isSmallScreen = width < 1200; // Use mobile menu for screens under 1200px
+  const { isMobile, isTablet } = useWindowSize();
   const { isLoggedIn, user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -52,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({
             </Link>
           </div>
 
-          {isMobile || isTablet || isSmallScreen ? (
+          {isMobile || isTablet ? (
             <button
               onClick={toggleMenu}
               className="text-white focus:outline-none"
@@ -83,25 +82,25 @@ const Navbar: React.FC<NavbarProps> = ({
               </svg>
             </button>
           ) : (
-            <div className="flex space-x-2 lg:space-x-4 xl:space-x-6 text-sm lg:text-base overflow-x-auto">
+            <div className="flex space-x-8">
               <NavLink to="/">Home</NavLink>
               <NavLink to="/stats">Stats</NavLink>
               <NavLink to="/leads">Leads</NavLink>
               <NavLink to="/tools">Tools</NavLink>
-              <NavLink to="/barbfortrally">Rally</NavLink>
-              <NavLink to="/crystaltech">Tech</NavLink>
+              <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
+              <NavLink to="/crystaltech">Crystal Tech</NavLink>
               <NavLink to="/forms">Forms</NavLink>
               <a
                 href="https://discord.gg/3606"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-rok-purple-light transition-colors whitespace-nowrap"
+                className="text-white hover:text-rok-purple-light transition-colors"
               >
                 Discord
               </a>
               {isLoggedIn ? (
-                <div className="flex items-center space-x-2 lg:space-x-4">
-                  <span className="text-rok-purple-light text-xs lg:text-sm whitespace-nowrap">
+                <div className="flex items-center space-x-6">
+                  <span className="text-rok-purple-light">
                     {user?.displayName}
                   </span>
                   {user?.role === "admin" && (
@@ -116,7 +115,7 @@ const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {(isMobile || isTablet || isSmallScreen) && isMenuOpen && (
+        {(isMobile || isTablet) && isMenuOpen && (
           <div className="flex flex-col space-y-4 mt-2 px-2 animate-fadeIn justify-end">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/stats">Stats</NavLink>
