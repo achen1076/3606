@@ -121,8 +121,8 @@ export default function InfLeadForm() {
     ) as HTMLInputElement;
 
     const formationInput = form.querySelector(
-      'input[name="formation"]'
-    ) as HTMLInputElement;
+      'select[name="formation"]'
+    ) as HTMLSelectElement;
 
     // Create the form values object
     const formValues = {
@@ -831,7 +831,7 @@ export default function InfLeadForm() {
                   Accessory 1 Iconic Level
                 </label>
                 <select
-                  name="accessory1IconicLevel"
+                  name="accessory1Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -877,7 +877,7 @@ export default function InfLeadForm() {
                   Accessory 2 Iconic Level
                 </label>
                 <select
-                  name="accessory2IconicLevel"
+                  name="accessory2Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >

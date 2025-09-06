@@ -338,6 +338,17 @@ export default function CavRallyForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
+                  id="skin-cav-attack-5"
+                  name="citySkin"
+                  className="mr-2 cursor-pointer"
+                />
+                <label htmlFor="skin-cav-attack-5" className="text-white">
+                  Cav Attack 5%
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
                   id="skin-cav-attack-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
@@ -366,6 +377,17 @@ export default function CavRallyForm() {
                 />
                 <label htmlFor="skin-cav-attack-20" className="text-white">
                   Cav Attack 20%
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="skin-cav-defense-5"
+                  name="citySkin"
+                  className="mr-2 cursor-pointer"
+                />
+                <label htmlFor="skin-cav-defense-5" className="text-white">
+                  Cav Defense 5%
                 </label>
               </div>
               <div className="flex items-center">
@@ -826,7 +848,7 @@ export default function CavRallyForm() {
                   Accessory 1 Iconic Level
                 </label>
                 <select
-                  name="accessory1IconicLevel"
+                  name="accessory1Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -872,7 +894,7 @@ export default function CavRallyForm() {
                   Accessory 2 Iconic Level
                 </label>
                 <select
-                  name="accessory2IconicLevel"
+                  name="accessory2Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >

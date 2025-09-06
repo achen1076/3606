@@ -339,111 +339,111 @@ export default function ArcherLeadForm() {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-attack-10"
+                  id="skin-archer-attack-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-attack-10" className="text-white">
-                  Arch Attack 10%
+                <label htmlFor="skin-archer-attack-5" className="text-white">
+                  Archer Attack 5%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-attack-15"
+                  id="skin-archer-attack-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-attack-15" className="text-white">
-                  Arch Attack 15%
+                <label htmlFor="skin-archer-attack-10" className="text-white">
+                  Archer Attack 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-attack-20"
+                  id="skin-archer-attack-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-attack-20" className="text-white">
-                  Arch Attack 20%
+                <label htmlFor="skin-archer-attack-15" className="text-white">
+                  Archer Attack 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-defense-10"
+                  id="skin-archer-defense-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-defense-10" className="text-white">
-                  Arch Defense 10%
+                <label htmlFor="skin-archer-defense-5" className="text-white">
+                  Archer Defense 5%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-defense-15"
+                  id="skin-archer-defense-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-defense-15" className="text-white">
-                  Arch Defense 15%
+                <label htmlFor="skin-archer-defense-10" className="text-white">
+                  Archer Defense 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-defense-20"
+                  id="skin-archer-defense-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-defense-20" className="text-white">
-                  Arch Defense 20%
+                <label htmlFor="skin-archer-defense-15" className="text-white">
+                  Archer Defense 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-health-5"
+                  id="skin-archer-health-5"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-health-5" className="text-white">
-                  Arch Health 5%
+                <label htmlFor="skin-archer-health-5" className="text-white">
+                  Archer Health 5%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-health-10"
+                  id="skin-archer-health-10"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-health-10" className="text-white">
-                  Arch Health 10%
+                <label htmlFor="skin-archer-health-10" className="text-white">
+                  Archer Health 10%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-health-15"
+                  id="skin-archer-health-15"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-health-15" className="text-white">
-                  Arch Health 15%
+                <label htmlFor="skin-archer-health-15" className="text-white">
+                  Archer Health 15%
                 </label>
               </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  id="skin-arch-health-20"
+                  id="skin-archer-health-20"
                   name="citySkin"
                   className="mr-2 cursor-pointer"
                 />
-                <label htmlFor="skin-arch-health-20" className="text-white">
-                  Arch Health 20%
+                <label htmlFor="skin-archer-health-20" className="text-white">
+                  Archer Health 20%
                 </label>
               </div>
               <div className="flex items-center">
@@ -835,7 +835,7 @@ export default function ArcherLeadForm() {
                   Accessory 1 Iconic Level
                 </label>
                 <select
-                  name="accessory1IconicLevel"
+                  name="accessory1Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
@@ -881,7 +881,7 @@ export default function ArcherLeadForm() {
                   Accessory 2 Iconic Level
                 </label>
                 <select
-                  name="accessory2IconicLevel"
+                  name="accessory2Iconic"
                   className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-rok-purple focus:border-transparent transition-all duration-200"
                   required
                 >
