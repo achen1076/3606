@@ -30,7 +30,7 @@ export default function HomePage() {
           <PageTitle
             title="Welcome to"
             highlightedText="Kingdom 3606"
-            subtitle="A powerful alliance in Rise of Kingdoms"
+            subtitle="Come join us!"
             className="mb-8"
           />
           <div className="bg-rok-purple rounded-lg p-6 shadow-lg">
@@ -40,7 +40,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <InfoCard title="Title Bot" value="24/7 Title Bot" />
               <InfoCard
-                title="Alliance Gift Level 27"
+                title="Alliance Gift Level 29"
                 value="2-3 Chests per Day"
               />
               <InfoCard

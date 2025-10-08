@@ -88,7 +88,8 @@ const Navbar: React.FC<NavbarProps> = ({
               <NavLink to="/leads">Leads</NavLink>
               <NavLink to="/tools">Tools</NavLink>
               <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
-              <NavLink to="/crystaltech">Crystal Tech</NavLink>
+              <NavLink to="/koabstats">KOAB Stats</NavLink>
+              {/* <NavLink to="/crystaltech">Crystal Tech</NavLink> */}
               <NavLink to="/forms">Forms</NavLink>
               <a
                 href="https://discord.gg/3606"
@@ -108,9 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   )}
                   <NavLink to="/logout">Logout</NavLink>
                 </div>
-              ) : (
-                <NavLink to="/login">Login</NavLink>
-              )}
+              ) : null}
             </div>
           )}
         </div>
@@ -122,7 +121,8 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink to="/leads">Leads</NavLink>
             <NavLink to="/tools">Tools</NavLink>
             <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
-            <NavLink to="/crystaltech">Crystal Tech</NavLink>
+            <NavLink to="/koabstats">KOAB Stats</NavLink>
+            {/* <NavLink to="/crystaltech">Crystal Tech</NavLink> */}
             <NavLink to="/forms">Forms</NavLink>
             <a
               href="https://discord.gg/3606"
@@ -140,9 +140,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 {user?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
                 <NavLink to="/logout">Logout</NavLink>
               </>
-            ) : (
-              <NavLink to="/login">Login</NavLink>
-            )}
+            ) : null}
           </div>
         )}
       </div>
