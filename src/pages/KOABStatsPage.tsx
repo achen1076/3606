@@ -27,7 +27,10 @@ export default function KOABStatsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchColumn, setSearchColumn] = useState("name");
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: null });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: null,
+    direction: null,
+  });
   const [sortByDelta, setSortByDelta] = useState(false);
   const [deltas, setDeltas] = useState<DeltaMap>({});
 
@@ -42,7 +45,7 @@ export default function KOABStatsPage() {
         const originalData = XLSX.utils.sheet_to_json(worksheet1, { header: 1 }) as any[][];
 
         // Load updated data from the "3606" sheet
-        const response2 = await fetch("/kingdom_scan_1203862233378193441_1759597334_1415.xlsx");
+        const response2 = await fetch("/data/kingdom_scan_1203862233378193441_1760101966_5429.xlsx");
         const arrayBuffer2 = await response2.arrayBuffer();
         const workbook2 = XLSX.read(arrayBuffer2, { type: "array" });
         const worksheet2 = workbook2.Sheets["3606"];
@@ -56,11 +59,11 @@ export default function KOABStatsPage() {
           const updatedMap: { [key: string]: any } = {};
           if (updatedData.length > 0) {
             const updatedHeaders = updatedData[0] as string[];
-            const idIndex = updatedHeaders.findIndex(h => 
-              String(h).toLowerCase().includes('id')
+            const idIndex = updatedHeaders.findIndex((h) =>
+              String(h).toLowerCase().includes("id")
             );
 
-            updatedData.slice(1).forEach(row => {
+            updatedData.slice(1).forEach((row) => {
               const id = row[idIndex];
               if (id) {
                 const rowObj: any = {};
@@ -73,20 +76,23 @@ export default function KOABStatsPage() {
           }
 
           // Process original data and calculate deltas
-          const originalIdIndex = headers.findIndex(h => 
-            String(h).toLowerCase().includes('id')
+          const originalIdIndex = headers.findIndex((h) =>
+            String(h).toLowerCase().includes("id")
           );
-          
+
           const deltaMap: DeltaMap = {};
-          const rows = originalData.slice(1)
-            .filter(row => {
+          const rows = originalData
+            .slice(1)
+            .filter((row) => {
               // Filter out empty rows - check if any cell has data
-              return row.some(cell => cell !== null && cell !== undefined && cell !== "");
+              return row.some(
+                (cell) => cell !== null && cell !== undefined && cell !== ""
+              );
             })
             .map((row, index) => {
               const rowData: RowData = { id: index };
               const governorId = row[originalIdIndex];
-              
+
               headers.forEach((header, idx) => {
                 rowData[header] = row[idx];
               });
@@ -95,17 +101,25 @@ export default function KOABStatsPage() {
               if (governorId && updatedMap[governorId]) {
                 const deltaKey = `row_${index}`;
                 deltaMap[deltaKey] = {};
-                
+
                 headers.forEach((header, idx) => {
                   const originalValue = row[idx];
-                  const updatedValue = updatedMap[governorId][String(header).toLowerCase()];
-                  
+                  const updatedValue =
+                    updatedMap[governorId][String(header).toLowerCase()];
+
                   // Only calculate delta for numeric columns
-                  if (originalValue !== undefined && updatedValue !== undefined) {
+                  if (
+                    originalValue !== undefined &&
+                    updatedValue !== undefined
+                  ) {
                     const origNum = Number(originalValue);
                     const updNum = Number(updatedValue);
-                    
-                    if (!isNaN(origNum) && !isNaN(updNum) && origNum !== updNum) {
+
+                    if (
+                      !isNaN(origNum) &&
+                      !isNaN(updNum) &&
+                      origNum !== updNum
+                    ) {
                       deltaMap[deltaKey][header] = updNum - origNum;
                     }
                   }
@@ -144,10 +158,10 @@ export default function KOABStatsPage() {
     }
 
     const num = Number(value);
-    
+
     // Check if it's DKP column - remove decimals
     const isDKPColumn = column && column.toLowerCase().includes("dkp");
-    
+
     if (!isNaN(num)) {
       if (isDKPColumn) {
         // Round DKP to integer and format with commas
@@ -229,7 +243,7 @@ export default function KOABStatsPage() {
     if (sortConfig.key && sortConfig.direction) {
       filtered.sort((a, b) => {
         let aVal, bVal;
-        
+
         // Sort by delta if enabled
         if (sortByDelta) {
           const aDeltaKey = `row_${a.id}`;
@@ -264,7 +278,16 @@ export default function KOABStatsPage() {
     }
 
     return filtered;
-  }, [data, searchTerm, searchColumn, nameColumn, idColumn, sortConfig, sortByDelta, deltas]);
+  }, [
+    data,
+    searchTerm,
+    searchColumn,
+    nameColumn,
+    idColumn,
+    sortConfig,
+    sortByDelta,
+    deltas,
+  ]);
 
   const handleReset = () => {
     setSearchTerm("");
@@ -316,7 +339,7 @@ export default function KOABStatsPage() {
       <Navbar />
       <div className="pt-24 min-h-screen bg-black">
         {/* Table Section */}
-      <section className="py-8">
+        <section className="py-8">
           <div className="w-[90%] mx-auto">
             {/* Page Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
@@ -416,7 +439,7 @@ export default function KOABStatsPage() {
                     {processedData.map((row, rowIndex) => {
                       const deltaKey = `row_${row.id}`;
                       const rowDeltas = deltas[deltaKey] || {};
-                      
+
                       return (
                         <tr
                           key={row.id}
@@ -429,14 +452,19 @@ export default function KOABStatsPage() {
                           {columns.map((column, colIndex) => {
                             const delta = rowDeltas[column];
                             const hasDelta = delta !== undefined;
-                            
+
                             return (
                               <td
                                 key={colIndex}
                                 className="px-6 py-4 whitespace-nowrap text-sm"
                               >
                                 <div className="flex flex-col items-start gap-1.5">
-                                  <span className="text-white font-medium">{formatNumber(row[column], column)}</span>
+                                  <span className="text-white font-medium">
+                                    {hasDelta 
+                                      ? formatNumber((Number(row[column]) || 0) + delta, column)
+                                      : formatNumber(row[column], column)
+                                    }
+                                  </span>
                                   {hasDelta && (
                                     <span
                                       className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
@@ -445,7 +473,8 @@ export default function KOABStatsPage() {
                                           : "bg-red-100 text-red-700"
                                       }`}
                                     >
-                                      {delta > 0 ? "+" : ""}{formatNumber(delta, column)}
+                                      {delta > 0 ? "+" : ""}
+                                      {formatNumber(delta, column)}
                                     </span>
                                   )}
                                 </div>
