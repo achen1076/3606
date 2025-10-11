@@ -42,14 +42,18 @@ export default function KOABStatsPage() {
         const arrayBuffer1 = await response1.arrayBuffer();
         const workbook1 = XLSX.read(arrayBuffer1, { type: "array" });
         const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
-        const originalData = XLSX.utils.sheet_to_json(worksheet1, { header: 1 }) as any[][];
+        const originalData = XLSX.utils.sheet_to_json(worksheet1, {
+          header: 1,
+        }) as any[][];
 
         // Load updated data from the "3606" sheet
-        const response2 = await fetch("/data/kingdom_scan_1203862233378193441_1760101966_5429.xlsx");
+        const response2 = await fetch("/data/updated_stats.xlsx");
         const arrayBuffer2 = await response2.arrayBuffer();
         const workbook2 = XLSX.read(arrayBuffer2, { type: "array" });
         const worksheet2 = workbook2.Sheets["3606"];
-        const updatedData = XLSX.utils.sheet_to_json(worksheet2, { header: 1 }) as any[][];
+        const updatedData = XLSX.utils.sheet_to_json(worksheet2, {
+          header: 1,
+        }) as any[][];
 
         if (originalData.length > 0) {
           const headers = originalData[0] as string[];
@@ -166,7 +170,7 @@ export default function KOABStatsPage() {
       if (isDKPColumn) {
         // Round DKP to integer and format with commas
         return Math.round(num).toLocaleString();
-      } else if (num >= 1000) {
+      } else if (Math.abs(num) >= 1000) {
         return num.toLocaleString();
       }
     }
@@ -251,8 +255,18 @@ export default function KOABStatsPage() {
           aVal = deltas[aDeltaKey]?.[sortConfig.key!] || 0;
           bVal = deltas[bDeltaKey]?.[sortConfig.key!] || 0;
         } else {
-          aVal = a[sortConfig.key!];
-          bVal = b[sortConfig.key!];
+          // Sort by original + delta (the sum)
+          const aDeltaKey = `row_${a.id}`;
+          const bDeltaKey = `row_${b.id}`;
+          const aDelta = deltas[aDeltaKey]?.[sortConfig.key!];
+          const bDelta = deltas[bDeltaKey]?.[sortConfig.key!];
+          
+          aVal = aDelta !== undefined 
+            ? (Number(a[sortConfig.key!]) || 0) + aDelta
+            : a[sortConfig.key!];
+          bVal = bDelta !== undefined 
+            ? (Number(b[sortConfig.key!]) || 0) + bDelta
+            : b[sortConfig.key!];
         }
 
         // Handle null/undefined
@@ -460,10 +474,12 @@ export default function KOABStatsPage() {
                               >
                                 <div className="flex flex-col items-start gap-1.5">
                                   <span className="text-white font-medium">
-                                    {hasDelta 
-                                      ? formatNumber((Number(row[column]) || 0) + delta, column)
-                                      : formatNumber(row[column], column)
-                                    }
+                                    {hasDelta
+                                      ? formatNumber(
+                                          (Number(row[column]) || 0) + delta,
+                                          column
+                                        )
+                                      : formatNumber(row[column], column)}
                                   </span>
                                   {hasDelta && (
                                     <span
