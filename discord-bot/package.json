@@ -1,0 +1,20 @@
+{
+  "name": "3606-stats-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for Kingdom 3606 KOAB stats",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "clear": "node clear-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "keywords": ["discord", "bot", "stats"],
+  "author": "",
+  "license": "ISC"
+}

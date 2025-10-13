@@ -167,11 +167,11 @@ export default function KOABStatsPage() {
     const isDKPColumn = column && column.toLowerCase().includes("dkp");
 
     if (!isNaN(num)) {
-      if (isDKPColumn) {
-        // Round DKP to integer and format with commas
+      // Round all numbers to integers and format with commas
+      if (Math.abs(num) >= 1000 || isDKPColumn) {
         return Math.round(num).toLocaleString();
-      } else if (Math.abs(num) >= 1000) {
-        return num.toLocaleString();
+      } else {
+        return Math.round(num).toString();
       }
     }
 
@@ -260,13 +260,15 @@ export default function KOABStatsPage() {
           const bDeltaKey = `row_${b.id}`;
           const aDelta = deltas[aDeltaKey]?.[sortConfig.key!];
           const bDelta = deltas[bDeltaKey]?.[sortConfig.key!];
-          
-          aVal = aDelta !== undefined 
-            ? (Number(a[sortConfig.key!]) || 0) + aDelta
-            : a[sortConfig.key!];
-          bVal = bDelta !== undefined 
-            ? (Number(b[sortConfig.key!]) || 0) + bDelta
-            : b[sortConfig.key!];
+
+          aVal =
+            aDelta !== undefined
+              ? (Number(a[sortConfig.key!]) || 0) + aDelta
+              : a[sortConfig.key!];
+          bVal =
+            bDelta !== undefined
+              ? (Number(b[sortConfig.key!]) || 0) + bDelta
+              : b[sortConfig.key!];
         }
 
         // Handle null/undefined
@@ -467,6 +469,22 @@ export default function KOABStatsPage() {
                             const delta = rowDeltas[column];
                             const hasDelta = delta !== undefined;
 
+                            // Calculate percentage for Required KP column
+                            // Show (Kill Points delta / Required KP) as percentage
+                            let percentage: string | null = null;
+                            if (column === "Required KP") {
+                              const killPointsDelta = rowDeltas["Kill Points"];
+                              const requiredKP =
+                                Number(row["Required KP"]) || 0;
+
+                              if (
+                                killPointsDelta !== undefined &&
+                                requiredKP > 0
+                              ) {
+                                percentage = ((killPointsDelta / requiredKP) * 100).toFixed(1);
+                              }
+                            }
+
                             return (
                               <td
                                 key={colIndex}
@@ -491,6 +509,19 @@ export default function KOABStatsPage() {
                                     >
                                       {delta > 0 ? "+" : ""}
                                       {formatNumber(delta, column)}
+                                    </span>
+                                  )}
+                                  {percentage !== null && (
+                                    <span
+                                      className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
+                                        parseFloat(percentage) >= 100
+                                          ? "bg-green-100 text-green-700"
+                                          : parseFloat(percentage) >= 80
+                                          ? "bg-yellow-100 text-yellow-700"
+                                          : "bg-red-100 text-red-700"
+                                      }`}
+                                    >
+                                      {percentage}%
                                     </span>
                                   )}
                                 </div>
