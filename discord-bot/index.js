@@ -12,8 +12,8 @@ const __dirname = dirname(__filename);
 
 // File paths
 const USER_LINKS_FILE = join(__dirname, 'user-links.json');
-const KOAB_DATA_FILE = join(__dirname, '../public/KOAB3606.xlsx');
-const UPDATED_DATA_FILE = join(__dirname, '../public/data/updated_stats.xlsx');
+const KOAB_DATA_FILE = join(__dirname, 'KOAB3606.xlsx');
+const UPDATED_DATA_FILE = join(__dirname, 'updated_stats.xlsx');
 
 // Initialize user links storage
 let userLinks = {};

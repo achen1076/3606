@@ -84,10 +84,13 @@ npm start
 ### For Admins
 
 - User linkages are stored in `user-links.json`
-- The bot reads from the same Excel files as the web app:
-  - `../public/KOAB3606.xlsx` (baseline data)
-  - `../public/data/updated_stats.xlsx` (current data)
-- Update these files to refresh the stats data
+- The bot reads from Excel files in the bot directory:
+  - `KOAB3606.xlsx` (baseline data)
+  - `updated_stats.xlsx` (current data)
+- **To update stats data:**
+  1. Replace the Excel files in the discord-bot folder
+  2. Commit and push to GitHub
+  3. Render will auto-deploy the updates (or restart the bot if running locally)
 
 ## Data Storage
 

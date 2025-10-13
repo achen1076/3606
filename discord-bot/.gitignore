@@ -2,3 +2,7 @@ node_modules/
 .env
 user-links.json
 *.log
+.DS_Store
+
+# Note: KOAB3606.xlsx and updated_stats.xlsx are intentionally NOT ignored
+# They need to be committed for deployment
