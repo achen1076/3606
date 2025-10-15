@@ -102,7 +102,7 @@ function formatNumber(num) {
   return Math.round(num).toLocaleString();
 }
 
-// Create progress bar
+// Create progress bar with gradient colors
 function createProgressBar(percentage) {
   const totalBars = 10;
   const filledBars = Math.min(Math.round((percentage / 100) * totalBars), totalBars);
@@ -111,14 +111,25 @@ function createProgressBar(percentage) {
   const filled = '█'.repeat(filledBars);
   const empty = '░'.repeat(emptyBars);
   
-  // Color based on percentage
+  // Gradient color based on percentage
+  // 0-50%: Red to Orange/Yellow
+  // 50-100%: Yellow to Green
+  // 100%+: Solid Green
+  let emoji;
+  
   if (percentage >= 100) {
-    return `🟩 ${filled}${empty}`; // Green
-  } else if (percentage >= 80) {
-    return `🟨 ${filled}${empty}`; // Yellow
+    emoji = '🟢'; // Solid green circle for 100%+
+  } else if (percentage >= 75) {
+    emoji = '🟡'; // Yellow-green (transitioning)
+  } else if (percentage >= 50) {
+    emoji = '🟡'; // Yellow
+  } else if (percentage >= 25) {
+    emoji = '🟠'; // Orange
   } else {
-    return `🟥 ${filled}${empty}`; // Red
+    emoji = '🔴'; // Red circle
   }
+  
+  return `${emoji} ${filled}${empty}`;
 }
 
 // Create Discord client
@@ -175,14 +186,16 @@ client.on('interactionCreate', async interaction => {
   const { commandName, user } = interaction;
 
   if (commandName === 'link') {
+    // Defer reply immediately to prevent timeout
+    await interaction.deferReply({ ephemeral: false });
+    
     const governorId = interaction.options.getString('id');
     
     // Validate that ID exists in data
     const stats = getPlayerStats(governorId);
     if (!stats) {
-      await interaction.reply({
-        content: `❌ Governor ID \`${governorId}\` not found in the database. Please check your ID and try again.`,
-        ephemeral: false
+      await interaction.editReply({
+        content: `❌ Governor ID \`${governorId}\` not found in the database. Please check your ID and try again.`
       });
       return;
     }
@@ -192,9 +205,8 @@ client.on('interactionCreate', async interaction => {
     saveUserLinks();
 
     const playerName = stats['Governor Name'] || stats['Name'] || 'Unknown';
-    await interaction.reply({
-      content: `✅ Successfully linked your Discord account to **${playerName}** (ID: \`${governorId}\`)`,
-      ephemeral: false
+    await interaction.editReply({
+      content: `✅ Successfully linked your Discord account to **${playerName}** (ID: \`${governorId}\`)`
     });
   }
 
@@ -217,21 +229,22 @@ client.on('interactionCreate', async interaction => {
   }
 
   else if (commandName === 'stats') {
+    // Defer reply immediately to prevent timeout
+    await interaction.deferReply({ ephemeral: false });
+    
     const governorId = userLinks[user.id];
 
     if (!governorId) {
-      await interaction.reply({
-        content: '❌ You need to link your account first! Use `/link <id>` to link your game ID.',
-        ephemeral: false
+      await interaction.editReply({
+        content: '❌ You need to link your account first! Use `/link <id>` to link your game ID.'
       });
       return;
     }
 
     const stats = getPlayerStats(governorId);
     if (!stats) {
-      await interaction.reply({
-        content: '❌ Unable to retrieve your stats. Please contact an admin.',
-        ephemeral: false
+      await interaction.editReply({
+        content: '❌ Unable to retrieve your stats. Please contact an admin.'
       });
       return;
     }
@@ -296,7 +309,7 @@ client.on('interactionCreate', async interaction => {
     });
     embed.setTimestamp();
 
-    await interaction.reply({ embeds: [embed], ephemeral: false });
+    await interaction.editReply({ embeds: [embed] });
   }
 });
 

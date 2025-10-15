@@ -38,7 +38,7 @@ export default function KOABStatsPage() {
     const fetchExcelData = async () => {
       try {
         // Load original data
-        const response1 = await fetch("/KOAB3606.xlsx");
+        const response1 = await fetch("/data/KOAB3606.xlsx");
         const arrayBuffer1 = await response1.arrayBuffer();
         const workbook1 = XLSX.read(arrayBuffer1, { type: "array" });
         const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
@@ -178,6 +178,45 @@ export default function KOABStatsPage() {
     return String(value);
   };
 
+  // Get gradient color for percentage (red -> yellow -> green)
+  const getPercentageColor = (percentage: number) => {
+    // If 100% or higher, return solid green
+    if (percentage >= 100) {
+      return { bg: "rgb(220, 252, 231)", text: "rgb(21, 128, 61)" }; // bg-green-100, text-green-700
+    }
+
+    // Calculate gradient from red (0%) -> yellow (50%) -> green (100%)
+    let r, g, b;
+    let textR, textG, textB;
+
+    if (percentage <= 50) {
+      // Red to Yellow (0% - 50%)
+      const ratio = percentage / 50;
+      r = 255;
+      g = Math.round(140 + 215 * ratio); // 140 -> 255
+      b = 140;
+      // Text color: dark red to dark yellow
+      textR = Math.round(185 - 60 * ratio);
+      textG = Math.round(28 + 115 * ratio);
+      textB = 28;
+    } else {
+      // Yellow to Green (50% - 100%)
+      const ratio = (percentage - 50) / 50;
+      r = Math.round(255 - 35 * ratio); // 255 -> 220
+      g = Math.round(255 - 3 * ratio); // 255 -> 252
+      b = Math.round(140 + 91 * ratio); // 140 -> 231
+      // Text color: dark yellow to dark green
+      textR = Math.round(125 - 104 * ratio);
+      textG = Math.round(143 - 15 * ratio);
+      textB = Math.round(28 + 33 * ratio);
+    }
+
+    return {
+      bg: `rgb(${r}, ${g}, ${b})`,
+      text: `rgb(${textR}, ${textG}, ${textB})`,
+    };
+  };
+
   // Handle sorting
   const handleSort = (column: string) => {
     let direction: "asc" | "desc" | null = "asc";
@@ -248,8 +287,20 @@ export default function KOABStatsPage() {
       filtered.sort((a, b) => {
         let aVal, bVal;
 
+        // Special handling for KP % column
+        if (sortConfig.key === "KP %") {
+          const aDeltaKey = `row_${a.id}`;
+          const bDeltaKey = `row_${b.id}`;
+          const aKillPointsDelta = deltas[aDeltaKey]?.["Kill Points"] || 0;
+          const bKillPointsDelta = deltas[bDeltaKey]?.["Kill Points"] || 0;
+          const aRequiredKP = Number(a["Required KP"]) || 1;
+          const bRequiredKP = Number(b["Required KP"]) || 1;
+
+          aVal = (aKillPointsDelta / aRequiredKP) * 100;
+          bVal = (bKillPointsDelta / bRequiredKP) * 100;
+        }
         // Sort by delta if enabled
-        if (sortByDelta) {
+        else if (sortByDelta) {
           const aDeltaKey = `row_${a.id}`;
           const bDeltaKey = `row_${b.id}`;
           aVal = deltas[aDeltaKey]?.[sortConfig.key!] || 0;
@@ -437,18 +488,30 @@ export default function KOABStatsPage() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="bg-rok-purple">
-                      {columns.map((column, index) => (
-                        <th
-                          key={index}
-                          onClick={() => handleSort(column)}
-                          className="px-6 py-4 text-left text-xs font-bold text-white tracking-wider uppercase whitespace-nowrap cursor-pointer hover:bg-rok-purple-dark transition-colors duration-150 select-none"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span>{column}</span>
-                            {getSortIcon(column)}
-                          </div>
-                        </th>
-                      ))}
+                      {columns
+                        .filter((col) => col !== "DKP")
+                        .map((column, index) => (
+                          <th
+                            key={index}
+                            onClick={() => handleSort(column)}
+                            className="px-6 py-4 text-left text-xs font-bold text-white tracking-wider uppercase whitespace-nowrap cursor-pointer hover:bg-rok-purple-dark transition-colors duration-150 select-none"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span>{column}</span>
+                              {getSortIcon(column)}
+                            </div>
+                          </th>
+                        ))}
+                      {/* Add KP % column header */}
+                      <th
+                        onClick={() => handleSort("KP %")}
+                        className="px-6 py-4 text-left text-xs font-bold text-white tracking-wider uppercase whitespace-nowrap cursor-pointer hover:bg-rok-purple-dark transition-colors duration-150 select-none"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span>KP %</span>
+                          {getSortIcon("KP %")}
+                        </div>
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-black">
@@ -465,14 +528,45 @@ export default function KOABStatsPage() {
                               : "bg-rok-purple-dark/30 hover:bg-rok-purple-dark/40"
                           }`}
                         >
-                          {columns.map((column, colIndex) => {
-                            const delta = rowDeltas[column];
-                            const hasDelta = delta !== undefined;
+                          {columns
+                            .filter((col) => col !== "DKP")
+                            .map((column, colIndex) => {
+                              const delta = rowDeltas[column];
+                              const hasDelta = delta !== undefined;
 
-                            // Calculate percentage for Required KP column
-                            // Show (Kill Points delta / Required KP) as percentage
-                            let percentage: string | null = null;
-                            if (column === "Required KP") {
+                              return (
+                                <td
+                                  key={colIndex}
+                                  className="px-6 py-4 whitespace-nowrap text-sm"
+                                >
+                                  <div className="flex flex-col items-start gap-1.5">
+                                    <span className="text-white font-medium">
+                                      {hasDelta
+                                        ? formatNumber(
+                                            (Number(row[column]) || 0) + delta,
+                                            column
+                                          )
+                                        : formatNumber(row[column], column)}
+                                    </span>
+                                    {hasDelta && (
+                                      <span
+                                        className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
+                                          delta > 0
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-700"
+                                        }`}
+                                      >
+                                        {delta > 0 ? "+" : ""}
+                                        {formatNumber(delta, column)}
+                                      </span>
+                                    )}
+                                  </div>
+                                </td>
+                              );
+                            })}
+                          {/* KP % column */}
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            {(() => {
                               const killPointsDelta = rowDeltas["Kill Points"];
                               const requiredKP =
                                 Number(row["Required KP"]) || 0;
@@ -481,53 +575,28 @@ export default function KOABStatsPage() {
                                 killPointsDelta !== undefined &&
                                 requiredKP > 0
                               ) {
-                                percentage = ((killPointsDelta / requiredKP) * 100).toFixed(1);
-                              }
-                            }
-
-                            return (
-                              <td
-                                key={colIndex}
-                                className="px-6 py-4 whitespace-nowrap text-sm"
-                              >
-                                <div className="flex flex-col items-start gap-1.5">
-                                  <span className="text-white font-medium">
-                                    {hasDelta
-                                      ? formatNumber(
-                                          (Number(row[column]) || 0) + delta,
-                                          column
-                                        )
-                                      : formatNumber(row[column], column)}
+                                const percentage = (
+                                  (killPointsDelta / requiredKP) *
+                                  100
+                                ).toFixed(1);
+                                const colors = getPercentageColor(
+                                  parseFloat(percentage)
+                                );
+                                return (
+                                  <span
+                                    className="inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit"
+                                    style={{
+                                      backgroundColor: colors.bg,
+                                      color: colors.text,
+                                    }}
+                                  >
+                                    {percentage}%
                                   </span>
-                                  {hasDelta && (
-                                    <span
-                                      className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
-                                        delta > 0
-                                          ? "bg-green-100 text-green-700"
-                                          : "bg-red-100 text-red-700"
-                                      }`}
-                                    >
-                                      {delta > 0 ? "+" : ""}
-                                      {formatNumber(delta, column)}
-                                    </span>
-                                  )}
-                                  {percentage !== null && (
-                                    <span
-                                      className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
-                                        parseFloat(percentage) >= 100
-                                          ? "bg-green-100 text-green-700"
-                                          : parseFloat(percentage) >= 80
-                                          ? "bg-yellow-100 text-yellow-700"
-                                          : "bg-red-100 text-red-700"
-                                      }`}
-                                    >
-                                      {percentage}%
-                                    </span>
-                                  )}
-                                </div>
-                              </td>
-                            );
-                          })}
+                                );
+                              }
+                              return <span className="text-gray-500">—</span>;
+                            })()}
+                          </td>
                         </tr>
                       );
                     })}
