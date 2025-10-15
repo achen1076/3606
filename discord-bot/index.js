@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, REST, Routes, EmbedBuilder } from 'discord.js';
 import { config } from 'dotenv';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import XLSX from 'xlsx';
@@ -11,9 +11,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // File paths
-const USER_LINKS_FILE = join(__dirname, 'user-links.json');
+// Use /app/data for persistent storage on Render, fallback to local for dev
+const DATA_DIR = process.env.RENDER ? '/app/data' : __dirname;
+const USER_LINKS_FILE = join(DATA_DIR, 'user-links.json');
 const KOAB_DATA_FILE = join(__dirname, 'KOAB3606.xlsx');
 const UPDATED_DATA_FILE = join(__dirname, 'updated_stats.xlsx');
+
+// Ensure data directory exists
+if (!existsSync(DATA_DIR)) {
+  mkdirSync(DATA_DIR, { recursive: true });
+}
 
 // Initialize user links storage
 let userLinks = {};
