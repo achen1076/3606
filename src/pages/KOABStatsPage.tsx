@@ -488,6 +488,10 @@ export default function KOABStatsPage() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="bg-rok-purple">
+                      {/* Rank column */}
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white tracking-wider uppercase whitespace-nowrap">
+                        #
+                      </th>
                       {columns
                         .filter((col) => col !== "DKP")
                         .map((column, index) => (
@@ -528,6 +532,12 @@ export default function KOABStatsPage() {
                               : "bg-rok-purple-dark/30 hover:bg-rok-purple-dark/40"
                           }`}
                         >
+                          {/* Rank number */}
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <span className="text-rok-purple-light font-bold text-base">
+                              {rowIndex + 1}
+                            </span>
+                          </td>
                           {columns
                             .filter((col) => col !== "DKP")
                             .map((column, colIndex) => {
