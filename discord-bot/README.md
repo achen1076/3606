@@ -5,17 +5,21 @@ A Discord bot that allows Kingdom 3606 members to link their accounts and view t
 ## Features
 
 ### Slash Commands
+
 - `/link <id>` - Link your Discord account to your in-game Governor ID
 - `/stats` - View your KOAB stats including Kill Points, DKP, and changes since baseline
 - `/unlink` - Unlink your Discord account
 
 ### AI Auto-Response with Memory
+
 The bot automatically responds to messages when:
+
 - The bot is tagged (@bot)
 - User @achen1606 is tagged (requires ACHEN_USER_ID env var)
 - Message contains the text "achen"
 
 **Conversation Memory:**
+
 - Remembers the last 10 messages per channel AND per user (hybrid memory)
 - Allows for natural follow-up questions without repeating context
 - Memory persists across bot restarts (stored in `/app/data/conversations.json`)
@@ -41,11 +45,13 @@ The AI uses OpenAI's **GPT-5 mini** and is informed about Rise of Kingdoms and K
 ### 2. Configure the Bot
 
 1. Copy `.env.example` to `.env`:
+
    ```bash
    cp .env.example .env
    ```
 
 2. Fill in your `.env` file:
+
    ```
    DISCORD_TOKEN=your_bot_token_from_discord_portal
    CLIENT_ID=your_application_id_from_discord_portal
@@ -55,6 +61,7 @@ The AI uses OpenAI's **GPT-5 mini** and is informed about Rise of Kingdoms and K
    ```
 
    **How to get these values:**
+
    - **DISCORD_TOKEN**: From Discord Developer Portal > Bot section
    - **CLIENT_ID**: From Discord Developer Portal > General Information (Application ID)
    - **GUILD_ID**: Enable Developer Mode in Discord (User Settings > Advanced), then right-click your server and select "Copy Server ID"
@@ -70,11 +77,13 @@ npm install
 ### 4. Run the Bot
 
 Development mode (auto-restart on changes):
+
 ```bash
 npm run dev
 ```
 
 Production mode:
+
 ```bash
 npm start
 ```
@@ -84,15 +93,19 @@ npm start
 ### For Members
 
 1. **Link your account:**
+
    ```
    /link 123456789
    ```
+
    Replace `123456789` with your Governor ID from the game.
 
 2. **View your stats:**
+
    ```
    /stats
    ```
+
    This will show your Kill Points, Required KP, DKP, and any changes since the baseline.
 
 3. **Unlink your account:**
@@ -119,15 +132,18 @@ npm start
 ## Troubleshooting
 
 **Commands not showing up:**
+
 - Make sure the bot has been invited with the `applications.commands` scope
 - Wait a few minutes for Discord to register the commands
 - Try kicking and re-inviting the bot
 
 **"ID not found" error:**
+
 - Verify the Governor ID exists in the KOAB3606.xlsx file
 - Check that the file paths in index.js are correct
 
 **Bot not responding:**
+
 - Check the console for errors
 - Verify your `.env` file has the correct token and IDs
 - Make sure the bot has permissions to respond in the channel

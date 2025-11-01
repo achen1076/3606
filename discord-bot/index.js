@@ -594,11 +594,24 @@ Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, all
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
       model: "gpt-5-mini",
-      messages: messages,
-      max_completion_tokens: 500,
+      input: messages,
+      max_output_tokens: 500,
     });
 
-    const reply = completion.choices[0].message.content;
+    const reply = completion.choices[0]?.message?.content;
+
+    // Check if we got a valid response
+    if (!reply || reply.trim() === "") {
+      console.error("❌ AI returned empty response");
+      console.error(
+        "Full completion object:",
+        JSON.stringify(completion, null, 2)
+      );
+      await message.reply(
+        "Sorry, I couldn't generate a response. Please try again!"
+      );
+      return;
+    }
 
     // Add assistant response to history
     addToConversationHistory(
