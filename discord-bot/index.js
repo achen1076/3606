@@ -43,9 +43,7 @@ if (!process.env.ACHEN_USER_ID) {
 console.log("✅ All required environment variables are set");
 
 // Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
