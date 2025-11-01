@@ -4,9 +4,13 @@ A Discord bot that allows Kingdom 3606 members to link their accounts and view t
 
 ## Features
 
+### Slash Commands
 - `/link <id>` - Link your Discord account to your in-game Governor ID
 - `/stats` - View your KOAB stats including Kill Points, DKP, and changes since baseline
 - `/unlink` - Unlink your Discord account
+
+### AI Auto-Response
+The bot automatically responds to messages that mention "achen" or tag @achen1606 using OpenAI's GPT-4. The AI is informed about Rise of Kingdoms and Kingdom 3606 context to provide relevant responses about gameplay, alliance strategy, and kingdom matters.
 
 ## Setup
 
@@ -36,11 +40,16 @@ A Discord bot that allows Kingdom 3606 members to link their accounts and view t
    DISCORD_TOKEN=your_bot_token_from_discord_portal
    CLIENT_ID=your_application_id_from_discord_portal
    GUILD_ID=your_discord_server_id
+   OPENAI_API_KEY=your_openai_api_key
+   ACHEN_USER_ID=your_discord_user_id
    ```
 
-   To get your Guild ID (Server ID):
-   - Enable Developer Mode in Discord (User Settings > Advanced > Developer Mode)
-   - Right-click your server and select "Copy Server ID"
+   **How to get these values:**
+   - **DISCORD_TOKEN**: From Discord Developer Portal > Bot section
+   - **CLIENT_ID**: From Discord Developer Portal > General Information (Application ID)
+   - **GUILD_ID**: Enable Developer Mode in Discord (User Settings > Advanced), then right-click your server and select "Copy Server ID"
+   - **OPENAI_API_KEY**: Get from [OpenAI Platform](https://platform.openai.com/api-keys)
+   - **ACHEN_USER_ID**: Right-click your Discord username and select "Copy User ID" (requires Developer Mode)
 
 ### 3. Install Dependencies
 

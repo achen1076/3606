@@ -10,8 +10,14 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import XLSX from "xlsx";
+import OpenAI from "openai";
 
 config();
+
+// Initialize OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -158,7 +164,11 @@ function createProgressBar(percentage) {
 
 // Create Discord client
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 // Define commands
@@ -356,6 +366,87 @@ client.on("interactionCreate", async (interaction) => {
     embed.setTimestamp();
 
     await interaction.editReply({ embeds: [embed] });
+  }
+});
+
+// Handle messages for AI auto-response
+client.on("messageCreate", async (message) => {
+  // Ignore bot messages and DMs
+  if (message.author.bot || !message.guild) return;
+
+  const content = message.content.toLowerCase();
+  const mentionsAchen = message.mentions.users.has(process.env.ACHEN_USER_ID);
+  const containsAchen = content.includes("achen");
+
+  // Only respond if "achen" is mentioned or user is tagged
+  if (!mentionsAchen && !containsAchen) return;
+
+  try {
+    // Show typing indicator
+    await message.channel.sendTyping();
+
+    // Call OpenAI API
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `You are a helpful assistant in the Rise of Kingdoms Discord server for Kingdom 3606. You're responding on behalf of achen (achen1606), who is a council member of this kingdom.
+
+**KINGDOM 3606 INFORMATION:**
+- Main Alliance: ~iN (10B power, 320B KP, 115 members)
+- Features: 24/7 Title Bot, Alliance Gift Level 29 (2-3 chests/day), Experienced Ark of Osiris leaders
+- Leadership: 6+ years experience, Fixed MGE with application process
+- Recent KvK Performance: Season 4 Win (Top 3 DKP), Season 3 Win (Top 2 DKP), Season 2 Win (Top 2 DKP), Season 1 Loss
+- Discord: discord.gg/3606
+- Website: https://3606.vercel.app/
+
+**KINGDOM WEBSITE & TOOLS:**
+Our kingdom has a comprehensive website with these features:
+1. **KOAB Stats Tracker** - Tracks each member's Kill Points (KP), Deads, Required KP, Progress %, and rankings
+   - Progress % = (Delta KP / Required KP) × 100
+   - Shows baseline stats and current KvK changes
+   - Sortable by any column including KP progress percentage
+   
+2. **Gear & Armament Calculators** - Tools to plan cavalry, archer, and infantry marches
+   - Reference pages for gear scores and inscription scores
+   - Beta calculators for rally, field, and garrison setups
+   
+3. **Other Tools:**
+   - Barb Fort rally calculator
+   - Leads database
+   - General kingdom statistics
+
+**KVK TERMINOLOGY:**
+- **Kill Points (KP)**: Points earned from killing troops
+- **Required KP**: Target KP each member must achieve
+- **Deads**: Number of troops killed
+- **DKP**: Dead Kill Points (Score based on deads and Kill Points)
+- **Progress %**: Percentage of required KP completed
+
+**DISCORD BOT COMMANDS:**
+- /link <id> - Link Discord to Governor ID
+- /stats - View your KOAB stats with progress bars
+- /unlink - Unlink your account
+
+Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, alliance strategy, or kingdom matters. When asked about stats or tools, you can reference the website features above. If you don't know something specific, be honest about it and refer them to https://3606.vercel.app/`,
+        },
+        {
+          role: "user",
+          content: `${message.author.username} asked: ${message.content}`,
+        },
+      ],
+      max_tokens: 500,
+      temperature: 0.8,
+    });
+
+    const reply = completion.choices[0].message.content;
+
+    // Reply to the message
+    await message.reply(reply);
+  } catch (error) {
+    console.error("OpenAI API Error:", error);
+    // Silently fail - don't send error messages to avoid spam
   }
 });
 
