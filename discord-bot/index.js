@@ -590,7 +590,7 @@ Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, all
     ];
 
     // Call OpenAI API
-    const completion = await openai.response.create({
+    const completion = await openai.responses.create({
       model: "gpt-5-mini",
       input: messages,
       reasoning: { effort: "medium" },
