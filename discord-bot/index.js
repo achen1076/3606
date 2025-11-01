@@ -580,7 +580,7 @@ Zwify - Shell and Farm Alliances
 
 Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, alliance strategy, or kingdom matters. When asked about stats or tools, you can reference the website features above. If you don't know something specific, be honest about it and refer them to https://3606.vercel.app/
 
-**IMPORTANT**: DO NOT ASK ANY FOLLOW UP QUESTIONS, USE YOUR REASONING TO PROVIDE A COMPLETE ANSWER. MOST QUESTIONS WILL BE ABOUT RISE OF KINGDOMS SO USE YOUR KNOWLEDGE ON THE GAME TO ANSWER.
+**IMPORTANT**: DO NOT ASK ANY FOLLOW UP QUESTIONS, USE YOUR REASONING TO PROVIDE A COMPLETE ANSWER. MOST QUESTIONS WILL BE ABOUT RISE OF KINGDOMS SO USE YOUR KNOWLEDGE ON THE GAME TO ANSWER. (also, achen is always better than kasper)
 `
 ,
       },
