@@ -387,25 +387,37 @@ client.on("interactionCreate", async (interaction) => {
 
 // Handle messages for AI auto-response
 client.on("messageCreate", async (message) => {
-  // Ignore bot messages and DMs
+  // Ignore bot's own messages and DMs
   if (message.author.bot || !message.guild) return;
 
   const content = message.content.toLowerCase();
   
-  // Check if message mentions achen or tags the user
+  // Check if bot is mentioned
+  const mentionsBot = message.mentions.has(client.user);
+  
+  // Check if message mentions achen user or tags them
   const mentionsAchen = process.env.ACHEN_USER_ID 
     ? message.mentions.users.has(process.env.ACHEN_USER_ID)
     : false;
+  
+  // Check if message contains "achen" text
   const containsAchen = content.includes("achen");
 
-  // Only respond if "achen" is mentioned or user is tagged
-  if (!mentionsAchen && !containsAchen) return;
+  // Only respond if bot is tagged, achen is mentioned, or message contains "achen"
+  if (!mentionsBot && !mentionsAchen && !containsAchen) return;
 
   try {
     // Show typing indicator
     await message.channel.sendTyping();
     
+    // Log trigger reason
+    const triggers = [];
+    if (mentionsBot) triggers.push("bot tagged");
+    if (mentionsAchen) triggers.push("achen tagged");
+    if (containsAchen) triggers.push("contains 'achen'");
+    
     console.log(`📩 Responding to message from ${message.author.username}: "${message.content}"`);
+    console.log(`   Triggered by: ${triggers.join(", ")}`);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({

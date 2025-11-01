@@ -10,7 +10,12 @@ A Discord bot that allows Kingdom 3606 members to link their accounts and view t
 - `/unlink` - Unlink your Discord account
 
 ### AI Auto-Response
-The bot automatically responds to messages that mention "achen" or tag @achen1606 using OpenAI's GPT-4. The AI is informed about Rise of Kingdoms and Kingdom 3606 context to provide relevant responses about gameplay, alliance strategy, and kingdom matters.
+The bot automatically responds to messages when:
+- The bot is tagged (@bot)
+- User @achen1606 is tagged (requires ACHEN_USER_ID env var)
+- Message contains the text "achen"
+
+The AI uses OpenAI's GPT-4o-mini and is informed about Rise of Kingdoms and Kingdom 3606 context to provide relevant responses about gameplay, alliance strategy, and kingdom matters.
 
 ## Setup
 
