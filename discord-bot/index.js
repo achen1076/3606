@@ -15,20 +15,32 @@ import OpenAI from "openai";
 config();
 
 // Validate required environment variables
-const requiredEnvVars = ['DISCORD_TOKEN', 'CLIENT_ID', 'GUILD_ID', 'OPENAI_API_KEY'];
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+const requiredEnvVars = [
+  "DISCORD_TOKEN",
+  "CLIENT_ID",
+  "GUILD_ID",
+  "OPENAI_API_KEY",
+];
+const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
 if (missingVars.length > 0) {
-  console.error('❌ Missing required environment variables:', missingVars.join(', '));
-  console.error('Please set these in your .env file or Render environment variables');
+  console.error(
+    "❌ Missing required environment variables:",
+    missingVars.join(", ")
+  );
+  console.error(
+    "Please set these in your .env file or Render environment variables"
+  );
   process.exit(1);
 }
 
 if (!process.env.ACHEN_USER_ID) {
-  console.warn('⚠️ ACHEN_USER_ID not set - bot will only respond to messages containing "achen"');
+  console.warn(
+    '⚠️ ACHEN_USER_ID not set - bot will only respond to messages containing "achen"'
+  );
 }
 
-console.log('✅ All required environment variables are set');
+console.log("✅ All required environment variables are set");
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -59,6 +71,62 @@ if (existsSync(USER_LINKS_FILE)) {
 // Save user links
 function saveUserLinks() {
   writeFileSync(USER_LINKS_FILE, JSON.stringify(userLinks, null, 2));
+}
+
+// Conversation memory storage
+const CONVERSATION_FILE = join(DATA_DIR, "conversations.json");
+let conversations = {};
+if (existsSync(CONVERSATION_FILE)) {
+  conversations = JSON.parse(readFileSync(CONVERSATION_FILE, "utf-8"));
+}
+
+// Save conversations
+function saveConversations() {
+  writeFileSync(CONVERSATION_FILE, JSON.stringify(conversations, null, 2));
+}
+
+// Get conversation history (hybrid: channel + user context)
+function getConversationHistory(channelId, userId) {
+  const channelKey = `channel_${channelId}`;
+  const userKey = `user_${userId}`;
+
+  // Get last 5 messages from channel and last 5 from user
+  const channelHistory = conversations[channelKey] || [];
+  const userHistory = conversations[userKey] || [];
+
+  // Combine and deduplicate, keep most recent 10
+  const combined = [...channelHistory, ...userHistory];
+  const uniqueMessages = Array.from(
+    new Map(combined.map((msg) => [msg.timestamp + msg.content, msg])).values()
+  )
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .slice(-10);
+
+  return uniqueMessages.map((msg) => ({
+    role: msg.role,
+    content: msg.content,
+  }));
+}
+
+// Add message to conversation history
+function addToConversationHistory(channelId, userId, role, content) {
+  const channelKey = `channel_${channelId}`;
+  const userKey = `user_${userId}`;
+  const timestamp = Date.now();
+
+  const message = { role, content, timestamp };
+
+  // Add to channel history (keep last 10)
+  if (!conversations[channelKey]) conversations[channelKey] = [];
+  conversations[channelKey].push(message);
+  conversations[channelKey] = conversations[channelKey].slice(-10);
+
+  // Add to user history (keep last 10)
+  if (!conversations[userKey]) conversations[userKey] = [];
+  conversations[userKey].push(message);
+  conversations[userKey] = conversations[userKey].slice(-10);
+
+  saveConversations();
 }
 
 // Load Excel data
@@ -391,15 +459,15 @@ client.on("messageCreate", async (message) => {
   if (message.author.bot || !message.guild) return;
 
   const content = message.content.toLowerCase();
-  
+
   // Check if bot is mentioned
   const mentionsBot = message.mentions.has(client.user);
-  
+
   // Check if message mentions achen user or tags them
-  const mentionsAchen = process.env.ACHEN_USER_ID 
+  const mentionsAchen = process.env.ACHEN_USER_ID
     ? message.mentions.users.has(process.env.ACHEN_USER_ID)
     : false;
-  
+
   // Check if message contains "achen" text
   const containsAchen = content.includes("achen");
 
@@ -409,23 +477,37 @@ client.on("messageCreate", async (message) => {
   try {
     // Show typing indicator
     await message.channel.sendTyping();
-    
+
     // Log trigger reason
     const triggers = [];
     if (mentionsBot) triggers.push("bot tagged");
     if (mentionsAchen) triggers.push("achen tagged");
     if (containsAchen) triggers.push("contains 'achen'");
-    
-    console.log(`📩 Responding to message from ${message.author.username}: "${message.content}"`);
+
+    console.log(
+      `📩 Responding to message from ${message.author.username}: "${message.content}"`
+    );
     console.log(`   Triggered by: ${triggers.join(", ")}`);
 
-    // Call OpenAI API
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: `You are a helpful assistant in the Rise of Kingdoms Discord server for Kingdom 3606. You're responding on behalf of achen (achen1606), who is a council member of this kingdom.
+    // Get conversation history
+    const conversationHistory = getConversationHistory(
+      message.channel.id,
+      message.author.id
+    );
+
+    // Add current user message to history
+    addToConversationHistory(
+      message.channel.id,
+      message.author.id,
+      "user",
+      message.content
+    );
+
+    // Build messages array with system prompt + history + current message
+    const messages = [
+      {
+        role: "system",
+        content: `You are a helpful assistant in the Rise of Kingdoms Discord server for Kingdom 3606. You're responding on behalf of achen (achen1606), who is a council member of this kingdom.
 
 **KINGDOM 3606 INFORMATION:**
 - Main Alliance: ~iN (10B power, 320B KP, 115 members)
@@ -458,31 +540,84 @@ Our kingdom has a comprehensive website with these features:
 - **DKP**: Dead Kill Points (Score based on deads and Kill Points)
 - **Progress %**: Percentage of required KP completed
 
+**Kingdom Structure:**
+Council
+
+BuckNaked — King and Territory Lead
+
+TSN Stitch — War Lead and Diplomacy
+
+Achen — Stats, KD Management, and Diplomacy
+
+Mondu — War and Ark Lead
+
+Kasper — War Lead and Migration Tsar
+
+Officers
+
+Rokishi — Migration Officer
+
+Nanog — Shell Management
+
+Dory — Events and Migration
+
+Tati — Territory
+
+Geo — Territory and Shell Alliances
+
+Fairy Mah — KD Management
+
+Papi Horst — War Lead
+
+Papa Tony — Events and AMOB
+
+Uz - KD management and Territory
+
+Zwify - Shell and Farm Alliances 
+
 **DISCORD BOT COMMANDS:**
 - /link <id> - Link Discord to Governor ID
 - /stats - View your KOAB stats with progress bars
 - /unlink - Unlink your account
 
 Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, alliance strategy, or kingdom matters. When asked about stats or tools, you can reference the website features above. If you don't know something specific, be honest about it and refer them to https://3606.vercel.app/`,
-        },
-        {
-          role: "user",
-          content: `${message.author.username} asked: ${message.content}`,
-        },
-      ],
+      },
+      // Add conversation history
+      ...conversationHistory,
+      // Add current message
+      {
+        role: "user",
+        content: message.content,
+      },
+    ];
+
+    // Call OpenAI API
+    const completion = await openai.chat.completions.create({
+      model: "gpt-5-mini",
+      messages: messages,
       max_tokens: 500,
       temperature: 0.8,
     });
 
     const reply = completion.choices[0].message.content;
 
+    // Add assistant response to history
+    addToConversationHistory(
+      message.channel.id,
+      message.author.id,
+      "assistant",
+      reply
+    );
+
     // Reply to the message
     await message.reply(reply);
-    console.log(`✅ Reply sent successfully`);
+    console.log(
+      `✅ Reply sent successfully (${conversationHistory.length} messages in history)`
+    );
   } catch (error) {
     console.error("❌ OpenAI API Error:", error.message);
     console.error("Full error:", error);
-    
+
     // If it's an API key error, let user know (only in console)
     if (error.message?.includes("API key")) {
       console.error("⚠️ Check your OPENAI_API_KEY environment variable!");

@@ -9,13 +9,18 @@ A Discord bot that allows Kingdom 3606 members to link their accounts and view t
 - `/stats` - View your KOAB stats including Kill Points, DKP, and changes since baseline
 - `/unlink` - Unlink your Discord account
 
-### AI Auto-Response
+### AI Auto-Response with Memory
 The bot automatically responds to messages when:
 - The bot is tagged (@bot)
 - User @achen1606 is tagged (requires ACHEN_USER_ID env var)
 - Message contains the text "achen"
 
-The AI uses OpenAI's GPT-4o-mini and is informed about Rise of Kingdoms and Kingdom 3606 context to provide relevant responses about gameplay, alliance strategy, and kingdom matters.
+**Conversation Memory:**
+- Remembers the last 10 messages per channel AND per user (hybrid memory)
+- Allows for natural follow-up questions without repeating context
+- Memory persists across bot restarts (stored in `/app/data/conversations.json`)
+
+The AI uses OpenAI's **GPT-5 mini** and is informed about Rise of Kingdoms and Kingdom 3606 context to provide relevant responses about gameplay, alliance strategy, and kingdom matters.
 
 ## Setup
 
