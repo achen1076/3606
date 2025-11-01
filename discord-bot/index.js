@@ -14,6 +14,22 @@ import OpenAI from "openai";
 
 config();
 
+// Validate required environment variables
+const requiredEnvVars = ['DISCORD_TOKEN', 'CLIENT_ID', 'GUILD_ID', 'OPENAI_API_KEY'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingVars.join(', '));
+  console.error('Please set these in your .env file or Render environment variables');
+  process.exit(1);
+}
+
+if (!process.env.ACHEN_USER_ID) {
+  console.warn('⚠️ ACHEN_USER_ID not set - bot will only respond to messages containing "achen"');
+}
+
+console.log('✅ All required environment variables are set');
+
 // Initialize OpenAI
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -375,7 +391,11 @@ client.on("messageCreate", async (message) => {
   if (message.author.bot || !message.guild) return;
 
   const content = message.content.toLowerCase();
-  const mentionsAchen = message.mentions.users.has(process.env.ACHEN_USER_ID);
+  
+  // Check if message mentions achen or tags the user
+  const mentionsAchen = process.env.ACHEN_USER_ID 
+    ? message.mentions.users.has(process.env.ACHEN_USER_ID)
+    : false;
   const containsAchen = content.includes("achen");
 
   // Only respond if "achen" is mentioned or user is tagged
@@ -384,6 +404,8 @@ client.on("messageCreate", async (message) => {
   try {
     // Show typing indicator
     await message.channel.sendTyping();
+    
+    console.log(`📩 Responding to message from ${message.author.username}: "${message.content}"`);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -444,9 +466,15 @@ Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, all
 
     // Reply to the message
     await message.reply(reply);
+    console.log(`✅ Reply sent successfully`);
   } catch (error) {
-    console.error("OpenAI API Error:", error);
-    // Silently fail - don't send error messages to avoid spam
+    console.error("❌ OpenAI API Error:", error.message);
+    console.error("Full error:", error);
+    
+    // If it's an API key error, let user know (only in console)
+    if (error.message?.includes("API key")) {
+      console.error("⚠️ Check your OPENAI_API_KEY environment variable!");
+    }
   }
 });
 
