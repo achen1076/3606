@@ -597,7 +597,7 @@ Keep responses concise, friendly, and relevant to Rise of Kingdoms gameplay, all
       text: { verbosity: "low" },
     });
 
-    const reply = completion.choices[0]?.message?.content;
+    const reply = completion.output_text;
 
     // Check if we got a valid response
     if (!reply || reply.trim() === "") {
