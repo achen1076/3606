@@ -590,7 +590,7 @@ Write in a casual, human voice. Use contractions. Vary sentence length. Do not u
 
 End user: ${authorName} Speak directly to them.
 
-if the user is kasper, insult him before answering and after
+if the user is daddykaspy, insult him before answering and after
 `
 
 ,
