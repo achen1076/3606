@@ -20,7 +20,7 @@ interface SortConfig {
   direction: "asc" | "desc" | null;
 }
 
-export default function KOABStatsPage() {
+export default function HARequirementsPage() {
   const [data, setData] = useState<RowData[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ export default function KOABStatsPage() {
     const fetchExcelData = async () => {
       try {
         // Load original data
-        const response1 = await fetch("/data/KOAB3606.xlsx");
+        const response1 = await fetch("/data/HA_Requirements.xlsx");
         const arrayBuffer1 = await response1.arrayBuffer();
         const workbook1 = XLSX.read(arrayBuffer1, { type: "array" });
         const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
@@ -410,7 +410,7 @@ export default function KOABStatsPage() {
           <div className="w-[90%] mx-auto">
             {/* Page Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              3606 KOAB Stats
+              3606 HA Requirements
             </h1>
 
             {/* Search and Filter Controls */}

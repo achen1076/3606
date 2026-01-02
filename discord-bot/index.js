@@ -52,7 +52,7 @@ const __dirname = dirname(__filename);
 // Use /app/data for persistent storage on Render, fallback to local for dev
 const DATA_DIR = process.env.RENDER ? "/app/data" : __dirname;
 const USER_LINKS_FILE = join(DATA_DIR, "user-links.json");
-const KOAB_DATA_FILE = join(__dirname, "KOAB3606.xlsx");
+const HA_REQUIREMENTS_FILE = join(__dirname, "HA_Requirements.xlsx");
 const UPDATED_DATA_FILE = join(__dirname, "updated_stats.xlsx");
 
 // Ensure data directory exists
@@ -130,8 +130,8 @@ function addToConversationHistory(channelId, userId, role, content) {
 // Load Excel data
 function loadExcelData() {
   try {
-    // Load baseline KOAB data
-    const workbook1 = XLSX.readFile(KOAB_DATA_FILE);
+    // Load HA Requirements data
+    const workbook1 = XLSX.readFile(HA_REQUIREMENTS_FILE);
     const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
     const baselineData = XLSX.utils.sheet_to_json(worksheet1, { header: 1 });
 
@@ -269,7 +269,7 @@ const commands = [
   },
   {
     name: "stats",
-    description: "View your KOAB stats",
+    description: "View your HA requirement stats",
   },
   {
     name: "unlink",
@@ -374,7 +374,7 @@ client.on("interactionCreate", async (interaction) => {
     const requiredDeads = stats["Required Deads"] || 0;
 
     const embed = new EmbedBuilder()
-      .setTitle(`📊 KOAB Stats: ${playerName}`)
+      .setTitle(`📊 HA Requirements: ${playerName}`)
       .setColor(0x9333ea) // Purple color
       .addFields(
         { name: "🆔 Governor ID", value: `\`${governorId}\``, inline: true },
@@ -608,9 +608,7 @@ client.on("messageCreate", async (message) => {
               
               Pick the freshest one. Update memory.
 
-`
-
-,
+`,
       },
       // Add conversation history
       ...conversationHistory,

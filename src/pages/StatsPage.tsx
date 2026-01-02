@@ -43,8 +43,8 @@ export default function StatsPage() {
                 <tr className="border-b border-gray-700">
                   <td className="p-3 text-left">~iN</td>
                   <td className="p-3 text-right">10 B</td>
-                  <td className="p-3 text-right">320 B</td>
-                  <td className="p-3 text-right">115</td>
+                  <td className="p-3 text-right">400 B</td>
+                  <td className="p-3 text-right">100</td>
                 </tr>
               </tbody>
             </table>
@@ -60,6 +60,13 @@ export default function StatsPage() {
               <h3 className="text-xl font-bold text-rok-purple-light mb-4">
                 Recent KvK Results
               </h3>
+              <div className="bg-black/30 p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <span className="text-white font-bold">KOAB</span>
+                  <span className="text-green-400 font-bold">Victory</span>
+                </div>
+                <p className="text-gray-300 mt-2">Top 2 DKP</p>
+              </div>
               <div className="bg-black/30 p-4 rounded-lg">
                 <div className="flex justify-between items-center">
                   <span className="text-white font-bold">Season 4</span>
@@ -102,7 +109,7 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">Total Kingdom KP</span>
-                      <span className="text-white">20.8B</span>
+                      <span className="text-white">51.1B</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -114,7 +121,7 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">T5 Kills</span>
-                      <span className="text-white">602M</span>
+                      <span className="text-white">2.2B</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
@@ -126,24 +133,24 @@ export default function StatsPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">T4 Kills</span>
-                      <span className="text-white">858M</span>
+                      <span className="text-white">594M</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
                         className="bg-rok-purple-light h-2 rounded-full"
-                        style={{ width: "90%" }}
+                        style={{ width: "30%" }}
                       ></div>
                     </div>
                   </div>
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-white">Deads</span>
-                      <span className="text-white">200M</span>
+                      <span className="text-white">253M</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
                         className="bg-rok-purple-light h-2 rounded-full"
-                        style={{ width: "60%" }}
+                        style={{ width: "90%" }}
                       ></div>
                     </div>
                   </div>

@@ -87,8 +87,8 @@ const Navbar: React.FC<NavbarProps> = ({
               <NavLink to="/stats">Stats</NavLink>
               <NavLink to="/leads">Leads</NavLink>
               <NavLink to="/tools">Tools</NavLink>
-              <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
-              <NavLink to="/koabstats">KOAB Stats</NavLink>
+              {/* <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink> */}
+              <NavLink to="/harequirements">HA Requirements</NavLink>
               {/* <NavLink to="/crystaltech">Crystal Tech</NavLink> */}
               <NavLink to="/forms">Forms</NavLink>
               <a
@@ -121,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <NavLink to="/leads">Leads</NavLink>
             <NavLink to="/tools">Tools</NavLink>
             <NavLink to="/barbfortrally">Barb Fort Rally Data</NavLink>
-            <NavLink to="/koabstats">KOAB Stats</NavLink>
+            <NavLink to="/harequirements">HA Requirements</NavLink>
             {/* <NavLink to="/crystaltech">Crystal Tech</NavLink> */}
             <NavLink to="/forms">Forms</NavLink>
             <a

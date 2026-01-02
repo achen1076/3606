@@ -3,20 +3,34 @@ import * as XLSX from "xlsx";
 
 interface ExcelTableProps {
   excelFilePath?: string;
-  initialSeason?: number;
+  initialSeason?: number | "KOAB";
+}
+
+interface DeltaMap {
+  [key: string]: {
+    [column: string]: number;
+  };
 }
 
 export default function ExcelTable({
   excelFilePath = "/data/3606_kvk4.xlsx",
   initialSeason = 4,
 }: ExcelTableProps) {
-  const [currentSeason, setCurrentSeason] = useState<number>(initialSeason);
+  const [currentSeason, setCurrentSeason] = useState<number | "KOAB">(
+    initialSeason
+  );
 
   // Define file paths for different seasons
-  const seasonFilePaths = {
+  const seasonFilePaths: {
+    [key: number | string]: string | { original: string; updated: string };
+  } = {
     2: "/data/3606_k2.xlsx",
     3: "/data/3606_k3.xlsx",
     4: "/data/3606_kvk4.xlsx",
+    KOAB: {
+      original: "/data/KOAB3606.xlsx",
+      updated: "/data/KOAB_updated_stats.xlsx",
+    },
   };
 
   // Update file path when season changes
@@ -39,12 +53,137 @@ export default function ExcelTable({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
   const [scrollLeft, setScrollLeft] = useState<number>(0);
+  const [sortByDelta, setSortByDelta] = useState(false);
+  const [deltas, setDeltas] = useState<DeltaMap>({});
+
+  // Load KOAB data with delta tracking
+  const loadKOABData = async (forceRefresh = false) => {
+    try {
+      const cacheBuster = forceRefresh ? `?refresh=${Date.now()}` : "";
+      const files = seasonFilePaths["KOAB"] as {
+        original: string;
+        updated: string;
+      };
+
+      // Load original data
+      const response1 = await fetch(`${files.original}${cacheBuster}`);
+      const arrayBuffer1 = await response1.arrayBuffer();
+      const workbook1 = XLSX.read(arrayBuffer1, { type: "array" });
+      const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
+      const originalData = XLSX.utils.sheet_to_json(worksheet1, {
+        header: 1,
+      }) as any[][];
+
+      // Load updated data
+      const response2 = await fetch(`${files.updated}${cacheBuster}`);
+      const arrayBuffer2 = await response2.arrayBuffer();
+      const workbook2 = XLSX.read(arrayBuffer2, { type: "array" });
+      const worksheet2 = workbook2.Sheets["3606"];
+      const updatedData = XLSX.utils.sheet_to_json(worksheet2, {
+        header: 1,
+      }) as any[][];
+
+      if (originalData.length > 0) {
+        const allHeaders = originalData[0] as string[];
+
+        // Filter out DKP and Required columns
+        const filteredHeaders = allHeaders.filter(
+          (col) => col !== "DKP" && !col.toLowerCase().includes("required")
+        );
+        setHeaders(filteredHeaders);
+
+        // Create lookup map for updated data
+        const updatedMap: { [key: string]: any } = {};
+        if (updatedData.length > 0) {
+          const updatedHeaders = updatedData[0] as string[];
+          const idIndex = updatedHeaders.findIndex((h) =>
+            String(h).toLowerCase().includes("id")
+          );
+
+          updatedData.slice(1).forEach((row) => {
+            const id = row[idIndex];
+            if (id) {
+              const rowObj: any = {};
+              updatedHeaders.forEach((header, idx) => {
+                rowObj[String(header).toLowerCase()] = row[idx];
+              });
+              updatedMap[id] = rowObj;
+            }
+          });
+        }
+
+        const originalIdIndex = allHeaders.findIndex((h) =>
+          String(h).toLowerCase().includes("id")
+        );
+        const deltaMap: DeltaMap = {};
+
+        const rows = originalData
+          .slice(1)
+          .filter((row) =>
+            row.some(
+              (cell) => cell !== null && cell !== undefined && cell !== ""
+            )
+          )
+          .map((row, index) => {
+            const governorId = row[originalIdIndex];
+            const filteredRow = row.filter(
+              (_, idx) =>
+                allHeaders[idx] !== "DKP" &&
+                !allHeaders[idx].toLowerCase().includes("required")
+            );
+
+            // Calculate deltas
+            if (governorId && updatedMap[governorId]) {
+              const deltaKey = `row_${index}`;
+              deltaMap[deltaKey] = {};
+
+              allHeaders.forEach((header, idx) => {
+                if (
+                  header === "DKP" ||
+                  header.toLowerCase().includes("required")
+                )
+                  return;
+                const originalValue = row[idx];
+                const updatedValue =
+                  updatedMap[governorId][String(header).toLowerCase()];
+
+                if (originalValue !== undefined && updatedValue !== undefined) {
+                  const origNum = Number(originalValue);
+                  const updNum = Number(updatedValue);
+
+                  if (!isNaN(origNum) && !isNaN(updNum) && origNum !== updNum) {
+                    deltaMap[deltaKey][header] = updNum - origNum;
+                  }
+                }
+              });
+            }
+
+            return filteredRow;
+          });
+
+        setExcelData(rows);
+        setDeltas(deltaMap);
+      }
+
+      setLoading(false);
+    } catch (error: any) {
+      console.error("Error loading KOAB data:", error);
+      setError(`Failed to load KOAB data. ${error.message}`);
+      setLoading(false);
+    }
+  };
 
   // Load Excel data
   const loadExcelData = async (forceRefresh = false) => {
     try {
       setLoading(true);
       setError(null);
+
+      // Check if this is KOAB season (requires delta calculation)
+      if (currentSeason === "KOAB") {
+        await loadKOABData(forceRefresh);
+        return;
+      }
 
       // Add a cache-busting query parameter to force a fresh fetch
       const cacheBuster = forceRefresh ? `?refresh=${Date.now()}` : "";
@@ -197,6 +336,7 @@ export default function ExcelTable({
       });
 
       setExcelData(filteredRows);
+      setDeltas({});
       setLoading(false);
     } catch (error: any) {
       console.error("Error loading Excel file:", error);
@@ -312,21 +452,52 @@ export default function ExcelTable({
     const isNumericColumn =
       headerName.includes("kp") ||
       headerName.includes("dead") ||
-      headerName.includes("kill");
+      headerName.includes("kill") ||
+      headerName.includes("power");
 
     return [...filteredData].sort((a, b) => {
-      // Get values at the sorted column index
-      let aValue = a[sortColumnIndex];
-      let bValue = b[sortColumnIndex];
+      let aValue, bValue;
 
-      if (isNumericColumn) {
-        // Handle numeric columns (KP, Dead)
-        aValue = parseFloat(aValue) || 0;
-        bValue = parseFloat(bValue) || 0;
+      // Handle KOAB delta sorting
+      if (currentSeason === "KOAB" && sortByDelta && isNumericColumn) {
+        const aRowIndex = excelData.indexOf(a);
+        const bRowIndex = excelData.indexOf(b);
+        const aDeltaKey = `row_${aRowIndex}`;
+        const bDeltaKey = `row_${bRowIndex}`;
+        aValue = deltas[aDeltaKey]?.[headers[sortColumnIndex]] || 0;
+        bValue = deltas[bDeltaKey]?.[headers[sortColumnIndex]] || 0;
+      }
+      // Handle KOAB total (original + delta) sorting
+      else if (currentSeason === "KOAB" && isNumericColumn) {
+        const aRowIndex = excelData.indexOf(a);
+        const bRowIndex = excelData.indexOf(b);
+        const aDeltaKey = `row_${aRowIndex}`;
+        const bDeltaKey = `row_${bRowIndex}`;
+        const aDelta = deltas[aDeltaKey]?.[headers[sortColumnIndex]];
+        const bDelta = deltas[bDeltaKey]?.[headers[sortColumnIndex]];
+
+        aValue =
+          aDelta !== undefined
+            ? (Number(a[sortColumnIndex]) || 0) + aDelta
+            : parseFloat(a[sortColumnIndex]) || 0;
+        bValue =
+          bDelta !== undefined
+            ? (Number(b[sortColumnIndex]) || 0) + bDelta
+            : parseFloat(b[sortColumnIndex]) || 0;
       } else {
-        // Handle string columns (Name, ID)
-        aValue = aValue ? aValue.toString().toLowerCase() : "";
-        bValue = bValue ? bValue.toString().toLowerCase() : "";
+        // Get values at the sorted column index
+        aValue = a[sortColumnIndex];
+        bValue = b[sortColumnIndex];
+
+        if (isNumericColumn) {
+          // Handle numeric columns (KP, Dead)
+          aValue = parseFloat(aValue) || 0;
+          bValue = parseFloat(bValue) || 0;
+        } else {
+          // Handle string columns (Name, ID)
+          aValue = aValue ? aValue.toString().toLowerCase() : "";
+          bValue = bValue ? bValue.toString().toLowerCase() : "";
+        }
       }
 
       // Perform the comparison
@@ -338,7 +509,15 @@ export default function ExcelTable({
       }
       return 0;
     });
-  }, [filteredData, sortConfig, headers]);
+  }, [
+    filteredData,
+    sortConfig,
+    headers,
+    currentSeason,
+    sortByDelta,
+    deltas,
+    excelData,
+  ]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -367,6 +546,30 @@ export default function ExcelTable({
     }
   };
 
+  // Format numbers with commas for KOAB (except for ID column)
+  const formatNumberKOAB = (value: any, column: string): string => {
+    if (value === undefined || value === null || value === "") return "";
+
+    const isIdColumn =
+      column &&
+      (column.toLowerCase().includes("id") || column.toLowerCase() === "id");
+    if (isIdColumn) {
+      return String(value);
+    }
+
+    const num = Number(value);
+
+    if (!isNaN(num)) {
+      if (Math.abs(num) >= 1000) {
+        return Math.round(num).toLocaleString();
+      } else {
+        return Math.round(num).toString();
+      }
+    }
+
+    return String(value);
+  };
+
   // Reset to default state
   const handleReset = () => {
     setSearchTerm("");
@@ -384,7 +587,8 @@ export default function ExcelTable({
       {/* Title */}
       <div className="mb-6 text-center">
         <h2 className="text-2xl font-bold text-rok-purple">
-          KvK {currentSeason} Player Statistics
+          {currentSeason === "KOAB" ? "KOAB" : `KvK ${currentSeason}`} Player
+          Statistics
         </h2>
         <p className="text-gray-400 mt-1">
           Kingdom 3606 player performance data
@@ -424,11 +628,38 @@ export default function ExcelTable({
           >
             Season 4
           </button>
+          <button
+            onClick={() => setCurrentSeason("KOAB")}
+            className={`px-4 py-2 rounded-md text-sm font-medium ${
+              currentSeason === "KOAB"
+                ? "bg-rok-purple text-white"
+                : "text-gray-300 hover:bg-gray-700"
+            }`}
+          >
+            KOAB
+          </button>
         </div>
       </div>
 
       {/* Search and controls */}
       <div className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        {currentSeason === "KOAB" && (
+          <div className="flex items-center gap-2">
+            <span className="text-gray-300 text-sm">Sort by Deltas</span>
+            <button
+              onClick={() => setSortByDelta(!sortByDelta)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+                sortByDelta ? "bg-green-500" : "bg-white/10"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                  sortByDelta ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        )}
         <div className="relative w-full md:w-64">
           <input
             type="text"
@@ -549,50 +780,94 @@ export default function ExcelTable({
                     </tr>
                   </thead>
                   <tbody className="bg-black/20 divide-y divide-gray-800">
-                    {sortedData.map((row, rowIndex) => (
-                      <tr
-                        key={rowIndex}
-                        className={`${
-                          rowIndex % 2 === 0 ? "bg-black/30" : "bg-black/10"
-                        } hover:bg-rok-purple/20`}
-                      >
-                        {row.map((cell: any, cellIndex: number) => {
-                          // Determine if this column likely contains numeric data
-                          const isLikelyNumeric =
-                            headers[cellIndex] &&
-                            typeof headers[cellIndex] === "string" &&
-                            (headers[cellIndex]
-                              .toString()
-                              .toLowerCase()
-                              .includes("kp") ||
-                              headers[cellIndex]
-                                .toString()
-                                .toLowerCase()
-                                .includes("dead") ||
-                              headers[cellIndex]
-                                .toString()
-                                .toLowerCase()
-                                .includes("kill") ||
-                              headers[cellIndex]
-                                .toString()
-                                .toLowerCase()
-                                .includes("power"));
+                    {sortedData.map((row, rowIndex) => {
+                      const dataRowIndex = excelData.indexOf(row);
+                      const deltaKey = `row_${dataRowIndex}`;
+                      const rowDeltas = deltas[deltaKey] || {};
 
-                          return (
-                            <td
-                              key={cellIndex}
-                              className={`px-4 py-2 whitespace-nowrap text-sm ${
-                                isLikelyNumeric ? "text-right" : "text-left"
-                              }`}
-                            >
-                              {isLikelyNumeric
-                                ? formatNumber(cell)
-                                : cell || "N/A"}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
+                      return (
+                        <tr
+                          key={rowIndex}
+                          className={`${
+                            rowIndex % 2 === 0 ? "bg-black/30" : "bg-black/10"
+                          } hover:bg-rok-purple/20`}
+                        >
+                          {row.map((cell: any, cellIndex: number) => {
+                            const headerName = headers[cellIndex];
+                            // Determine if this column likely contains numeric data
+                            const isLikelyNumeric =
+                              headerName &&
+                              typeof headerName === "string" &&
+                              (headerName
+                                .toString()
+                                .toLowerCase()
+                                .includes("kp") ||
+                                headerName
+                                  .toString()
+                                  .toLowerCase()
+                                  .includes("dead") ||
+                                headerName
+                                  .toString()
+                                  .toLowerCase()
+                                  .includes("kill") ||
+                                headerName
+                                  .toString()
+                                  .toLowerCase()
+                                  .includes("power"));
+
+                            // Special handling for KOAB data with deltas
+                            if (currentSeason === "KOAB" && isLikelyNumeric) {
+                              const delta = rowDeltas[headerName];
+                              const hasDelta = delta !== undefined;
+
+                              return (
+                                <td
+                                  key={cellIndex}
+                                  className="px-4 py-2 whitespace-nowrap text-sm text-right"
+                                >
+                                  <div className="flex flex-col items-end gap-1.5">
+                                    <span className="text-white font-medium">
+                                      {hasDelta
+                                        ? formatNumberKOAB(
+                                            (Number(cell) || 0) + delta,
+                                            headerName
+                                          )
+                                        : formatNumberKOAB(cell, headerName)}
+                                    </span>
+                                    {hasDelta && (
+                                      <span
+                                        className={`inline-flex items-center justify-center text-xs font-semibold px-2.5 py-1 rounded-full min-w-fit ${
+                                          delta > 0
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-700"
+                                        }`}
+                                      >
+                                        {delta > 0 ? "+" : ""}
+                                        {formatNumberKOAB(delta, headerName)}
+                                      </span>
+                                    )}
+                                  </div>
+                                </td>
+                              );
+                            }
+
+                            // Regular rendering for KvK seasons
+                            return (
+                              <td
+                                key={cellIndex}
+                                className={`px-4 py-2 whitespace-nowrap text-sm ${
+                                  isLikelyNumeric ? "text-right" : "text-left"
+                                }`}
+                              >
+                                {isLikelyNumeric
+                                  ? formatNumber(cell)
+                                  : cell || "N/A"}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

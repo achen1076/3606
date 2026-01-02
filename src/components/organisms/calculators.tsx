@@ -35,29 +35,41 @@ export default function Calculators() {
           Swapping between rally, field, and garrison only affect gear and some
           inscriptions.
         </p>
-        
         {/* Reference Links */}
         <div className="mb-6 flex flex-wrap gap-4">
-          <a 
-            href="/gear-scores" 
+          <a
+            href="/gear-scores"
             className="px-4 py-2 bg-rok-purple/30 hover:bg-rok-purple/50 text-white rounded-md flex items-center transition-all"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                clipRule="evenodd"
+              />
             </svg>
             View Gear Score Reference
           </a>
-          <a 
-            href="/inscription-scores" 
+          <a
+            href="/inscription-scores"
             className="px-4 py-2 bg-rok-purple/30 hover:bg-rok-purple/50 text-white rounded-md flex items-center transition-all"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
             View Inscription Score Reference
           </a>
         </div>
-
         {/* Accordion Sections */}
         <div className="space-y-4">
           {/* Cavalry Accordion */}
@@ -170,8 +182,7 @@ export default function Calculators() {
             </div>
           </div>
         </div>
-
-        {/* Barb For Rally Section */}
+        {/* Barb For Rally Section
         <div className="mt-10 border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-bold text-white mb-6">
             Barb Fort Rally Data
@@ -208,9 +219,8 @@ export default function Calculators() {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Crystal Tech Section */}
+        </div> */}
+        Crystal Tech Section
         <div className="mt-10 border-t border-gray-700 pt-8">
           <h2 className="text-2xl font-bold text-white mb-6">
             Crystal Tech Tree
@@ -218,30 +228,45 @@ export default function Calculators() {
           <p className="text-lg text-gray-300 mb-6">
             Research and develop crystal-based technology for your kingdom
           </p>
-          
+
           <div className="bg-rok-purple/20 p-6 rounded-lg">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-white mb-4">Tech Tree</h3>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Tech Tree
+                </h3>
                 <p className="text-gray-300 mb-4">
-                  Explore the crystal technology tree and plan your research path.
+                  Explore the crystal technology tree and plan your research
+                  path.
                 </p>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-white mb-4">Upgrade Paths</h3>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Upgrade Paths
+                </h3>
                 <p className="text-gray-300 mb-4">
-                  Visualize technology prerequisites and optimize your development strategy.
+                  Visualize technology prerequisites and optimize your
+                  development strategy.
                 </p>
               </div>
             </div>
-            
+
             <div className="mt-6 flex justify-center">
-              <a 
-                href="/crystaltech" 
+              <a
+                href="/crystaltech"
                 className="px-6 py-3 bg-rok-purple hover:bg-rok-purple-dark text-white rounded-md flex items-center transition-all text-lg"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z" clipRule="evenodd" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 View Crystal Tech Tree
               </a>
