@@ -369,7 +369,7 @@ client.on("interactionCreate", async (interaction) => {
     const playerName = stats["Governor Name"] || stats["Name"] || "Unknown";
     const power = stats["Power"] || 0;
     const killPoints = stats["Kill Points"] || 0;
-    const requiredKP = stats["Required KP"] || 0;
+    const requiredKP = stats["Required Kills"] || 0;
     const deads = stats["Deads"] || 0;
     const requiredDeads = stats["Required Deads"] || 0;
 
