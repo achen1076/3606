@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/inscription-scores" element={<InscriptionScorePage />} />
         {/* <Route path="/barbfortrally" element={<BarbForRallyPage />} /> */}
         <Route path="/crystaltech" element={<CrystalTechPage />} />
-        {/* <Route path="/harequirements" element={<HARequirementsPage />} /> */}
+        <Route path="/harequirements" element={<HARequirementsPage />} />
         <Route path="/tools" element={<ToolsPage />} />
         <Route path="/forms" element={<FormsPage />} />
         <Route path="/login" element={<LoginPage />} />
